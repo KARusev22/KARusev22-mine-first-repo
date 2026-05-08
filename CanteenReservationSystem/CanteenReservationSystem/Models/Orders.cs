@@ -1,0 +1,15 @@
+﻿namespace CanteenReservationSystem.Models;
+
+public class Orders : BaseEntity
+{
+    public string UserId { get; set; }
+    public ApplicationUser User { get; set; }
+
+    public string UniqueCode { get; set; }
+    public decimal TotalPrice { get; set; }
+    public string Status { get; set; } // Pending, Completed, NotClaimed
+    public DateTime CreatedAt { get; set; }
+
+    public ICollection<OrderDetails> OrderDetails { get; set; }
+    public ICollection<Payments> Payments { get; set; }
+}

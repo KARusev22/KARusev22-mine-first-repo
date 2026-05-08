@@ -4,6 +4,7 @@ using CanteenReservationSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CanteenReservationSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260508123326_InitialSchema")]
+    partial class InitialSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,40 +120,6 @@ namespace CanteenReservationSystem.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("CanteenReservationSystem.Models.CartItems", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DishId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Note")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("TargetDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DishId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("CanteenReservationSystem.Models.Category", b =>
@@ -290,159 +259,6 @@ namespace CanteenReservationSystem.Migrations
                     b.ToTable("Nutritions");
                 });
 
-            modelBuilder.Entity("CanteenReservationSystem.Models.OrderDetails", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DishId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Note")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DishId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderDetails");
-                });
-
-            modelBuilder.Entity("CanteenReservationSystem.Models.Orders", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UniqueCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("CanteenReservationSystem.Models.Payments", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("Payments");
-                });
-
-            modelBuilder.Entity("CanteenReservationSystem.Models.PollOptions", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("OptionText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PollId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PollId");
-
-                    b.ToTable("PollOptions");
-                });
-
-            modelBuilder.Entity("CanteenReservationSystem.Models.Polls", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Question")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Polls");
-                });
-
-            modelBuilder.Entity("CanteenReservationSystem.Models.Votes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("OptionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OptionId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Votes");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -580,25 +396,6 @@ namespace CanteenReservationSystem.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CanteenReservationSystem.Models.CartItems", b =>
-                {
-                    b.HasOne("CanteenReservationSystem.Models.Dish", "Dish")
-                        .WithMany()
-                        .HasForeignKey("DishId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CanteenReservationSystem.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Dish");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("CanteenReservationSystem.Models.Dish", b =>
                 {
                     b.HasOne("CanteenReservationSystem.Models.Category", "Category")
@@ -657,77 +454,6 @@ namespace CanteenReservationSystem.Migrations
                         .IsRequired();
 
                     b.Navigation("Dish");
-                });
-
-            modelBuilder.Entity("CanteenReservationSystem.Models.OrderDetails", b =>
-                {
-                    b.HasOne("CanteenReservationSystem.Models.Dish", "Dish")
-                        .WithMany()
-                        .HasForeignKey("DishId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CanteenReservationSystem.Models.Orders", "Order")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Dish");
-
-                    b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("CanteenReservationSystem.Models.Orders", b =>
-                {
-                    b.HasOne("CanteenReservationSystem.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CanteenReservationSystem.Models.Payments", b =>
-                {
-                    b.HasOne("CanteenReservationSystem.Models.Orders", "Order")
-                        .WithMany("Payments")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("CanteenReservationSystem.Models.PollOptions", b =>
-                {
-                    b.HasOne("CanteenReservationSystem.Models.Polls", "Poll")
-                        .WithMany("Options")
-                        .HasForeignKey("PollId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Poll");
-                });
-
-            modelBuilder.Entity("CanteenReservationSystem.Models.Votes", b =>
-                {
-                    b.HasOne("CanteenReservationSystem.Models.PollOptions", "Option")
-                        .WithMany("Votes")
-                        .HasForeignKey("OptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CanteenReservationSystem.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Option");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -804,23 +530,6 @@ namespace CanteenReservationSystem.Migrations
             modelBuilder.Entity("CanteenReservationSystem.Models.Ingredient", b =>
                 {
                     b.Navigation("DishIngredients");
-                });
-
-            modelBuilder.Entity("CanteenReservationSystem.Models.Orders", b =>
-                {
-                    b.Navigation("OrderDetails");
-
-                    b.Navigation("Payments");
-                });
-
-            modelBuilder.Entity("CanteenReservationSystem.Models.PollOptions", b =>
-                {
-                    b.Navigation("Votes");
-                });
-
-            modelBuilder.Entity("CanteenReservationSystem.Models.Polls", b =>
-                {
-                    b.Navigation("Options");
                 });
 #pragma warning restore 612, 618
         }
