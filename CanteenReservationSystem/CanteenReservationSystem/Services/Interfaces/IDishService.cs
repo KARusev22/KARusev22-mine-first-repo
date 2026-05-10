@@ -9,4 +9,6 @@ public interface IDishService
     Task CreateAsync(Dish dish);
     Task UpdateAsync(Dish dish);
     Task DeleteAsync(int id);
+    
+    Task<IEnumerable<Dish>> FilterByCategoryAsync(int categoryId);
 }

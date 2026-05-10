@@ -9,4 +9,5 @@ public interface IIngredientService
     Task CreateAsync(Ingredient ingredient);
     Task UpdateAsync(Ingredient ingredient);
     Task DeleteAsync(int id);
+    Task<IEnumerable<Dish>> GetDishesByIngredientAsync(int ingredientId);
 }
