@@ -9,4 +9,5 @@ public interface IAllergenService
     Task CreateAsync(Allergen allergen);
     Task UpdateAsync(Allergen allergen);
     Task DeleteAsync(int id);
+    Task<IEnumerable<Dish>> GetDishesByAllergenAsync(int allergenId);
 }
