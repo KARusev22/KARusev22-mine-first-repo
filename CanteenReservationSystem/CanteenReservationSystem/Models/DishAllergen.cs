@@ -1,6 +1,6 @@
 ﻿namespace CanteenReservationSystem.Models;
 
-public class DishAllergen
+public class DishAllergen : BaseEntity
 {
     public int DishId { get; set; }
     public Dish Dish { get; set; }

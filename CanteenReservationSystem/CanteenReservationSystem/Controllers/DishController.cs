@@ -98,6 +98,21 @@ public class DishController : Controller
             });
         }
         
+        if (Request.Form.TryGetValue("selectedAllergens", out var allergenValues))
+        {
+            foreach (var allergenIdStr in allergenValues)
+            {
+                if (int.TryParse(allergenIdStr, out int allergenId))
+                {
+                    _context.DishAllergens.Add(new DishAllergen
+                    {
+                        DishId = dish.Id,
+                        AllergenId = allergenId
+                    });
+                }
+            }
+        }
+        
         return RedirectToAction(nameof(Index));
     }
     
@@ -117,6 +132,15 @@ public class DishController : Controller
         if (dish == null)
             return NotFound();
 
+        var allAllergens = await _context.Allergens.ToListAsync();
+        var selectedAllergenIds = await _context.DishAllergens
+            .Where(da => da.DishId == dish.Id)
+            .Select(da => da.AllergenId)
+            .ToListAsync();
+
+        ViewBag.Allergens = allAllergens;
+        ViewBag.SelectedAllergens = selectedAllergenIds;
+        
         return View(dish);
     }
     
@@ -195,6 +219,33 @@ public class DishController : Controller
 
         _context.DishIngredients.RemoveRange(toDelete);
         
+        var existingAllergens = await _context.DishAllergens
+            .Where(da => da.DishId == dish.Id)
+            .ToListAsync();
+
+        var selectedAllergens = Request.Form["selectedAllergens"]
+            .Select(int.Parse)
+            .ToList();
+        
+        foreach (var allergenId in selectedAllergens)
+        {
+            if (!existingAllergens.Any(da => da.AllergenId == allergenId))
+            {
+                _context.DishAllergens.Add(new DishAllergen
+                {
+                    DishId = dish.Id,
+                    AllergenId = allergenId
+                });
+            }
+        }
+        
+        foreach (var allergenRecord  in existingAllergens)
+        {
+            if (!selectedAllergens.Contains(allergenRecord .AllergenId))
+            {
+                _context.DishAllergens.Remove(allergenRecord );
+            }
+        }
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
