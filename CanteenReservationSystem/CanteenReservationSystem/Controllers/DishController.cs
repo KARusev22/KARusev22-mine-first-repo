@@ -19,15 +19,17 @@ public class DishController : Controller
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IWebHostEnvironment _env; //Access to wwwroot for file uploads
     private readonly IDishService _dishService;
+    private readonly IIngredientService _ingredientService; 
     private readonly HtmlSanitizer _sanitizer = new HtmlSanitizer();
 
     public DishController(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
-        IWebHostEnvironment env, IDishService dishService)
+        IWebHostEnvironment env, IDishService dishService, IIngredientService ingredientService)
     {
         _context = context;
         _userManager = userManager;
         _env = env;
         _dishService = dishService;
+        _ingredientService = ingredientService;
         
         _sanitizer.AllowedTags.Add("b");
         _sanitizer.AllowedTags.Add("i");
@@ -53,7 +55,8 @@ public class DishController : Controller
     
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Dish dish, IFormFile? imageFile)
+    public async Task<IActionResult> Create(Dish dish, IFormFile? imageFile,
+                                            List<string> ingredientNames,List<int> ingredientGrams)
     {
         if (!ModelState.IsValid)
             return View(dish);
@@ -77,6 +80,24 @@ public class DishController : Controller
 
         await _dishService.CreateAsync(dish);
 
+        for (int i = 0; i < ingredientNames.Count; i++)
+        {
+            var name = ingredientNames[i];
+            var grams = ingredientGrams[i];
+
+            if (string.IsNullOrWhiteSpace(name))
+                continue;
+
+            var ingredient = await _ingredientService.FindOrCreateByNameAsync(name);
+
+            _context.DishIngredients.Add(new DishIngredient
+            {
+                DishId = dish.Id,
+                IngredientId = ingredient.Id,
+                GramsPerPortion = grams
+            });
+        }
+        
         return RedirectToAction(nameof(Index));
     }
     
@@ -101,7 +122,8 @@ public class DishController : Controller
     
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, Dish dish, IFormFile? imageFile)
+    public async Task<IActionResult> Edit(int id, Dish dish, IFormFile? imageFile, List<int> ingredientIds,
+                                        List<string> ingredientNames, List<int> ingredientGrams)
     {
         if (id != dish.Id)
             return BadRequest();
@@ -128,6 +150,52 @@ public class DishController : Controller
 
         await _dishService.UpdateAsync(dish);
 
+        var existing = await _context.DishIngredients
+            .Where(di => di.DishId == dish.Id)
+            .ToListAsync();
+        
+        for (int i = 0; i < ingredientNames.Count; i++)
+        {
+            var ingId = ingredientIds[i];
+            var name = ingredientNames[i];
+            var grams = ingredientGrams[i];
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                continue;
+            }
+
+            var ingredient = await _ingredientService.FindOrCreateByNameAsync(name);
+
+            if (ingId > 0)
+            {
+                var existingRecord = existing.First(di => di.Id == ingId);
+
+                existingRecord.IngredientId = ingredient.Id;
+                existingRecord.GramsPerPortion = grams;
+
+                _context.DishIngredients.Update(existingRecord);
+            }
+            else
+            {
+                _context.DishIngredients.Add(new DishIngredient
+                {
+                    DishId = dish.Id,
+                    IngredientId = ingredient.Id,
+                    GramsPerPortion = grams
+                });
+            }
+        }
+        
+        var idsFromForm = ingredientIds.Where(x => x > 0).ToList();
+
+        var toDelete = existing
+            .Where(di => !idsFromForm.Contains(di.Id))
+            .ToList();
+
+        _context.DishIngredients.RemoveRange(toDelete);
+        
+        await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
     

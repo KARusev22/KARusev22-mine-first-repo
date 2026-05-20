@@ -64,4 +64,25 @@ public class IngredientService : IIngredientService
             .Select(di => di.Dish)
             .ToListAsync();
     }
+    
+    public async Task<Ingredient> FindOrCreateByNameAsync(string name)
+    {
+        var normalized = name.Trim().ToLower();
+
+        var ingredient = await _context.Ingredients
+            .FirstOrDefaultAsync(i => i.IngredientName.ToLower() == normalized);
+
+        if (ingredient != null)
+            return ingredient;
+
+        ingredient = new Ingredient
+        {
+            IngredientName = name.Trim()
+        };
+
+        _context.Ingredients.Add(ingredient);
+        await _context.SaveChangesAsync();
+
+        return ingredient;
+    }
 }
