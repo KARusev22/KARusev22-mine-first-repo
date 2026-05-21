@@ -1,22 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CanteenReservationSystem.Data;
 using CanteenReservationSystem.Models;
+using CanteenReservationSystem.Services;
+using CanteenReservationSystem.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace CanteenReservationSystem.Controllers;
 
 public class AllergenController : Controller
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IAllergenService _allergenService;
 
-    public AllergenController(ApplicationDbContext context)
+    public AllergenController(IAllergenService allergenService)
     {
-        _context = context;
+        _allergenService = allergenService;
     }
 
     public async Task<IActionResult> Index()
     {
-        var allergens = await _context.Allergens.ToListAsync();
+        var allergens = await _allergenService.GetAllAsync();
         return View(allergens);
     }
 
@@ -33,8 +35,7 @@ public class AllergenController : Controller
         if (!ModelState.IsValid)
             return View(allergen);
 
-        _context.Allergens.Add(allergen);
-        await _context.SaveChangesAsync();
+        await _allergenService.CreateAsync(allergen);
 
         return RedirectToAction(nameof(Index));
     }
@@ -42,7 +43,7 @@ public class AllergenController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(int id)
     {
-        var allergen = await _context.Allergens.FindAsync(id);
+        var allergen = await _allergenService.GetByIdAsync(id);
         if (allergen == null)
             return NotFound();
 
@@ -58,9 +59,8 @@ public class AllergenController : Controller
 
         if (!ModelState.IsValid)
             return View(allergen);
-
-        _context.Allergens.Update(allergen);
-        await _context.SaveChangesAsync();
+        
+        await _allergenService.UpdateAsync(allergen);
 
         return RedirectToAction(nameof(Index));
     }
@@ -68,7 +68,7 @@ public class AllergenController : Controller
     [HttpGet]
     public async Task<IActionResult> Delete(int id)
     {
-        var allergen = await _context.Allergens.FindAsync(id);
+        var allergen = await _allergenService.GetByIdAsync(id);
         if (allergen == null)
             return NotFound();
 
@@ -79,13 +79,7 @@ public class AllergenController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var allergen = await _context.Allergens.FindAsync(id);
-        if (allergen != null)
-        {
-            _context.Allergens.Remove(allergen);
-            await _context.SaveChangesAsync();
-        }
-
+        await _allergenService.DeleteAsync(id);
         return RedirectToAction(nameof(Index));
     }
 }
