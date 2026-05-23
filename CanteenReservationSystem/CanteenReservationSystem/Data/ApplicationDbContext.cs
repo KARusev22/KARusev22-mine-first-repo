@@ -24,7 +24,6 @@ namespace CanteenReservationSystem.Data
         public DbSet<Polls> Polls { get; set; }
         public DbSet<PollOptions> PollOptions { get; set; }
         public DbSet<Votes> Votes { get; set; }
-        public DbSet<Payments> Payments { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

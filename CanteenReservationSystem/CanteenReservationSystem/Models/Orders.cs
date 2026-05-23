@@ -11,5 +11,4 @@ public class Orders : BaseEntity
     public DateTime CreatedAt { get; set; }
 
     public ICollection<OrderDetails> OrderDetails { get; set; }
-    public ICollection<Payments> Payments { get; set; }
 }

@@ -87,4 +87,22 @@ public class CartService : ICartService
         _context.CartItems.RemoveRange(items);
         await _context.SaveChangesAsync();
     }
+    
+    public async Task<List<CartItems>> GetItemsByIdsAsync(List<int> ids)
+    {
+        return await _context.CartItems
+            .Include(c => c.Dish)
+            .Where(c => ids.Contains(c.Id))
+            .ToListAsync();
+    }
+
+    public async Task RemoveItemsByIdsAsync(List<int> ids)
+    {
+        var items = await _context.CartItems
+            .Where(c => ids.Contains(c.Id))
+            .ToListAsync();
+
+        _context.CartItems.RemoveRange(items);
+        await _context.SaveChangesAsync();
+    }
 }
