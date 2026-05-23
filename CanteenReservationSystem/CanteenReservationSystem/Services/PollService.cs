@@ -46,22 +46,6 @@ public class PollService : IPollService
         await _context.SaveChangesAsync();
     }
 
-    public async Task VoteAsync(int pollId, int optionId, string userId)
-    {
-        if (await HasUserVotedAsync(pollId, userId))
-            throw new InvalidOperationException("User has already voted.");
-
-        var vote = new Votes
-        {
-            OptionId = optionId,
-            UserId = userId,
-            VotedAt = DateTime.UtcNow
-        };
-
-        _context.Votes.Add(vote);
-        await _context.SaveChangesAsync();
-    }
-
     public async Task<bool> HasUserVotedAsync(int pollId, string userId)
     {
         return await _context.Votes
@@ -75,5 +59,19 @@ public class PollService : IPollService
             .Where(o => o.PollId == pollId)
             .Include(o => o.Votes)
             .ToListAsync();
+    }
+    
+    public async Task DeletePollAsync(int pollId)
+    {
+        var poll = await _context.Polls
+            .Include(p => p.Options)
+            .ThenInclude(o => o.Votes)
+            .FirstOrDefaultAsync(p => p.Id == pollId);
+
+        if (poll == null)
+            return;
+
+        _context.Polls.Remove(poll);
+        await _context.SaveChangesAsync();
     }
 }
