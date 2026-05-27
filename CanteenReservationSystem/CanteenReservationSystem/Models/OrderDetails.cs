@@ -9,5 +9,5 @@ public class OrderDetails : BaseEntity
     public Dish Dish { get; set; }
 
     public int Quantity { get; set; }
-    public string Note { get; set; }
+    public string? Note { get; set; }
 }

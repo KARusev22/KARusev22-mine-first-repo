@@ -116,12 +116,15 @@
             </div>
         }
 
-        <a asp-controller="Cart"
-           asp-action="Add"
-           asp-route-id="@Model.Id"
-           class="figusta-btn-primary figusta-add-to-cart-btn">
-            Add to Cart
-        </a>
+        <form asp-controller="Cart" asp-action="Add" method="post">
+            <input type="hidden" name="dishId" value="@Model.Id" />
+            <input type="hidden" name="quantity" value="1" />
+            <input type="hidden" name="targetDate" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" />
+
+            <button type="submit" class="figusta-btn-primary">
+                Add to Cart
+            </button>
+        </form>
 
     </div>
 

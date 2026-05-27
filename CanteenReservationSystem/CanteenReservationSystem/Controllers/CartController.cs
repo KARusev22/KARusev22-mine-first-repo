@@ -43,21 +43,21 @@ public class CartController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Update(int dishId, DateTime targetDate, int quantity)
+    public async Task<IActionResult> Update(int dishId, int quantity, string? note)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        await _cartService.UpdateQuantityAsync(userId, dishId, targetDate, quantity);
+        await _cartService.UpdateItemAsync(userId, dishId, quantity, note);
 
-        return RedirectToAction("Index");
+        return Ok();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Remove(int dishId, DateTime targetDate)
+    public async Task<IActionResult> Remove(int cartItemId)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        await _cartService.RemoveItemAsync(userId, dishId, targetDate);
+        await _cartService.RemoveItemAsync(userId, cartItemId);
 
         return RedirectToAction("Index");
     }

@@ -1,0 +1,91 @@
+﻿@model List<CanteenReservationSystem.Models.CartItems>
+
+@{
+    ViewData["Title"] = "Checkout";
+    ViewData["FigustaPage"] = true;
+}
+
+<div class="figusta-main">
+
+    <div class="figusta-page-header">
+        <h1 class="figusta-page-title">Checkout</h1>
+        <p class="figusta-page-subtitle">Select items and choose a date</p>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="figusta-panel-card">
+            <p>Your cart is empty.</p>
+        </div>
+    }
+    else
+    {
+        <form asp-controller="Reservation" asp-action="CreateReservation" method="post">
+
+            @foreach (var item in Model)
+            {
+                <div class="figusta-panel-card figusta-cart-item" data-id="@item.Id">
+
+                    <div class="figusta-cart-top">
+
+                        <input type="checkbox"
+                               class="figusta-check"
+                               name="SelectedItemIds"
+                               value="@item.Id" />
+
+                        <h2 class="figusta-dish-title">@item.Dish?.DishName</h2>
+
+                        <button type="button"
+                                class="figusta-remove-btn"
+                                onclick="removeItem(@item.Id)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+
+                    </div>
+
+                    <p class="figusta-dish-category">@item.Dish?.Category?.CategoryName</p>
+
+                    <p class="figusta-dish-price"
+                       data-price="@item.Dish?.Price.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)">
+                        @item.Dish?.Price.ToString("0.00") euro
+                    </p>
+
+                    <div class="figusta-cart-form">
+
+                        <label>Quantity</label>
+                        <input type="number"
+                               class="figusta-qty"
+                               data-id="@item.Id"
+                               value="@item.Quantity"
+                               min="1" />
+
+                        <label>Note</label>
+                        <textarea class="figusta-note"
+                                  data-id="@item.Id">@item.Note</textarea>
+
+                    </div>
+
+                </div>
+            }
+
+            <div class="figusta-total-card">
+                Total: <span id="figusta-total"></span> euro
+            </div>
+
+            <div class="figusta-panel-card" style="margin-top:1.5rem;">
+                <label>Select Date</label>
+                <input type="date"
+                       name="TargetDate"
+                       min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")"
+                       class="form-control"
+                       required />
+            </div>
+
+            <button type="submit" class="figusta-btn-primary" style="margin-top:1.5rem;">
+                Create Reservation
+            </button>
+
+        </form>
+    }
+
+</div>

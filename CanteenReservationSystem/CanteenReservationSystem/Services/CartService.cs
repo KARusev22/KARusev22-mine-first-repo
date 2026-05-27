@@ -30,19 +30,13 @@ public class CartService : ICartService
             .ToListAsync();
     }
 
-    public async Task<CartItems?> GetItemAsync(string userId, int dishId, DateTime targetDate)
-    {
-        return await _context.CartItems
-            .Include(c => c.Dish)
-            .FirstOrDefaultAsync(c =>
-                c.UserId == userId &&
-                c.DishId == dishId &&
-                c.TargetDate.Date == targetDate.Date);
-    }
-
     public async Task AddToCartAsync(CartItems item)
     {
-        var existing = await GetItemAsync(item.UserId, item.DishId, item.TargetDate);
+        var existing = await _context.CartItems
+            .FirstOrDefaultAsync(c =>
+                c.UserId == item.UserId &&
+                c.DishId == item.DishId &&
+                c.TargetDate.Date == item.TargetDate.Date);
 
         if (existing != null)
         {
@@ -56,20 +50,26 @@ public class CartService : ICartService
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateQuantityAsync(string userId, int dishId, DateTime targetDate, int quantity)
+    public async Task UpdateItemAsync(string userId, int dishId, int quantity, string? note)
     {
-        var item = await GetItemAsync(userId, dishId, targetDate);
+        var item = await _context.CartItems
+            .FirstOrDefaultAsync(c => c.UserId == userId && c.DishId == dishId);
 
         if (item != null)
         {
             item.Quantity = quantity;
+
+            if (note != null)
+                item.Note = note;
+
             await _context.SaveChangesAsync();
         }
     }
-
-    public async Task RemoveItemAsync(string userId, int dishId, DateTime targetDate)
+    
+    public async Task RemoveItemAsync(string userId, int cartItemId)
     {
-        var item = await GetItemAsync(userId, dishId, targetDate);
+        var item = await _context.CartItems
+            .FirstOrDefaultAsync(c => c.UserId == userId && c.Id == cartItemId);
 
         if (item != null)
         {

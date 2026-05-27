@@ -22,7 +22,7 @@ builder.Services.AddScoped<IIngredientService, IngredientService>();
 builder.Services.AddScoped<INutritionService, NutritionService>();
 builder.Services.AddScoped<IPollService, PollService>();
 builder.Services.AddScoped<IVoteService, VoteService>();
-
+builder.Services.AddScoped<IReservationService, ReservationService>();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
