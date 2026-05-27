@@ -8,22 +8,7 @@ public class HomeController : Controller
 {
     public IActionResult Index()
     {
-        return View();
-    }
-
-    public IActionResult Kitchen()
-    {
-        return View();
-    }
-
-    public IActionResult Admin()
-    {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
+        return RedirectToAction("Index", "Dish");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
