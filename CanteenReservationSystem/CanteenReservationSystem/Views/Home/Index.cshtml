@@ -1,8 +1,94 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Menu";
+    ViewData["FigustaPage"] = true;
+    ViewData["FigustaNav"] = "menu";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<section class="figusta-filter-bar">
+    <label for="figusta-category-filter" class="visually-hidden">Filter by category</label>
+    <select id="figusta-category-filter" class="figusta-filter-select" aria-label="Filter by category">
+        <option value="all" selected>All</option>
+        <option value="main-course">Main Course</option>
+        <option value="pizza">Pizza</option>
+        <option value="salads">Salads</option>
+        <option value="burgers">Burgers</option>
+        <option value="pasta">Pasta</option>
+        <option value="sushi">Sushi</option>
+        <option value="vegetarian">Vegetarian</option>
+        <option value="desserts">Desserts</option>
+    </select>
+</section>
+
+<div class="figusta-menu-grid" id="figusta-menu-grid">
+    <article class="figusta-dish-card" data-category="main-course">
+        <img class="figusta-dish-image" src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&h=450&fit=crop" alt="Grilled Salmon" loading="lazy"/>
+        <div class="figusta-dish-body">
+            <h2 class="figusta-dish-title">Grilled Salmon</h2>
+            <p class="figusta-dish-category">Main Course</p>
+            <p class="figusta-dish-price">$24.99</p>
+        </div>
+    </article>
+
+    <article class="figusta-dish-card" data-category="pizza">
+        <img class="figusta-dish-image" src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&h=450&fit=crop" alt="Margherita Pizza" loading="lazy"/>
+        <div class="figusta-dish-body">
+            <h2 class="figusta-dish-title">Margherita Pizza</h2>
+            <p class="figusta-dish-category">Pizza</p>
+            <p class="figusta-dish-price">$16.99</p>
+        </div>
+    </article>
+
+    <article class="figusta-dish-card" data-category="salads">
+        <img class="figusta-dish-image" src="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=600&h=450&fit=crop" alt="Caesar Salad" loading="lazy"/>
+        <div class="figusta-dish-body">
+            <h2 class="figusta-dish-title">Caesar Salad</h2>
+            <p class="figusta-dish-category">Salads</p>
+            <p class="figusta-dish-price">$12.99</p>
+        </div>
+    </article>
+
+    <article class="figusta-dish-card" data-category="burgers">
+        <img class="figusta-dish-image" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&h=450&fit=crop" alt="Beef Burger" loading="lazy"/>
+        <div class="figusta-dish-body">
+            <h2 class="figusta-dish-title">Beef Burger</h2>
+            <p class="figusta-dish-category">Burgers</p>
+            <p class="figusta-dish-price">$18.99</p>
+        </div>
+    </article>
+
+    <article class="figusta-dish-card" data-category="pasta">
+        <img class="figusta-dish-image" src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&h=450&fit=crop" alt="Chicken Pasta" loading="lazy"/>
+        <div class="figusta-dish-body">
+            <h2 class="figusta-dish-title">Chicken Pasta</h2>
+            <p class="figusta-dish-category">Pasta</p>
+            <p class="figusta-dish-price">$19.99</p>
+        </div>
+    </article>
+
+    <article class="figusta-dish-card" data-category="sushi">
+        <img class="figusta-dish-image" src="https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=600&h=450&fit=crop" alt="Sushi Platter" loading="lazy"/>
+        <div class="figusta-dish-body">
+            <h2 class="figusta-dish-title">Sushi Platter</h2>
+            <p class="figusta-dish-category">Sushi</p>
+            <p class="figusta-dish-price">$28.99</p>
+        </div>
+    </article>
+
+    <article class="figusta-dish-card" data-category="vegetarian">
+        <img class="figusta-dish-image" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=450&fit=crop" alt="Vegetable Stir Fry" loading="lazy"/>
+        <div class="figusta-dish-body">
+            <h2 class="figusta-dish-title">Vegetable Stir Fry</h2>
+            <p class="figusta-dish-category">Vegetarian</p>
+            <p class="figusta-dish-price">$15.99</p>
+        </div>
+    </article>
+
+    <article class="figusta-dish-card" data-category="desserts">
+        <img class="figusta-dish-image" src="https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=600&h=450&fit=crop" alt="Chocolate Lava Cake" loading="lazy"/>
+        <div class="figusta-dish-body">
+            <h2 class="figusta-dish-title">Chocolate Lava Cake</h2>
+            <p class="figusta-dish-category">Desserts</p>
+            <p class="figusta-dish-price">$9.99</p>
+        </div>
+    </article>
 </div>

@@ -1,0 +1,14 @@
+@{
+    var active = ViewData["FigustaNav"] as string ?? "";
+}
+
+<div class="figusta-nav mx-lg-auto">
+    <a class="figusta-nav-link @(active == "menu" ? "is-active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Menu</a>
+    <a class="figusta-nav-link @(active == "kitchen" ? "is-active" : "")" asp-area="" asp-controller="Home" asp-action="Kitchen">
+        <i class="bi bi-cup-hot"></i> Kitchen
+    </a>
+    <a class="figusta-nav-link @(active == "cashier" ? "is-active" : "")" href="#"><i class="bi bi-cash-stack"></i> Cashier</a>
+    <a class="figusta-nav-link @(active == "admin" ? "is-active" : "")" asp-area="" asp-controller="Home" asp-action="Admin">
+        <i class="bi bi-grid"></i> Admin
+    </a>
+</div>

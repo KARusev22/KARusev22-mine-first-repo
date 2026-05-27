@@ -1,0 +1,132 @@
+@{
+    ViewData["Title"] = "Kitchen Dashboard";
+    ViewData["FigustaPage"] = true;
+    ViewData["FigustaNav"] = "kitchen";
+}
+
+<header class="figusta-page-header">
+    <h1 class="figusta-page-title">Kitchen Dashboard</h1>
+    <p class="figusta-page-subtitle">Manage incoming orders and inventory</p>
+</header>
+
+<div class="figusta-kitchen-layout">
+    <aside class="figusta-panel-card figusta-ingredients-panel">
+        <div class="figusta-panel-heading">
+            <span class="figusta-panel-icon figusta-panel-icon-green"><i class="bi bi-box-seam"></i></span>
+            <h2>Ingredients Summary</h2>
+        </div>
+        <ul class="figusta-ingredient-list">
+            <li class="figusta-ingredient-row">
+                <div>
+                    <span class="figusta-ingredient-name">Salmon Fillets</span>
+                    <span class="figusta-ingredient-type">Protein</span>
+                </div>
+                <span class="figusta-ingredient-qty">2 pcs</span>
+            </li>
+            <li class="figusta-ingredient-row">
+                <div>
+                    <span class="figusta-ingredient-name">Beef Patties</span>
+                    <span class="figusta-ingredient-type">Protein</span>
+                </div>
+                <span class="figusta-ingredient-qty">3 pcs</span>
+            </li>
+            <li class="figusta-ingredient-row">
+                <div>
+                    <span class="figusta-ingredient-name">Chicken Breast</span>
+                    <span class="figusta-ingredient-type">Protein</span>
+                </div>
+                <span class="figusta-ingredient-qty">2 pcs</span>
+            </li>
+            <li class="figusta-ingredient-row">
+                <div>
+                    <span class="figusta-ingredient-name">Romaine Lettuce</span>
+                    <span class="figusta-ingredient-type">Vegetables</span>
+                </div>
+                <span class="figusta-ingredient-qty">3 heads</span>
+            </li>
+            <li class="figusta-ingredient-row">
+                <div>
+                    <span class="figusta-ingredient-name">Tomatoes</span>
+                    <span class="figusta-ingredient-type">Vegetables</span>
+                </div>
+                <span class="figusta-ingredient-qty">5 pcs</span>
+            </li>
+            <li class="figusta-ingredient-row">
+                <div>
+                    <span class="figusta-ingredient-name">Mozzarella Cheese</span>
+                    <span class="figusta-ingredient-type">Dairy</span>
+                </div>
+                <span class="figusta-ingredient-qty">200g</span>
+            </li>
+            <li class="figusta-ingredient-row">
+                <div>
+                    <span class="figusta-ingredient-name">Fettuccine Pasta</span>
+                    <span class="figusta-ingredient-type">Grains</span>
+                </div>
+                <span class="figusta-ingredient-qty">400g</span>
+            </li>
+            <li class="figusta-ingredient-row">
+                <div>
+                    <span class="figusta-ingredient-name">Sushi Rice</span>
+                    <span class="figusta-ingredient-type">Grains</span>
+                </div>
+                <span class="figusta-ingredient-qty">300g</span>
+            </li>
+        </ul>
+    </aside>
+
+    <section class="figusta-orders-panel">
+        <div class="figusta-orders-header">
+            <div class="figusta-panel-heading">
+                <span class="figusta-panel-icon figusta-panel-icon-green"><i class="bi bi-clipboard-check"></i></span>
+                <h2>Active Orders</h2>
+            </div>
+            <span class="figusta-badge figusta-badge-amber">3 orders</span>
+        </div>
+
+        <article class="figusta-order-card">
+            <div class="figusta-order-top">
+                <span class="figusta-order-code">A7B3C9D1</span>
+                <span class="figusta-order-time"><i class="bi bi-clock"></i> 10:30 AM</span>
+            </div>
+            <ul class="figusta-order-items">
+                <li>Grilled Salmon x2</li>
+                <li>Caesar Salad x1</li>
+            </ul>
+            <div class="figusta-order-notes">
+                <span class="figusta-order-notes-label">Customer Notes</span>
+                <p>No lemon on the salmon, extra dressing</p>
+            </div>
+        </article>
+
+        <article class="figusta-order-card">
+            <div class="figusta-order-top">
+                <span class="figusta-order-code">F2E8H4K6</span>
+                <span class="figusta-order-time"><i class="bi bi-clock"></i> 10:35 AM</span>
+            </div>
+            <ul class="figusta-order-items">
+                <li>Beef Burger x3</li>
+                <li>Margherita Pizza x1</li>
+            </ul>
+            <div class="figusta-order-notes">
+                <span class="figusta-order-notes-label">Customer Notes</span>
+                <p>No onions on burgers</p>
+            </div>
+        </article>
+
+        <article class="figusta-order-card">
+            <div class="figusta-order-top">
+                <span class="figusta-order-code">K9M2R5T8</span>
+                <span class="figusta-order-time"><i class="bi bi-clock"></i> 10:42 AM</span>
+            </div>
+            <ul class="figusta-order-items">
+                <li>Chicken Pasta x2</li>
+                <li>Sushi Platter x1</li>
+            </ul>
+            <div class="figusta-order-notes">
+                <span class="figusta-order-notes-label">Customer Notes</span>
+                <p>Extra spicy sauce on pasta</p>
+            </div>
+        </article>
+    </section>
+</div>

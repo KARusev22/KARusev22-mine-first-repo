@@ -2,25 +2,60 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-        </li>
-        <li class="nav-item">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-            </form>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-        </li>
-    }
-</ul>
+@{
+    var isFigustaPage = ViewData["FigustaPage"] as bool? ?? false;
+}
+
+@if (isFigustaPage)
+{
+    <div class="figusta-actions ms-lg-auto">
+        <a class="figusta-cart-btn" href="#" aria-label="Shopping cart">
+            <i class="bi bi-cart3 fs-5"></i>
+        </a>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <ul class="figusta-user-menu">
+                <li>
+                    <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity?.Name</a>
+                </li>
+                <li>
+                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="btn btn-link">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        }
+        else
+        {
+            <a class="figusta-btn-login" asp-area="Identity" asp-page="/Account/Login">
+                <i class="bi bi-person-fill"></i>
+                <span>Login</span>
+            </a>
+        }
+    </div>
+}
+else
+{
+    <ul class="navbar-nav">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+            </li>
+            <li class="nav-item">
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                </form>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            </li>
+        }
+    </ul>
+}
