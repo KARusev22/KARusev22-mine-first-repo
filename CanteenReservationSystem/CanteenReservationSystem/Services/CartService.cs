@@ -40,20 +40,21 @@ public class CartService : ICartService
 
         if (existing != null)
         {
-            existing.Quantity += item.Quantity;
+            existing.Quantity += Math.Max(item.Quantity, 1);
         }
         else
         {
+            item.Quantity = Math.Max(item.Quantity, 1);
             _context.CartItems.Add(item);
         }
 
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateItemAsync(string userId, int dishId, int quantity, string? note)
+    public async Task UpdateItemAsync(string userId, int cartItemId, int quantity, string? note)
     {
         var item = await _context.CartItems
-            .FirstOrDefaultAsync(c => c.UserId == userId && c.DishId == dishId);
+            .FirstOrDefaultAsync(c => c.UserId == userId && c.Id == cartItemId);
 
         if (item != null)
         {

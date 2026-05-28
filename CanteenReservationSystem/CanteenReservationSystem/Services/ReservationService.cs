@@ -32,7 +32,7 @@ public class ReservationService : IReservationService
             UserId = userId,
             UniqueCode = Guid.NewGuid().ToString("N")[..8].ToUpper(),
             Status = "Pending",
-            CreatedAt = DateTime.UtcNow,
+            CreatedAt = DateTime.Now,
             TotalPrice = selectedItems.Sum(i => i.Dish.Price * i.Quantity),
             OrderDetails = selectedItems.Select(i => new OrderDetails
             {

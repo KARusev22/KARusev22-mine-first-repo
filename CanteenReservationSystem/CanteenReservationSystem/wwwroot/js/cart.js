@@ -41,7 +41,7 @@
             fetch("/Cart/Update", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `dishId=${id}&quantity=${quantity}`
+                body: `cartItemId=${id}&quantity=${quantity}`
             }).then(() => {
                 recalcTotal();
             });
@@ -57,7 +57,7 @@
             fetch("/Cart/Update", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `dishId=${id}&note=${encodeURIComponent(note)}`
+                body: `cartItemId=${id}&note=${encodeURIComponent(note)}`
             });
         });
     });

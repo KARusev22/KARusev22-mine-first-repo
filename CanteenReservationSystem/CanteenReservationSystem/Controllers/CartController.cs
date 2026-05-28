@@ -43,11 +43,11 @@ public class CartController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Update(int dishId, int quantity, string? note)
+    public async Task<IActionResult> Update(int cartItemId, int quantity, string? note)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        await _cartService.UpdateItemAsync(userId, dishId, quantity, note);
+        await _cartService.UpdateItemAsync(userId, cartItemId, quantity, note);
 
         return Ok();
     }
