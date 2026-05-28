@@ -81,7 +81,6 @@ namespace CanteenReservationSystem.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                // Търсим потребителя по FullName
                 var user = await _userManager.Users
                     .FirstOrDefaultAsync(u => u.FullName == Input.FullName);
 
@@ -91,7 +90,6 @@ namespace CanteenReservationSystem.Areas.Identity.Pages.Account
                     return Page();
                 }
 
-                // Логваме се чрез ApplicationUser обекта
                 var result = await _signInManager.PasswordSignInAsync(
                     user,
                     Input.Password,
