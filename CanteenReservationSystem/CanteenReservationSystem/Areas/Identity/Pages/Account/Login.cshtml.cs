@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CanteenReservationSystem.Areas.Identity.Pages.Account
 {
@@ -99,6 +100,13 @@ namespace CanteenReservationSystem.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Role, user.Role)
+                    };
+
+                    await _signInManager.SignInWithClaimsAsync(user, new AuthenticationProperties { IsPersistent = Input.RememberMe }, claims);
+
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
