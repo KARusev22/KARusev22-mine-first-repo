@@ -148,6 +148,18 @@ body.figusta-body {
   padding: 0;
 }
 
+.figusta-avatar {
+    width: 32px;
+    height: 32px;
+    background: var(--figusta-green);
+    color: white;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
 .figusta-user-menu .nav-link {
   color: var(--figusta-text);
   font-weight: 500;

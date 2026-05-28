@@ -1,14 +1,64 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
 @{
     var active = ViewData["FigustaNav"] as string ?? "";
+    var user = UserManager.GetUserAsync(User).Result;
+    var role = user?.Role;
 }
 
 <div class="figusta-nav mx-lg-auto">
-    <a class="figusta-nav-link @(active == "menu" ? "is-active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Menu</a>
-    <a class="figusta-nav-link @(active == "kitchen" ? "is-active" : "")" asp-area="" asp-controller="Home" asp-action="Kitchen">
-        <i class="bi bi-cup-hot"></i> Kitchen
-    </a>
-    <a class="figusta-nav-link @(active == "cashier" ? "is-active" : "")" href="#"><i class="bi bi-cash-stack"></i> Cashier</a>
-    <a class="figusta-nav-link @(active == "admin" ? "is-active" : "")" asp-area="" asp-controller="Home" asp-action="Admin">
-        <i class="bi bi-grid"></i> Admin
-    </a>
+    <a class="figusta-nav-link @(active == "menu" ? "is-active" : "")"
+       asp-controller="Home" asp-action="Index">Menu</a>
+
+    @if (SignInManager.IsSignedIn(User) && role == "User")
+    {
+        <a class="figusta-nav-link @(active == "orders" ? "is-active" : "")"
+           asp-controller="Order" asp-action="MyOrders">
+           <i class="bi bi-receipt"></i> My Orders
+        </a>
+
+        <a class="figusta-nav-link @(active == "stats" ? "is-active" : "")"
+           asp-controller="Statistics" asp-action="Index">
+           <i class="bi bi-bar-chart"></i> Statistics
+        </a>
+
+        <a class="figusta-nav-link @(active == "polls" ? "is-active" : "")"
+           asp-controller="Poll" asp-action="Index">
+           <i class="bi bi-ui-checks-grid"></i> Polls
+        </a>
+
+        <a class="figusta-nav-link @(active == "cart" ? "is-active" : "")"
+           asp-controller="Cart" asp-action="Index">
+           <i class="bi bi-cart"></i> Cart
+        </a>
+    }
+
+    <!-- Kitchen -->
+    @if (role == "Kitchen")
+    {
+        <a class="figusta-nav-link @(active == "kitchen" ? "is-active" : "")"
+           asp-controller="Home" asp-action="Kitchen">
+            <i class="bi bi-cup-hot"></i> Kitchen
+        </a>
+    }
+
+    <!-- Cashier -->
+    @if (role == "Cashier")
+    {
+        <a class="figusta-nav-link @(active == "cashier" ? "is-active" : "")"
+           asp-controller="Home" asp-action="Cashier">
+            <i class="bi bi-cash-stack"></i> Cashier
+        </a>
+    }
+
+    <!-- Admin -->
+    @if (role == "Admin")
+    {
+        <a class="figusta-nav-link @(active == "admin" ? "is-active" : "")"
+           asp-controller="Home" asp-action="Admin">
+            <i class="bi bi-grid"></i> Admin
+        </a>
+    }
 </div>

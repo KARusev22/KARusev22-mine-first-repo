@@ -9,14 +9,20 @@
 @if (isFigustaPage)
 {
     <div class="figusta-actions ms-lg-auto">
-        <a class="figusta-cart-btn" href="#" aria-label="Shopping cart">
-            <i class="bi bi-cart3 fs-5"></i>
-        </a>
+       
         @if (SignInManager.IsSignedIn(User))
         {
+            var user = await UserManager.GetUserAsync(User);
+            var initials = user.FullName != null
+                ? string.Join("", user.FullName.Split(' ').Select(n => n[0])).ToUpper()
+                : user.Email[0].ToString().ToUpper();
+
             <ul class="figusta-user-menu">
                 <li>
-                    <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity?.Name</a>
+                    <span class="figusta-avatar">@initials</span>
+                </li>
+                <li>
+                    <span class="nav-link">@user.FullName</span>
                 </li>
                 <li>
                     <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
