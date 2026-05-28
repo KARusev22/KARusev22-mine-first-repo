@@ -10,5 +10,6 @@ public class Orders : BaseEntity
     public string Status { get; set; } // Pending, Completed, NotClaimed
     public DateTime CreatedAt { get; set; }
 
+    public DateTime TargetDate { get; set; }
     public ICollection<OrderDetails> OrderDetails { get; set; }
 }

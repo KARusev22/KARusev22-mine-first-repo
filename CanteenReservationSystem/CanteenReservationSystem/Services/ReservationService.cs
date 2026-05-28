@@ -33,6 +33,7 @@ public class ReservationService : IReservationService
             UniqueCode = Guid.NewGuid().ToString("N")[..8].ToUpper(),
             Status = "Pending",
             CreatedAt = DateTime.Now,
+            TargetDate = targetDate,
             TotalPrice = selectedItems.Sum(i => i.Dish.Price * i.Quantity),
             OrderDetails = selectedItems.Select(i => new OrderDetails
             {
@@ -53,6 +54,7 @@ public class ReservationService : IReservationService
     public async Task<Orders?> GetByIdAsync(int id)
     {
         return await _context.Orders
+            .Include(o => o.User)
             .Include(o => o.OrderDetails)
                 .ThenInclude(od => od.Dish)
             .FirstOrDefaultAsync(o => o.Id == id);
@@ -61,6 +63,7 @@ public class ReservationService : IReservationService
     public async Task<Orders?> GetByCodeAsync(string code)
     {
         return await _context.Orders
+            .Include(o => o.User)
             .Include(o => o.OrderDetails)
                 .ThenInclude(od => od.Dish)
             .FirstOrDefaultAsync(o => o.UniqueCode == code);
