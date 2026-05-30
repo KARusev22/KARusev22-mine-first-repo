@@ -7,6 +7,8 @@
     ViewData["FigustaNav"] = "orders";
 }
 
+@Html.AntiForgeryToken()
+
 <div class="figusta-page-header">
     <h1 class="figusta-page-title">
         <i class="bi bi-receipt-cutoff me-2 text-success"></i>
@@ -67,14 +69,31 @@
                 }
 
                 <div class="figusta-order-bottom">
+
                     <div class="figusta-order-total">
                         <span>Total:</span>
                         <strong>@order.TotalPrice.ToString("0.00") euro.</strong>
                     </div>
 
-                    <a class="figusta-btn-outline" asp-controller="Reservation" asp-action="Details" asp-route-id="@order.Id">
-                        <i class="bi bi-eye"></i> View Details
-                    </a>
+                    <div class="figusta-order-actions">
+
+                        @if (order.TargetDate.Date > DateTime.Today)
+                        {
+                            <a class="figusta-btn-edit"
+                               asp-controller="Orders"
+                               asp-action="Edit"
+                               asp-route-id="@order.Id">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a>
+
+                            <button type="button"
+                                    class="figusta-btn-delete"
+                                    onclick="confirmDelete(@order.Id, this)">
+                                <i class="bi bi-x-circle"></i> Delete
+                            </button>
+                        }
+                    </div>
+
                 </div>
 
             </div>

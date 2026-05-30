@@ -68,4 +68,53 @@ public class OrderService : IOrderService
                 .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity))
         };
     }
+    
+    public async Task<Orders> GetByIdForUserAsync(int id, string userId)
+    {
+        return await _context.Orders
+            .Where(o => o.Id == id && o.UserId == userId)
+            .Include(o => o.OrderDetails)
+            .ThenInclude(d => d.Dish)
+            .FirstOrDefaultAsync();
+    }
+    
+    public async Task DeleteAsync(Orders order)
+    {
+        _context.Orders.Remove(order);
+        await _context.SaveChangesAsync();
+    }
+    
+    public async Task UpdateAsync(Orders order, EditOrderViewModel model)
+    {
+        if (model.TargetDate.Date <= DateTime.Today)
+            throw new InvalidOperationException("Cannot set a past date.");
+
+        var existing = await _context.OrderDetails
+            .Where(od => od.OrderId == order.Id)
+            .ToListAsync();
+
+        _context.OrderDetails.RemoveRange(existing);
+
+        decimal total = 0;
+
+        foreach (var item in model.Items)
+        {
+            var dish = await _context.Dishes.FindAsync(item.DishId);
+
+            _context.OrderDetails.Add(new OrderDetails
+            {
+                OrderId = order.Id,
+                DishId = item.DishId,
+                Quantity = item.Quantity,
+                Note = item.Note
+            });
+
+            total += dish.Price * item.Quantity;
+        }
+        
+        order.TotalPrice = total;
+        order.TargetDate = model.TargetDate;
+
+        await _context.SaveChangesAsync();
+    }
 }

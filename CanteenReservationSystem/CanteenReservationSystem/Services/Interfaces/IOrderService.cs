@@ -7,4 +7,10 @@ public interface IOrderService
 {
     Task<List<Orders>> GetOrdersByUserAsync(string userId);
     Task<UserStatsViewModel> GetUserStatsAsync(string userId);
+    
+    Task<Orders> GetByIdForUserAsync(int id, string userId);
+    Task DeleteAsync(Orders order);
+    Task UpdateAsync(Orders order, EditOrderViewModel model);
 }
+
+

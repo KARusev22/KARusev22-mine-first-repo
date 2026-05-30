@@ -5,6 +5,7 @@ public class OrderViewModel
     public int Id { get; set; }
     public string Code { get; set; } = string.Empty;
     public DateTime CreatedOn { get; set; }
+    public DateTime TargetDate { get; set; } 
     public string Status { get; set; } = string.Empty;
     public string? Notes { get; set; }
     public decimal TotalPrice { get; set; }
