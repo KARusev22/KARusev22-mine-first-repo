@@ -23,7 +23,9 @@
     @await RenderSectionAsync("Styles", required: false)
 </head>
 @{
-    var isFigustaPage = ViewData["FigustaPage"] as bool? ?? false;
+    var isFigustaPage =
+        (ViewContext.RouteData.Values["controller"]?.ToString() == "AdminDishes")
+        || (ViewData["FigustaPage"] as bool? ?? false);
 }
 <body class="@(isFigustaPage ? "figusta-body" : "")">
 <header>
@@ -51,6 +53,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="AdminDishes" asp-action="Index">
+                                    <i class="bi bi-gear"></i> Admin Panel
+                                </a>
+                            </li>
+                        }
                     </ul>
                 }
                 <partial name="_LoginPartial"/>

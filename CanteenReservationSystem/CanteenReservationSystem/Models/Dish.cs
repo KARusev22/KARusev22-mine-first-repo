@@ -1,17 +1,18 @@
-﻿namespace CanteenReservationSystem.Models;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+namespace CanteenReservationSystem.Models;
 
 public class Dish : BaseEntity
 {
     public int CategoryId { get; set; }
-    public Category Category { get; set; }
+    [ValidateNever] public Category? Category { get; set; }
 
     public string DishName { get; set; }
     public decimal Price { get; set; }
-    public string ImageUrl { get; set; }
-    public string Characteristics { get; set; }
-    public string Description { get; set; }
-    public Nutrition Nutrition { get; set; }
+    public string? ImageUrl { get; set; }
+    public string? Characteristics { get; set; }
+    public string? Description { get; set; }
+    [ValidateNever] public Nutrition? Nutrition { get; set; }
     
-    public ICollection<DishIngredient> DishIngredients { get; set; }
-    public ICollection<DishAllergen> DishAllergens { get; set; }
+    [ValidateNever] public ICollection<DishIngredient> DishIngredients { get; set; } = new List<DishIngredient>();
+    [ValidateNever] public ICollection<DishAllergen> DishAllergens { get; set; } = new List<DishAllergen>();
 }

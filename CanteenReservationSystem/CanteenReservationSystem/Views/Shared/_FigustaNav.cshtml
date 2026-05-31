@@ -56,9 +56,14 @@
     <!-- Admin -->
     @if (role == "Admin")
     {
-        <a class="figusta-nav-link @(active == "admin" ? "is-active" : "")"
-           asp-controller="Home" asp-action="Admin">
-            <i class="bi bi-grid"></i> Admin
+        <a class="figusta-nav-link @(active == "addDish" ? "is-active" : "")"
+           asp-controller="AdminDishes" asp-action="Create">
+            <i class="bi bi-plus-circle"></i> Add Dish
+        </a>
+
+        <a class="figusta-nav-link @(active == "editDishes" ? "is-active" : "")"
+           asp-controller="AdminDishes" asp-action="Index">
+            <i class="bi bi-pencil-square"></i> Edit Dishes
         </a>
     }
 </div>
