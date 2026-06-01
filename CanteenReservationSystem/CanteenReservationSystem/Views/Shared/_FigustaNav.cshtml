@@ -65,5 +65,10 @@
            asp-controller="AdminDishes" asp-action="Index">
             <i class="bi bi-pencil-square"></i> Edit Dishes
         </a>
+        
+        <a class="figusta-nav-link @(active == "adminOrders" ? "is-active" : "")"
+           asp-controller="AdminOrders" asp-action="Index">
+            <i class="bi bi-receipt-cutoff"></i> Orders
+        </a>
     }
 </div>
