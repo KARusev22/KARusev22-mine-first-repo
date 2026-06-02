@@ -16,17 +16,30 @@ public class AdminOrdersController : Controller
         _context = context;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? status,
+        DateTime? date,
+        string? code)
     {
         ViewData["FigustaPage"] = true;
         
-        var orders = await _context.Orders
+        var query = _context.Orders
             .Include(o => o.User)
-            .Include(o => o.OrderDetails)
-            .ThenInclude(od => od.Dish)
+            .Include(o => o.OrderDetails).ThenInclude(od => od.Dish)
+            .AsQueryable();
+        
+        if (!string.IsNullOrEmpty(status))
+            query = query.Where(o => o.Status == status);
+        
+        if (date.HasValue)
+            query = query.Where(o => o.TargetDate.Date == date.Value.Date);
+        
+        if (!string.IsNullOrWhiteSpace(code))
+            query = query.Where(o => o.UniqueCode.Contains(code));
+        
+        var orders = await query
             .OrderByDescending(o => o.CreatedAt)
             .ToListAsync();
-
+        
         var model = orders.Select(o => new OrderViewModel
         {
             Id = o.Id,

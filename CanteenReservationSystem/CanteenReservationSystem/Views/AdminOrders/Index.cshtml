@@ -17,13 +17,32 @@
 <div class="container py-4">
     <h2 class="mb-4 text-center fw-bold">Admin Orders</h2>
 
+    <div class="admin-filters-container">
+        <form method="get" class="admin-filters-form">
+
+            <select name="status" class="filter-input">
+                <option value="">Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Completed">Completed</option>
+                <option value="NotClaimed">NotClaimed</option>
+            </select>
+
+            <input type="date" name="date" class="filter-input"/>
+
+            <input type="text" name="code" placeholder="Code" class="filter-input" />
+
+            <button class="filter-btn">
+                <i class="bi bi-funnel"></i>
+            </button>
+
+        </form>
+    </div>
+    
     <div class="row g-4">
         @foreach (var o in Model)
         {
             <div class="col-md-4">
                 <div class="order-card glass-card p-4 rounded-4 shadow-lg">
-
-                    <!-- STATUS -->
                     <span class="badge status-badge @o.Status.ToLower()">
                         @o.Status
                     </span>

@@ -75,6 +75,49 @@
     pointer-events: none;
 }
 
+.admin-filters-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.admin-filters-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.filter-input {
+    padding: 6px 14px;
+    border-radius: 50px;
+    border: 1px solid rgba(0,0,0,0.15);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(6px);
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.filter-input:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 6px rgba(76, 175, 80, 0.4);
+}
+
+.filter-btn {
+    padding: 6px 14px;
+    border-radius: 50px;
+    border: none;
+    background: #4CAF50;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.filter-btn:hover {
+    background: #3e8e41;
+}
+
 @keyframes ripple-effect {
     from { opacity: 1; transform: scale(0); }
     to { opacity: 0; transform: scale(3); }
