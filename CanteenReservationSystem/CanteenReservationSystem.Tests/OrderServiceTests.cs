@@ -188,4 +188,150 @@ public class OrderServiceTests
         await Assert.ThrowsAsync<InvalidOperationException>(async () =>
             await service.UpdateAsync(order, model));
     }
+
+    [Fact]
+    public async Task GetByIdForUserAsync_ReturnsOrder_WhenUserMatches()
+    {
+        using var context = CreateContext("GetByIdForUserAsync_ReturnsOrder_WhenUserMatches");
+
+        var dish = CreateDish("Dish B", "Side");
+        context.Dishes.Add(dish);
+
+        var order = new Orders
+        {
+            UserId = "user1",
+            TotalPrice = 20m,
+            CreatedAt = new DateTime(2026, 5, 22),
+            TargetDate = new DateTime(2026, 5, 23),
+            Status = "Pending",
+            UniqueCode = "B2",
+            OrderDetails = new List<OrderDetails>
+            {
+                new OrderDetails { Dish = dish, DishId = dish.Id, Quantity = 2 }
+            }
+        };
+
+        context.Orders.Add(order);
+        await context.SaveChangesAsync();
+
+        var service = new OrderService(context);
+        var result = await service.GetByIdForUserAsync(order.Id, "user1");
+
+        Assert.NotNull(result);
+        Assert.Equal(order.Id, result.Id);
+    }
+
+    [Fact]
+    public async Task GetByIdForUserAsync_ReturnsNull_WhenUserDoesNotMatch()
+    {
+        using var context = CreateContext("GetByIdForUserAsync_ReturnsNull_WhenUserDoesNotMatch");
+
+        var dish = CreateDish("Dish C", "Dessert");
+        context.Dishes.Add(dish);
+
+        var order = new Orders
+        {
+            UserId = "user2",
+            TotalPrice = 12m,
+            CreatedAt = new DateTime(2026, 5, 24),
+            TargetDate = new DateTime(2026, 5, 25),
+            Status = "Pending",
+            UniqueCode = "C3",
+            OrderDetails = new List<OrderDetails>
+            {
+                new OrderDetails { Dish = dish, DishId = dish.Id, Quantity = 1 }
+            }
+        };
+
+        context.Orders.Add(order);
+        await context.SaveChangesAsync();
+
+        var service = new OrderService(context);
+        var result = await service.GetByIdForUserAsync(order.Id, "user1");
+
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public async Task DeleteAsync_RemovesOrderFromDatabase()
+    {
+        using var context = CreateContext("DeleteAsync_RemovesOrderFromDatabase");
+
+        var dish = CreateDish("Dish D", "Main");
+        context.Dishes.Add(dish);
+
+        var order = new Orders
+        {
+            UserId = "user1",
+            TotalPrice = 8m,
+            CreatedAt = new DateTime(2026, 5, 26),
+            TargetDate = new DateTime(2026, 5, 27),
+            Status = "Pending",
+            UniqueCode = "D4",
+            OrderDetails = new List<OrderDetails>
+            {
+                new OrderDetails { Dish = dish, DishId = dish.Id, Quantity = 1 }
+            }
+        };
+
+        context.Orders.Add(order);
+        await context.SaveChangesAsync();
+
+        var service = new OrderService(context);
+        await service.DeleteAsync(order);
+
+        var deletedOrder = await context.Orders.FindAsync(order.Id);
+        Assert.Null(deletedOrder);
+    }
+
+    [Fact]
+    public async Task UpdateAsync_ReplacesOrderDetailsAndUpdatesTotalPrice()
+    {
+        using var context = CreateContext("UpdateAsync_ReplacesOrderDetailsAndUpdatesTotalPrice");
+
+        var dish = CreateDish("Dish E", "Main", 7m);
+        var newDish = CreateDish("Dish F", "Side", 4m);
+        context.Dishes.AddRange(dish, newDish);
+
+        var order = new Orders
+        {
+            UserId = "user1",
+            TotalPrice = 7m,
+            CreatedAt = DateTime.Today,
+            TargetDate = DateTime.Today.AddDays(2),
+            Status = "Pending",
+            UniqueCode = "E5",
+            OrderDetails = new List<OrderDetails>
+            {
+                new OrderDetails { Dish = dish, DishId = dish.Id, Quantity = 1 }
+            }
+        };
+
+        context.Orders.Add(order);
+        await context.SaveChangesAsync();
+
+        var service = new OrderService(context);
+        var model = new EditOrderViewModel
+        {
+            OrderId = order.Id,
+            TargetDate = DateTime.Today.AddDays(3),
+            Items = new List<EditOrderItemViewModel>
+            {
+                new EditOrderItemViewModel { DishId = newDish.Id, Quantity = 2, Note = "Change" }
+            }
+        };
+
+        await service.UpdateAsync(order, model);
+
+        var updatedOrder = await context.Orders
+            .Include(o => o.OrderDetails)
+            .ThenInclude(od => od.Dish)
+            .FirstAsync(o => o.Id == order.Id);
+
+        Assert.Equal(DateTime.Today.AddDays(3), updatedOrder.TargetDate);
+        Assert.Equal(8m, updatedOrder.TotalPrice);
+        Assert.Single(updatedOrder.OrderDetails);
+        Assert.Equal(newDish.Id, updatedOrder.OrderDetails.First().DishId);
+        Assert.Equal(2, updatedOrder.OrderDetails.First().Quantity);
+    }
 }
