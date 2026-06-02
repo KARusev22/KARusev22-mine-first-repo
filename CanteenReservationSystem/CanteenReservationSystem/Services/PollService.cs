@@ -74,4 +74,19 @@ public class PollService : IPollService
         _context.Polls.Remove(poll);
         await _context.SaveChangesAsync();
     }
+    
+    public async Task<IEnumerable<Polls>> GetAllPollsAsync()
+    {
+        return await _context.Polls
+            .Include(p => p.Options)
+            .ToListAsync();
+    }
+    
+    public async Task<Dictionary<string, int>> GetPollResultsAsync(int pollId)
+    {
+        return await _context.PollOptions
+            .Where(o => o.PollId == pollId)
+            .Select(o => new { o.OptionText, Count = o.Votes.Count })
+            .ToDictionaryAsync(x => x.OptionText, x => x.Count);
+    }
 }

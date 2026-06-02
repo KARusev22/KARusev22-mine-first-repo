@@ -75,5 +75,10 @@
            asp-controller="AdminOrders" asp-action="Index">
             <i class="bi bi-receipt-cutoff"></i> Orders
         </a>
+        
+        <a class="figusta-nav-link @(active == "adminPolls" ? "is-active" : "")"
+           asp-controller="AdminPoll" asp-action="Index">
+            <i class="bi bi-ui-checks"></i> Polls
+        </a>
     }
 </div>

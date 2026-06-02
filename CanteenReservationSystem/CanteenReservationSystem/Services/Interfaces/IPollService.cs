@@ -10,4 +10,6 @@ public interface IPollService
     Task<bool> HasUserVotedAsync(int pollId, string userId);
     Task<IEnumerable<PollOptions>> GetOptionsAsync(int pollId);
     Task DeletePollAsync(int pollId);
+    Task<IEnumerable<Polls>> GetAllPollsAsync();
+    Task<Dictionary<string, int>> GetPollResultsAsync(int pollId);
 }

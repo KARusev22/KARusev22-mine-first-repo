@@ -36,22 +36,6 @@ public class PollController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Polls poll, List<string> options)
-    {
-        options = options.Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
-
-        if (!options.Any())
-        {
-            ModelState.AddModelError("", "Add at least one option");
-            return View(poll);
-        }
-
-        await _pollService.CreatePollAsync(poll, options);
-        return RedirectToAction(nameof(Index));
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Vote(int pollId, int optionId)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -74,18 +58,5 @@ public class PollController : Controller
             return NotFound();
 
         return View(poll);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Delete(int id)
-    {
-        var poll = await _pollService.GetByIdAsync(id);
-        if (poll == null)
-            return NotFound();
-
-        await _pollService.DeletePollAsync(id);
-
-        return RedirectToAction(nameof(Index));
     }
 }
