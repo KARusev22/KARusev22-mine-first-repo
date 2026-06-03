@@ -11,6 +11,11 @@ public interface IOrderService
     Task<Orders> GetByIdForUserAsync(int id, string userId);
     Task DeleteAsync(Orders order);
     Task UpdateAsync(Orders order, EditOrderViewModel model);
+    Task<Orders?> GetByUniqueCodeAsync(string code);
+
+    Task MarkAsCompletedAsync(int orderId);
+
+    Task MarkAllPendingAsNotTakenAsync();
 }
 
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CanteenReservationSystem.Data;
 using CanteenReservationSystem.Models.ViewModels;
+using CanteenReservationSystem.Services.Interfaces;
 
 namespace CanteenReservationSystem.Controllers;
 
@@ -102,7 +103,7 @@ public class AdminOrdersController : Controller
         return View(model);
     }
     
-    public async Task<IActionResult> MarkNotClaimed(int id)
+    public async Task<IActionResult> MarkNotTaken(int id)
     {
         var order = await _context.Orders
             .Include(o => o.User)
@@ -110,7 +111,7 @@ public class AdminOrdersController : Controller
 
         if (order == null) return NotFound();
 
-        order.Status = "NotClaimed";
+        order.Status = "NotTaken";
         order.User.BlackPoints += 1;
 
         await _context.SaveChangesAsync();
@@ -143,12 +144,12 @@ public class AdminOrdersController : Controller
         var ordersPerDayLabels = groupedByDay.Select(g => g.Key.ToString("dd MMM")).ToList();
         var ordersPerDayValues = groupedByDay.Select(g => g.Count()).ToList();
 
-        var statusLabels = new List<string> { "Pending", "Completed", "NotClaimed" };
+        var statusLabels = new List<string> { "Pending", "Completed", "NotTaken" };
         var statusValues = new List<int>
         {
             orders.Count(o => o.Status == "Pending"),
             orders.Count(o => o.Status == "Completed"),
-            orders.Count(o => o.Status == "NotClaimed")
+            orders.Count(o => o.Status == "NotTaken")
         };
 
         var topDishes = orders
@@ -214,5 +215,4 @@ public class AdminOrdersController : Controller
 
         return View(model);
     }
-    
 }

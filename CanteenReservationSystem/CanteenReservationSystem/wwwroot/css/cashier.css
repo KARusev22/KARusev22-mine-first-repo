@@ -1,0 +1,86 @@
+﻿.cashier-container {
+    max-width: 550px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+
+    animation: fadeIn 0.4s ease;
+}
+
+.cashier-title {
+    font-size: 28px;
+    font-weight: 600;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.cashier-input {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(8px);
+
+    font-size: 16px;
+    transition: 0.25s ease;
+}
+
+.cashier-input:focus {
+    outline: none;
+    border-color: #ffd86b;
+    box-shadow: 0 0 0 4px rgba(255, 216, 107, 0.35);
+}
+
+.cashier-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 15px;
+
+    border: none;
+    border-radius: 14px;
+
+    background: linear-gradient(135deg, #ffe08a, #ffd86b);
+    color: #333;
+
+    font-size: 17px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.cashier-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(255, 216, 107, 0.45);
+}
+
+.cashier-details-box {
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 16px;
+
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+.cashier-items li {
+    padding: 6px 0;
+    font-size: 16px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Cashier Panel";
+}
+
+<link rel="stylesheet" href="~/css/cashier.css" />
+
+<div class="cashier-container">
+    <h2 class="cashier-title">Cashier Panel</h2>
+
+    <form method="post" asp-action="FindOrder">
+        <input type="text" name="uniqueCode" class="cashier-input" placeholder="Enter unique code" required />
+
+        <button type="submit" class="cashier-btn">Search Order</button>
+    </form>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger mt-3">@ViewBag.Error</div>
+    }
+</div>

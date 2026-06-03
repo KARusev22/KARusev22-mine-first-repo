@@ -49,7 +49,7 @@ public class OrderService : IOrderService
                 .Select(g => g.Key)
                 .FirstOrDefault(),
 
-            TakenOrders = orders.Count(o => o.Status == "Completed" || o.Status == "Delivered" || o.Status == "PickedUp"),
+            TakenOrders = orders.Count(o => o.Status == "Completed"),
             NotTakenOrders = orders.Count(o => o.Status == "Pending" || o.Status == "Cancelled"),
 
             Top3Days = orders
@@ -114,6 +114,47 @@ public class OrderService : IOrderService
         
         order.TotalPrice = total;
         order.TargetDate = model.TargetDate;
+
+        await _context.SaveChangesAsync();
+    }
+    
+    public async Task<Orders?> GetByUniqueCodeAsync(string code)
+    {
+        return await _context.Orders
+            .Include(o => o.OrderDetails)
+            .ThenInclude(d => d.Dish)
+            .Include(o => o.User)
+            .FirstOrDefaultAsync(o => o.UniqueCode == code);
+    }
+
+    public async Task MarkAsCompletedAsync(int orderId)
+    {
+        var order = await _context.Orders
+            .Include(o => o.User)
+            .FirstOrDefaultAsync(o => o.Id == orderId);
+
+        if (order == null)
+            return;
+
+        order.Status = "Completed";
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task MarkAllPendingAsNotTakenAsync()
+    {
+        var today = DateTime.Today;
+
+        var orders = await _context.Orders
+            .Include(o => o.User)
+            .Where(o => o.Status == "Pending" && o.TargetDate.Date < today)
+            .ToListAsync();
+
+        foreach (var order in orders)
+        {
+            order.Status = "NotTaken";
+            order.User.BlackPoints += 1;
+        }
 
         await _context.SaveChangesAsync();
     }
