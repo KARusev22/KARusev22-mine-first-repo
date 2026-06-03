@@ -5,7 +5,7 @@ using CanteenReservationSystem.Models;
 
 namespace CanteenReservationSystem.Controllers;
 
-[Authorize(Roles = "Admin")]
+[Authorize]
 public class AdminPollController : Controller
 {
     private readonly IPollService _pollService;
@@ -15,17 +15,20 @@ public class AdminPollController : Controller
         _pollService = pollService;
     }
 
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Index()
     {
         var polls = await _pollService.GetAllPollsAsync();
         return View(polls);
     }
 
+    [Authorize(Roles = "Admin")]
     public IActionResult Create()
     {
         return View();
     }
-
+    
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create(Polls poll, List<string> options)
     {
@@ -47,6 +50,7 @@ public class AdminPollController : Controller
         return View(poll);
     }
 
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         await _pollService.DeletePollAsync(id);

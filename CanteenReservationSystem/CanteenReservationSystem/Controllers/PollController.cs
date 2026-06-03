@@ -20,43 +20,23 @@ public class PollController : Controller
         var polls = await _pollService.GetActivePollsAsync();
         return View(polls);
     }
-    public async Task<IActionResult> Details(int id)
-    {
-        var poll = await _pollService.GetByIdAsync(id);
-        if (poll == null)
-            return NotFound();
-
-        return View(poll);
-    }
-
-    public IActionResult Create()
-    {
-        return View();
-    }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Vote(int pollId, int optionId)
+    public async Task<IActionResult> SubmitVote(int optionId)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        var option = await _pollService.GetOptionByIdAsync(optionId);
+        if (option == null)
+            return NotFound();
+
+        var pollId = option.PollId;
 
         if (await _voteService.HasUserVotedAsync(pollId, userId))
-        {
-            TempData["Error"] = "You have already voted for this poll!";
-            return RedirectToAction(nameof(Details), new { id = pollId });
-        }
+            return BadRequest("Already voted");
 
         await _voteService.AddVoteAsync(optionId, userId);
 
-        return RedirectToAction(nameof(Results), new { id = pollId });
-    }
-
-    public async Task<IActionResult> Results(int id)
-    {
-        var poll = await _pollService.GetByIdAsync(id);
-        if (poll == null)
-            return NotFound();
-
-        return View(poll);
+        return Ok();
     }
 }

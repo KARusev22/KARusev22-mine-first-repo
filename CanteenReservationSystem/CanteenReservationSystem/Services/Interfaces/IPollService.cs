@@ -12,4 +12,5 @@ public interface IPollService
     Task DeletePollAsync(int pollId);
     Task<IEnumerable<Polls>> GetAllPollsAsync();
     Task<Dictionary<string, int>> GetPollResultsAsync(int pollId);
+    Task<PollOptions?> GetOptionByIdAsync(int optionId);
 }

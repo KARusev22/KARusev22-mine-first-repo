@@ -19,6 +19,7 @@ public class PollService : IPollService
         return await _context.Polls
             .Where(p => p.IsActive)
             .Include(p => p.Options)
+            .ThenInclude(o => o.Votes)
             .ToListAsync();
     }
 
@@ -88,5 +89,12 @@ public class PollService : IPollService
             .Where(o => o.PollId == pollId)
             .Select(o => new { o.OptionText, Count = o.Votes.Count })
             .ToDictionaryAsync(x => x.OptionText, x => x.Count);
+    }
+    
+    public async Task<PollOptions?> GetOptionByIdAsync(int optionId)
+    {
+        return await _context.PollOptions
+            .Include(o => o.Votes)
+            .FirstOrDefaultAsync(o => o.Id == optionId);
     }
 }
