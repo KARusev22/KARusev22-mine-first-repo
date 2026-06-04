@@ -1,0 +1,780 @@
+:root {
+  --figusta-green: #68b063;
+  --figusta-green-dark: #5a9d55;
+  --figusta-bg: #f8f9fa;
+  --figusta-text: #333333;
+  --figusta-text-muted: #777777;
+  --figusta-border: #e5e7eb;
+  --figusta-white: #ffffff;
+  --figusta-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  --figusta-radius: 12px;
+}
+
+body.figusta-body {
+  background-color: var(--figusta-bg);
+  color: var(--figusta-text);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  margin-bottom: 0;
+}
+
+.figusta-header {
+  background: var(--figusta-white);
+  border-bottom: 1px solid var(--figusta-border);
+  box-shadow: none;
+}
+
+.figusta-header .container-fluid {
+  max-width: 1400px;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.figusta-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.35rem;
+  color: var(--figusta-text);
+  text-decoration: none;
+}
+
+.figusta-brand:hover {
+  color: var(--figusta-text);
+}
+
+.figusta-brand-icon {
+  color: var(--figusta-green);
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+}
+
+.figusta-brand-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.figusta-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.figusta-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--figusta-text);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.25rem 0;
+  transition: color 0.15s ease;
+}
+
+.figusta-nav-link:hover {
+  color: var(--figusta-green);
+}
+
+.figusta-nav-link i {
+  color: var(--figusta-text-muted);
+  font-size: 0.9rem;
+}
+
+.figusta-nav-link.is-active {
+  border: 1px solid var(--figusta-text);
+  border-radius: 8px;
+  padding: 0.35rem 0.85rem;
+  margin: -0.35rem -0.85rem;
+}
+
+.figusta-nav-link.is-active i {
+  color: var(--figusta-green);
+}
+
+.figusta-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.figusta-cart-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  color: var(--figusta-text);
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.figusta-cart-btn:hover {
+  color: var(--figusta-green);
+}
+
+.figusta-btn-login {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--figusta-green);
+  color: var(--figusta-white) !important;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1.1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.figusta-btn-login:hover {
+  background: var(--figusta-green-dark);
+  color: var(--figusta-white) !important;
+}
+
+.figusta-user-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.figusta-avatar {
+    width: 32px;
+    height: 32px;
+    background: var(--figusta-green);
+    color: white;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.figusta-user-menu .nav-link {
+  color: var(--figusta-text);
+  font-weight: 500;
+  padding: 0;
+}
+
+.figusta-user-menu .btn-link {
+  color: var(--figusta-text-muted);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.figusta-main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 3rem;
+}
+
+.figusta-filter-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.figusta-filter-select {
+  appearance: none;
+  background: var(--figusta-white);
+  border: 1px solid var(--figusta-border);
+  border-radius: 8px;
+  padding: 0.45rem 2.25rem 0.45rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--figusta-text);
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 16 16'%3E%3Cpath fill='%23777777' d='M4.5 6L8 9.5 11.5 6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  min-width: 120px;
+}
+
+.figusta-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.figusta-dish-card {
+  background: var(--figusta-white);
+  border-radius: var(--figusta-radius);
+  overflow: hidden;
+  box-shadow: var(--figusta-shadow);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.figusta-dish-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.figusta-dish-card.is-hidden {
+  display: none;
+}
+
+.figusta-dish-image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+}
+
+.figusta-dish-body {
+  padding: 1rem 1.1rem 1.15rem;
+}
+
+.figusta-dish-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 0.2rem;
+  color: var(--figusta-text);
+}
+
+.figusta-dish-category {
+  font-size: 0.85rem;
+  color: var(--figusta-text-muted);
+  margin: 0 0 0.75rem;
+}
+
+.figusta-dish-price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--figusta-green);
+  margin: 0;
+}
+
+.figusta-login-page {
+  min-height: calc(100vh - 72px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem 3rem;
+}
+
+.figusta-login-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--figusta-white);
+  border-radius: var(--figusta-radius);
+  box-shadow: var(--figusta-shadow);
+  border: 1px solid var(--figusta-border);
+  padding: 2rem 2rem 1.75rem;
+}
+
+.figusta-login-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.figusta-login-brand .figusta-brand-icon {
+  font-size: 2.25rem;
+  margin-bottom: 0.35rem;
+}
+
+.figusta-login-brand h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+  color: var(--figusta-text);
+}
+
+.figusta-login-brand p {
+  margin: 0;
+  color: var(--figusta-text-muted);
+  font-size: 0.9rem;
+}
+
+.figusta-login-card .form-floating > label {
+  color: var(--figusta-text-muted);
+}
+
+.figusta-login-card .form-control {
+  border-color: var(--figusta-border);
+  border-radius: 8px;
+}
+
+.figusta-login-card .form-control:focus {
+  border-color: var(--figusta-green);
+  box-shadow: 0 0 0 0.2rem rgba(104, 176, 99, 0.2);
+}
+
+.figusta-btn-primary {
+  background: var(--figusta-green);
+  border-color: var(--figusta-green);
+  color: var(--figusta-white);
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.65rem 1rem;
+}
+
+.figusta-btn-primary:hover,
+.figusta-btn-primary:focus {
+  background: var(--figusta-green-dark);
+  border-color: var(--figusta-green-dark);
+  color: var(--figusta-white);
+}
+
+.figusta-login-links {
+  margin-top: 1.25rem;
+  font-size: 0.875rem;
+}
+
+.figusta-login-links a {
+  color: var(--figusta-green);
+  text-decoration: none;
+}
+
+.figusta-login-links a:hover {
+  text-decoration: underline;
+}
+
+.figusta-login-links p {
+  margin-bottom: 0.35rem;
+}
+
+.figusta-login-external {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--figusta-border);
+  font-size: 0.875rem;
+  color: var(--figusta-text-muted);
+}
+
+.figusta-login-external h3 {
+  font-size: 1rem;
+  color: var(--figusta-text);
+}
+
+.figusta-page-wrapper .footer {
+  display: none;
+}
+
+.figusta-page-header {
+  margin-bottom: 1.75rem;
+}
+
+.figusta-page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+  color: var(--figusta-text);
+}
+
+.figusta-page-subtitle {
+  margin: 0;
+  color: var(--figusta-text-muted);
+  font-size: 0.95rem;
+}
+
+.figusta-panel-card {
+  background: var(--figusta-white);
+  border: 1px solid var(--figusta-border);
+  border-radius: var(--figusta-radius);
+  box-shadow: var(--figusta-shadow);
+  padding: 1.25rem 1.35rem;
+}
+
+.figusta-panel-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.figusta-panel-heading h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--figusta-text);
+}
+
+.figusta-panel-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.figusta-panel-icon-green {
+  color: var(--figusta-green);
+}
+
+.figusta-kitchen-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 340px) 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.figusta-ingredient-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.figusta-ingredient-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--figusta-border);
+}
+
+.figusta-ingredient-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.figusta-ingredient-name {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--figusta-text);
+}
+
+.figusta-ingredient-type {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--figusta-text-muted);
+  margin-top: 0.1rem;
+}
+
+.figusta-ingredient-qty {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--figusta-green);
+  white-space: nowrap;
+}
+
+.figusta-orders-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.figusta-orders-header .figusta-panel-heading {
+  margin-bottom: 0;
+}
+
+.figusta-badge {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+}
+
+.figusta-badge-amber {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.figusta-order-card {
+  background: var(--figusta-white);
+  border: 1px solid var(--figusta-border);
+  border-radius: var(--figusta-radius);
+  padding: 1.15rem 1.25rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.figusta-order-card:last-child {
+  margin-bottom: 0;
+}
+
+.figusta-order-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.figusta-order-code {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--figusta-green);
+  letter-spacing: 0.02em;
+}
+
+.figusta-order-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: var(--figusta-text-muted);
+}
+
+.figusta-order-items {
+  list-style: none;
+  margin: 0 0 0.85rem;
+  padding: 0;
+}
+
+.figusta-order-items li {
+  background: #f3f4f6;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+
+.figusta-order-items li:last-child {
+  margin-bottom: 0;
+}
+
+.figusta-order-notes {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+}
+
+.figusta-order-notes-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--figusta-text-muted);
+  margin-bottom: 0.2rem;
+}
+
+.figusta-order-notes p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--figusta-text);
+}
+
+.figusta-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.figusta-kpi-card {
+  background: var(--figusta-white);
+  border: 1px solid var(--figusta-border);
+  border-radius: var(--figusta-radius);
+  padding: 1.15rem 1.25rem;
+}
+
+.figusta-kpi-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 0.65rem;
+}
+
+.figusta-kpi-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 8px;
+  background: rgba(104, 176, 99, 0.12);
+  color: var(--figusta-green);
+  font-size: 1.1rem;
+}
+
+.figusta-kpi-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--figusta-green);
+  background: rgba(104, 176, 99, 0.12);
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+}
+
+.figusta-kpi-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.15rem;
+  color: var(--figusta-text);
+}
+
+.figusta-kpi-label {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--figusta-text-muted);
+}
+
+.figusta-admin-charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.figusta-chart-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+  color: var(--figusta-text);
+}
+
+.figusta-chart-wrap {
+  position: relative;
+  height: 260px;
+}
+
+.figusta-admin-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.figusta-popular-meals {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.figusta-popular-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--figusta-border);
+}
+
+.figusta-popular-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.figusta-popular-rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: rgba(104, 176, 99, 0.15);
+  color: var(--figusta-green);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.figusta-popular-name {
+  display: block;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--figusta-text);
+}
+
+.figusta-popular-orders {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--figusta-text-muted);
+  margin-top: 0.1rem;
+}
+
+.figusta-popular-revenue {
+  text-align: right;
+}
+
+.figusta-popular-amount {
+  display: block;
+  font-weight: 700;
+  color: var(--figusta-green);
+  font-size: 0.95rem;
+}
+
+.figusta-popular-revenue-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--figusta-text-muted);
+}
+
+.figusta-satisfaction-panel .figusta-donut-wrap {
+  height: 220px;
+  max-width: 280px;
+  margin: 0 auto 1rem;
+}
+
+.figusta-satisfaction-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem;
+  font-size: 0.85rem;
+  color: var(--figusta-text);
+}
+
+.figusta-satisfaction-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.figusta-satisfaction-legend strong {
+  margin-left: auto;
+  font-weight: 600;
+}
+
+.figusta-legend-swatch {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.figusta-legend-excellent { background: #68b063; }
+.figusta-legend-good { background: #f0b429; }
+.figusta-legend-average { background: #333333; }
+.figusta-legend-poor { background: #e74c3c; }
+
+@media (max-width: 1199.98px) {
+  .figusta-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 991.98px) {
+  .figusta-nav {
+    gap: 1rem;
+    justify-content: flex-start;
+    padding: 0.75rem 0;
+  }
+
+  .figusta-header .navbar-collapse {
+    padding-bottom: 0.5rem;
+  }
+
+  .figusta-kitchen-layout,
+  .figusta-admin-charts,
+  .figusta-admin-bottom {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .figusta-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}

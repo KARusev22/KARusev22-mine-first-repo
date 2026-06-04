@@ -1,0 +1,157 @@
+﻿.poll-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 35px;
+    color: #1b5e20;
+}
+
+.poll-dashboard {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.left-column {
+    width: 520px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.right-column {
+    width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.glass {
+    padding: 25px;
+    border-radius: 18px;
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.stats-row {
+    display: flex;
+    gap: 20px;
+}
+
+.stat-card {
+    flex: 1;
+    text-align: center;
+}
+
+.stat-icon {
+    font-size: 2rem;
+    margin-bottom: 5px;
+    color: #1b5e20;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1b5e20;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.chart-card {
+    height: 300px;
+}
+
+.engagement-card {
+    padding: 25px;
+    border-radius: 18px;
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.eng-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #1b5e20;
+}
+
+.eng-title i {
+    margin-right: 6px;
+}
+
+.eng-score {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #1b5e20;
+}
+
+.eng-trend {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+}
+
+.eng-bar {
+    width: 100%;
+    height: 12px;
+    background: rgba(0,0,0,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px 0 15px 0;
+}
+
+.eng-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #2ecc71, #27ae60);
+    transition: width 0.8s ease;
+}
+
+.eng-level {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1b5e20;
+    opacity: 0.8;
+}
+
+.table-card {
+    padding: 20px;
+}
+
+.table-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.poll-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.poll-table th {
+    background: #e8f5e9;
+    padding: 10px;
+    font-weight: 600;
+    color: #1b5e20;
+}
+
+.poll-table td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.poll-table tr:hover {
+    background: rgba(76, 175, 80, 0.08);
+}
+
+canvas {
+    max-width: 100%;
+    max-height: 100%;
+}

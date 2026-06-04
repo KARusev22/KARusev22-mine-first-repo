@@ -1,0 +1,64 @@
+﻿@model CanteenReservationSystem.Models.ViewModels.OrderViewModel
+
+@{
+    ViewData["Title"] = "Order Details";
+    ViewData["FigustaPage"] = true;
+    ViewData["FigustaNav"] = "adminOrders";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-orders.css" />
+}
+
+@section Scripts {
+    <script src="~/js/admin-orders.js"></script>
+}
+
+<div class="container py-4">
+
+    <a href="/AdminOrders" class="btn btn-outline-secondary mb-3">
+        <i class="bi bi-arrow-left"></i> Back
+    </a>
+
+    <div class="glass-card p-4 rounded-4 shadow-lg mb-4 position-relative">
+
+        <span class="badge status-badge @Model.Status.ToLower()">
+            @Model.Status
+        </span>
+
+        <h3 class="fw-bold mb-3 order-title">
+            <i class="bi bi-receipt me-2"></i> Order @Model.Code
+        </h3>
+
+        <p><i class="bi bi-person-circle me-2"></i> @ViewBag.UserFullName</p>
+        <p><i class="bi bi-calendar-event me-2"></i> Created: @Model.CreatedOn.ToString("dd MMM yyyy", System.Globalization.CultureInfo.InvariantCulture)</p>
+        <p><i class="bi bi-flag me-2"></i> For: @Model.TargetDate.ToString("dd MMM yyyy", System.Globalization.CultureInfo.InvariantCulture)</p>
+        <p><i class="bi bi-cash-coin me-2"></i> Total: @Model.TotalPrice euro</p>
+
+    </div>
+
+    <div class="glass-card p-4 rounded-4 shadow-lg">
+        <h4 class="fw-bold mb-3">Items</h4>
+
+        <table class="table table-borderless text-white">
+            <thead>
+            <tr>
+                <th>Dish</th>
+                <th>Qty</th>
+                <th>Note</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Quantity</td>
+                    <td>@Model.Notes</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+</div>

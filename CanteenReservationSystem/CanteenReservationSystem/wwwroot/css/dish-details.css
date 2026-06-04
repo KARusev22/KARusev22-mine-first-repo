@@ -1,0 +1,132 @@
+﻿.figusta-dish-details-card {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.figusta-dish-details-image {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.figusta-dish-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--figusta-text);
+}
+
+.figusta-dish-category {
+    font-size: 0.95rem;
+    color: var(--figusta-text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.figusta-dish-price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--figusta-green);
+    margin-bottom: 1rem;
+}
+
+.figusta-dish-characteristics {
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--figusta-text);
+}
+
+.figusta-dish-description {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    color: var(--figusta-text);
+}
+
+.figusta-nutrition-card,
+.figusta-ingredients-card,
+.figusta-allergens-card {
+    margin-top: 1.5rem;
+}
+
+.figusta-ingredient-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--figusta-border);
+}
+
+.figusta-ingredient-row:last-child {
+    border-bottom: none;
+}
+
+.figusta-ingredient-row span:first-child {
+    font-weight: 600;
+    color: var(--figusta-text);
+}
+
+.figusta-ingredient-row span:last-child {
+    font-weight: 700;
+    color: var(--figusta-green);
+}
+
+.figusta-allergen-icon {
+    width: 28px;
+    height: 28px;
+}
+
+.figusta-add-to-cart-btn {
+    margin-top: 1.75rem;
+    display: inline-block;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 992px) {
+    .figusta-dish-title {
+        font-size: 1.25rem;
+    }
+
+    .figusta-dish-price {
+        font-size: 1.15rem;
+    }
+
+    .figusta-ingredient-row {
+        padding: 0.6rem 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .figusta-dish-details-card {
+        padding: 1rem;
+    }
+
+    .figusta-dish-title {
+        font-size: 1.2rem;
+    }
+
+    .figusta-dish-price {
+        font-size: 1.1rem;
+    }
+
+    .figusta-ingredient-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+
+    .figusta-ingredient-row span:last-child {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .figusta-dish-title {
+        font-size: 1.1rem;
+    }
+
+    .figusta-dish-price {
+        font-size: 1rem;
+    }
+
+    .figusta-add-to-cart-btn {
+        width: 100%;
+        text-align: center;
+    }

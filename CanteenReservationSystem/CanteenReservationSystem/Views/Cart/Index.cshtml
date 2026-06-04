@@ -1,0 +1,73 @@
+﻿@model IEnumerable<CanteenReservationSystem.Models.CartItems>
+
+@{
+    ViewData["Title"] = "Your Cart";
+    ViewData["FigustaPage"] = true;
+}
+
+<div class="figusta-main">
+
+    <div class="figusta-page-header">
+        <h1 class="figusta-page-title">Your Cart</h1>
+        <p class="figusta-page-subtitle">Review your items</p>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="figusta-panel-card">
+            <p>Your cart is empty.</p>
+        </div>
+    }
+    else
+    {
+        @foreach (var item in Model)
+        {
+            <div class="figusta-panel-card figusta-cart-item" data-id="@item.Id">
+
+                <div class="figusta-cart-top">
+
+                    <h2 class="figusta-dish-title">@item.Dish?.DishName</h2>
+
+                    <button type="button"
+                            class="figusta-remove-btn"
+                            onclick="removeItem(@item.Id)">
+                        <i class="bi bi-trash"></i>
+                    </button>
+
+                </div>
+
+                <p class="figusta-dish-category">@item.Dish?.Category?.CategoryName</p>
+
+                <p class="figusta-dish-price"
+                   data-price="@item.Dish?.Price.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)">
+                    @item.Dish?.Price.ToString("0.00") euro
+                </p>
+
+                <div class="figusta-cart-form">
+
+                    <label>Quantity</label>
+                    <input type="number"
+                           class="figusta-qty"
+                           data-id="@item.Id"
+                           value="@item.Quantity"
+                           min="1" />
+
+                    <label>Note</label>
+                    <textarea class="figusta-note"
+                              data-id="@item.Id">@item.Note</textarea>
+
+                </div>
+
+            </div>
+        }
+
+        <div class="figusta-total-card">
+            Total: <span id="figusta-total"></span> euro
+        </div>
+
+        <a href="/Reservation/Checkout" class="figusta-btn-primary" style="margin-top:1.5rem;">
+            Proceed to Checkout
+        </a>
+    }
+
+</div>
