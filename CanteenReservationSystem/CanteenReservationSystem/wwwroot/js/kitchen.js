@@ -1,0 +1,1 @@
+﻿console.log("Kitchen page loaded");

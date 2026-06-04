@@ -23,6 +23,7 @@ builder.Services.AddScoped<IPollService, PollService>();
 builder.Services.AddScoped<IVoteService, VoteService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IKitchenService, KitchenService>();
 
 builder.Services.AddHostedService<OrderAutoCloseService>();
 

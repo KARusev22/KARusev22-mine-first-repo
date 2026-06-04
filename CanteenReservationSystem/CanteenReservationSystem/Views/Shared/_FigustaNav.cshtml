@@ -38,9 +38,14 @@
     <!-- Kitchen -->
     @if (role == "Kitchen")
     {
-        <a class="figusta-nav-link @(active == "kitchen" ? "is-active" : "")"
-           asp-controller="Home" asp-action="Kitchen">
-            <i class="bi bi-cup-hot"></i> Kitchen
+        <a class="figusta-nav-link @(active == "kitchenDashboard" ? "is-active" : "")"
+           asp-controller="Kitchen" asp-action="Index">
+            <i class="bi bi-cup-hot"></i> Kitchen Dashboard
+        </a>
+
+        <a class="figusta-nav-link @(active == "kitchenPolls" ? "is-active" : "")"
+           asp-controller="AdminPoll" asp-action="Index">
+            <i class="bi bi-ui-checks-grid"></i> Polls
         </a>
     }
 

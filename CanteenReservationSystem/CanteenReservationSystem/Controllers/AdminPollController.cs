@@ -15,14 +15,16 @@ public class AdminPollController : Controller
         _pollService = pollService;
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Kitchen")]
     public async Task<IActionResult> Index()
     {
+        ViewData["FigustaNav"] = "kitchenPolls";
+        
         var polls = await _pollService.GetAllPollsAsync();
         return View(polls);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Kitchen")]
     public IActionResult Create()
     {
         return View();
