@@ -31,13 +31,13 @@
     *  ---
     * ## 🚀 Инсталация и Стартиране 1. Клонирайте хранилището: ```bash git clone [https://github.com/codingburgas/on-the-job-training-11v-figusta.git)
     * Инсталирайте необходимите зависимости:
-    * # Пример за backend
+    * Пример за backend
     * cd backend && npm install
-* # Пример за frontend
+  * Пример за frontend
 * cd ../frontend && npm install
 * Стартирайте проекта локално:
-* # За backend
+*  За backend
 * npm run start
-* # За frontend
+*  За frontend
 * npm run dev
-* 💡 Проектът е създаден с цел дигитализация и намаляване на хранителния отпадък (Food Waste) чрез прецизно планиране на продуктите в кухненския блок.
+## * 💡 Проектът е създаден с цел дигитализация и намаляване на хранителния отпадък (Food Waste) чрез прецизно планиране на продуктите в кухненския блок.
