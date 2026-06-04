@@ -68,8 +68,8 @@
 }
 
 .figusta-allergen-icon {
-    width: 28px;
-    height: 28px;
+    width: 58px;
+    height: 58px;
 }
 
 .figusta-add-to-cart-btn {
@@ -130,3 +130,4 @@
         width: 100%;
         text-align: center;
     }
+}
