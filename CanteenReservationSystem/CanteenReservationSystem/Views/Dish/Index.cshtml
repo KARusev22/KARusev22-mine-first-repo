@@ -14,26 +14,51 @@
 }
 
 <section class="figusta-filter-bar">
-    <label for="figusta-category-filter" class="visually-hidden">Filter by category</label>
+    <div class="figusta-filter-group">
+        <label for="figusta-search-input" class="figusta-filter-label">Search dishes</label>
+        <input id="figusta-search-input"
+               class="figusta-filter-input"
+               type="search"
+               placeholder="Search by name..."
+               autocomplete="off"
+               aria-label="Search dishes by name" />
+    </div>
 
-    <select id="figusta-category-filter" class="figusta-filter-select" aria-label="Filter by category">
-        <option value="all" selected>All</option>
+    <div class="figusta-filter-group">
+        <label for="figusta-sort-select" class="visually-hidden">Sort by price</label>
+        <select id="figusta-sort-select" class="figusta-sort-select" aria-label="Sort dishes by price">
+            <option value="asc" selected>Price: Low to High</option>
+            <option value="desc">Price: High to Low</option>
+        </select>
+    </div>
 
-        @foreach (var category in categories)
-        {
-            <option value="@category.CategoryName.ToLower()">
-                @category.CategoryName
-            </option>
-        }
-    </select>
+    <div class="figusta-filter-group">
+        <label for="figusta-category-filter" class="visually-hidden">Filter by category</label>
+        <select id="figusta-category-filter" class="figusta-filter-select" aria-label="Filter by category">
+            <option value="all" selected>All</option>
+
+            @foreach (var category in categories)
+            {
+                <option value="@category.CategoryName.ToLower()">
+                    @category.CategoryName
+                </option>
+            }
+        </select>
+    </div>
 </section>
+
+<div class="figusta-empty-state visually-hidden" id="figusta-empty-state" role="status" aria-live="polite">
+    No dishes match your search. Try a different name or clear the filters.
+</div>
 
 <div class="figusta-menu-grid" id="figusta-menu-grid">
 
     @foreach (var dish in Model)
     {
         <article class="figusta-dish-card"
-                 data-category="@dish.Category.CategoryName.ToLower()">
+                 data-category="@dish.Category.CategoryName.ToLower()"
+                 data-name="@dish.DishName.ToLower()"
+                 data-price="@dish.Price">
 
             <img class="figusta-dish-image"
                  src="@dish.ImageUrl"
