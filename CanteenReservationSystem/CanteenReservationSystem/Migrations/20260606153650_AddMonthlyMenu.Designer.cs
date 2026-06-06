@@ -4,6 +4,7 @@ using CanteenReservationSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CanteenReservationSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260606153650_AddMonthlyMenu")]
+    partial class AddMonthlyMenu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -283,7 +286,7 @@ namespace CanteenReservationSystem.Migrations
 
                     b.HasIndex("DishId");
 
-                    b.ToTable("MonthlyMenu");
+                    b.ToTable("MonthlyMenus");
                 });
 
             modelBuilder.Entity("CanteenReservationSystem.Models.Nutrition", b =>
