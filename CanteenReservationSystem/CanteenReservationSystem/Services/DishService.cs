@@ -35,6 +35,7 @@ public class DishService : IDishService
             .ThenInclude(di => di.Ingredient)
             .Include(d => d.DishAllergens)
             .ThenInclude(da => da.Allergen)
+            .Include(d => d.MonthlyMenuEntries) 
             .FirstOrDefaultAsync(d => d.Id == id);
     }
 

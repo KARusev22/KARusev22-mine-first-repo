@@ -85,5 +85,10 @@
            asp-controller="AdminPoll" asp-action="Index">
             <i class="bi bi-ui-checks"></i> Polls
         </a>
+        
+        <a class="figusta-nav-link @(active == "adminMonthlyMenu" ? "is-active" : "")"
+           asp-controller="AdminMonthlyMenu" asp-action="Index">
+            <i class="bi bi-calendar-week"></i> Monthly Menu
+        </a>
     }
 </div>

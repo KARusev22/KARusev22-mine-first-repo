@@ -1,4 +1,4 @@
-﻿@model List<CanteenReservationSystem.Models.CartItems>
+﻿@model CanteenReservationSystem.Models.ViewModels.CheckoutViewModel
 
 @{
     ViewData["Title"] = "Checkout";
@@ -9,10 +9,10 @@
 
     <div class="figusta-page-header">
         <h1 class="figusta-page-title">Checkout</h1>
-        <p class="figusta-page-subtitle">Select items and choose a date</p>
+        <p class="figusta-page-subtitle">Select items and choose a date!</p>
     </div>
 
-    @if (!Model.Any())
+    @if (!Model.Items.Any())
     {
         <div class="figusta-panel-card">
             <p>Your cart is empty.</p>
@@ -20,11 +20,12 @@
     }
     else
     {
-        <form asp-controller="Reservation" asp-action="CreateReservation" method="post">
+        <form asp-controller="Reservation" asp-action="Checkout" method="post">
 
-            @foreach (var item in Model)
+            @foreach (var item in Model.Items)
             {
-                <div class="figusta-panel-card figusta-cart-item" data-id="@item.Id">
+                <div class="figusta-panel-card figusta-cart-item @(item.IsAvailableForDate ? "" : "figusta-unavailable")"
+                     data-id="@item.Id">
 
                     <div class="figusta-cart-top">
 
@@ -50,6 +51,13 @@
                         @item.Dish?.Price.ToString("0.00") euro
                     </p>
 
+                    @if (!item.IsAvailableForDate)
+                    {
+                        <p class="text-danger" style="font-weight:bold;">
+                            Not available for this date
+                        </p>
+                    }
+                    
                     <div class="figusta-cart-form">
 
                         <label>Quantity</label>
@@ -81,7 +89,10 @@
                        required />
             </div>
 
-            <button type="submit" class="figusta-btn-primary" style="margin-top:1.5rem;">
+            <button id="checkout-btn"
+                    type="submit"
+                    class="figusta-btn-primary"
+                    style="margin-top:1.5rem;">
                 Create Reservation
             </button>
 
@@ -89,3 +100,27 @@
     }
 
 </div>
+
+<script>
+function validateSelection() {
+    const checkboxes = document.querySelectorAll("input[name='SelectedItemIds']:checked");
+    const items = document.querySelectorAll(".figusta-cart-item");
+    let valid = false;
+
+    checkboxes.forEach(cb => {
+        const item = document.querySelector(`.figusta-cart-item[data-id='${cb.value}']`);
+        if (item && !item.classList.contains("figusta-unavailable")) {
+            valid = true;
+        }
+    });
+
+    return valid;
+}
+
+document.querySelector("form").addEventListener("submit", function (e) {
+    if (!validateSelection()) {
+        e.preventDefault();
+        alert("Please select at least one available item.");
+    }
+});
+</script>

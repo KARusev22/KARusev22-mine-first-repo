@@ -22,7 +22,8 @@
     {
         @foreach (var item in Model)
         {
-            <div class="figusta-panel-card figusta-cart-item" data-id="@item.Id">
+            <div class="figusta-panel-card figusta-cart-item @(item.IsAvailableForDate ? "" : "figusta-unavailable")"
+                 data-id="@item.Id">
 
                 <div class="figusta-cart-top">
 
@@ -43,6 +44,13 @@
                     @item.Dish?.Price.ToString("0.00") euro
                 </p>
 
+                @if (item.IsAvailableForDate == false)
+                {
+                    <p class="text-danger" style="font-weight:bold;">
+                        Not available for this date!
+                    </p>
+                }
+                
                 <div class="figusta-cart-form">
 
                     <label>Quantity</label>

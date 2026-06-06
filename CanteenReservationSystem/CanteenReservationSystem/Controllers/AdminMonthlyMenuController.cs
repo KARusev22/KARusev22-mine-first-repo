@@ -13,60 +13,89 @@ public class AdminMonthlyMenuController : Controller
     {
         _context = context;
     }
-
-    public IActionResult Create()
+    [HttpGet]
+    public async Task<IActionResult> Create()
     {
-        ViewBag.Dishes = _context.Dishes.ToList();
-        return View();
+        ViewBag.Dishes = await _context.Dishes
+            .Include(d => d.Category)
+            .OrderBy(d => d.Category.CategoryName)
+            .ToListAsync();
+
+        return View(new MonthlyMenu
+        {
+            Month = DateTime.Now.Month,
+            Year = DateTime.Now.Year
+        });
     }
 
     [HttpPost]
-    public IActionResult Create(int month, int year, List<DayOfWeek> days, List<int> dishIds)
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(MonthlyMenu model)
     {
-        if (days.Count != 7 || dishIds.Count != 14)
+        if (model.DishId == null)
         {
-            ModelState.AddModelError("", "Invalid menu data.");
-            ViewBag.Dishes = _context.Dishes.ToList();
-            return View();
+            ModelState.AddModelError("DishId", "Please select a dish.");
+        }
+        
+        if (model.Year < 2026)
+            ModelState.AddModelError("Year", "Year cannot be earlier than 2026.");
+
+        if (model.Month < 1 || model.Month > 12)
+            ModelState.AddModelError("Month", "Month must be between 1 and 12.");
+
+        var dish = await _context.Dishes
+            .Include(d => d.Category)
+            .FirstOrDefaultAsync(d => d.Id == model.DishId);
+
+        if (dish == null)
+        {
+            ModelState.AddModelError("", "Invalid dish.");
+        }
+        else
+        {
+            int categoryId = dish.CategoryId;
+
+            int countForCategory = await _context.MonthlyMenu
+                .Include(m => m.Dish)
+                .Where(m =>
+                    m.Month == model.Month &&
+                    m.Year == model.Year &&
+                    m.DayOfWeek == model.DayOfWeek &&
+                    m.Dish.CategoryId == categoryId)
+                .CountAsync();
+
+            if (countForCategory >= 2)
+            {
+                ModelState.AddModelError("",
+                    $"This category already has 2 dishes for {model.DayOfWeek}.");
+            }
         }
 
-        for (int i = 0; i < days.Count; i++)
+        if (!ModelState.IsValid)
         {
-            var day = days[i];
+            ViewBag.Dishes = await _context.Dishes
+                .Include(d => d.Category)
+                .OrderBy(d => d.Category.CategoryName)
+                .ToListAsync();
 
-            var dish1 = dishIds[i * 2];
-            var dish2 = dishIds[i * 2 + 1];
-
-            _context.MonthlyMenu.Add(new MonthlyMenu
-            {
-                DishId = dish1,
-                DayOfWeek = day,
-                Month = month,
-                Year = year
-            });
-
-            _context.MonthlyMenu.Add(new MonthlyMenu
-            {
-                DishId = dish2,
-                DayOfWeek = day,
-                Month = month,
-                Year = year
-            });
+            return View(model);
         }
 
-        _context.SaveChanges();
+        _context.MonthlyMenu.Add(model);
+        await _context.SaveChangesAsync();
 
         return RedirectToAction("Index");
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        var menus = _context.MonthlyMenu
+        var menus = await _context.MonthlyMenu
             .Include(m => m.Dish)
+            .ThenInclude(d => d.Category)
             .OrderBy(m => m.Year)
             .ThenBy(m => m.Month)
             .ThenBy(m => m.DayOfWeek)
-            .ToList();
+            .ToListAsync();
 
         return View(menus);
     }

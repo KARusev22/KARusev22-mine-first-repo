@@ -1,0 +1,72 @@
+﻿@model IEnumerable<CanteenReservationSystem.Models.MonthlyMenu>
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Monthly Menu";
+}
+
+<div class="figusta-main">
+
+    <div class="figusta-page-header">
+        <h1 class="figusta-page-title">Monthly Menu</h1>
+        <p class="figusta-page-subtitle">Overview of all assigned dishes</p>
+    </div>
+
+    <a asp-action="Create" class="figusta-btn-primary" style="margin-bottom:1.5rem;">
+        <i class="bi bi-plus-circle"></i> Add New Entry
+    </a>
+
+    <div class="mm-table-panel">
+
+        <table class="mm-table">
+            <thead>
+                <tr>
+                    <th>Dish</th>
+                    <th>Category</th>
+                    <th>Day</th>
+                    <th>Month</th>
+                    <th>Year</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var cat = item.Dish.Category.CategoryName;
+                    string badgeClass = cat switch
+                    {
+                        "Drinks" => "mm-cat-drinks",
+                        "Vegan Menu" => "mm-cat-vegan",
+                        "Vegetarian Menu" => "mm-cat-vegetarian",
+                        "Healthy Choices" => "mm-cat-healthy",
+                        "Classic Meals" => "mm-cat-classic",
+                        _ => "mm-cat-classic"
+                    };
+
+                    <tr>
+                        <td>@item.Dish.DishName</td>
+
+                        <td>
+                            <span class="mm-badge @badgeClass">
+                                @cat
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="mm-day">
+                                <i class="bi bi-calendar-event"></i>
+                                @item.DayOfWeek
+                            </span>
+                        </td>
+
+                        <td>@CultureInfo.GetCultureInfo("en-US").DateTimeFormat.GetMonthName(item.Month)</td>
+
+                        <td>@item.Year</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+</div>

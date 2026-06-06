@@ -77,6 +77,11 @@
     color: var(--figusta-text);
 }
 
+.figusta-unavailable {
+    border: 2px solid #d9534f !important;
+    background: #ffe6e6 !important;
+}
+
 @media (max-width: 768px) {
     .figusta-cart-top {
         flex-wrap: wrap;

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using CanteenReservationSystem.Services.Interfaces;
 using CanteenReservationSystem.Models.ViewModels;
+using CanteenReservationSystem.Data;
 using System.Security.Claims;
 
 namespace CanteenReservationSystem.Controllers;
@@ -9,11 +11,14 @@ public class ReservationController : Controller
 {
     private readonly ICartService _cartService;
     private readonly IReservationService _reservationService;
-
-    public ReservationController(ICartService cartService, IReservationService reservationService)
+    private readonly ApplicationDbContext _context;
+    
+    public ReservationController(ICartService cartService, IReservationService reservationService,
+        ApplicationDbContext context)
     {
         _cartService = cartService;
         _reservationService = reservationService;
+        _context = context;
     }
 
     public async Task<IActionResult> Checkout()
@@ -21,38 +26,56 @@ public class ReservationController : Controller
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var cart = await _cartService.GetUserCartAsync(userId);
 
-        return View(cart);
+        var vm = new CheckoutViewModel
+        {
+            Items = cart.ToList(),
+            SelectedDate = DateTime.Today.AddDays(1)
+        };
+
+        return View(vm);
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreateReservation(ReservationRequestModel model)
+    public async Task<IActionResult> Checkout(DateTime TargetDate, int[] SelectedItemIds)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        if (model.SelectedItemIds == null || !model.SelectedItemIds.Any())
-        {
-            TempData["Error"] = "You must select at least one item";
-            return RedirectToAction("Checkout");
-        }
-        
-        var minDate = DateTime.Today.AddDays(1);
+        var items = await _cartService.GetItemsByIdsAsync(SelectedItemIds.ToList());
 
-        if (model.TargetDate.Date < minDate)
+        await _cartService.MarkAvailabilityForDateAsync(items, TargetDate);
+
+        var vm = new CheckoutViewModel
         {
-            TempData["Error"] = "You can make a reservation for tomorrow at the earliest.";
-            return RedirectToAction("Checkout");
-        }
+            Items = items,
+            SelectedDate = TargetDate
+        };
+
+        if (items.Any(i => !i.IsAvailableForDate))
+            return View(vm);
+
+        return View("ConfirmReservation", new ConfirmReservationViewModel {
+            TargetDate = TargetDate,
+            Ids = string.Join(",", SelectedItemIds)
+        });
+    }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreateReservation(DateTime TargetDate, string ids)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var selectedIds = ids.Split(',').Select(int.Parse).ToList();
 
         var reservation = await _reservationService.CreateReservationAsync(
             userId,
-            model.TargetDate,
-            model.SelectedItemIds
+            TargetDate,
+            selectedIds
         );
 
         return RedirectToAction("Success", new { id = reservation.Id });
     }
-
+    
     public async Task<IActionResult> Success(int id)
     {
         var reservation = await _reservationService.GetByIdAsync(id);

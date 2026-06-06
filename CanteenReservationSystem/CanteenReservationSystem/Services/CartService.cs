@@ -16,18 +16,25 @@ public class CartService : ICartService
 
     public async Task<IEnumerable<CartItems>> GetUserCartAsync(string userId)
     {
-        return await _context.CartItems
+        var list = await _context.CartItems
             .Where(c => c.UserId == userId)
             .Include(c => c.Dish)
-                .ThenInclude(d => d.Nutrition)
+            .ThenInclude(d => d.Nutrition)
             .Include(c => c.Dish)
-                .ThenInclude(d => d.DishIngredients)
-                    .ThenInclude(di => di.Ingredient)
+            .ThenInclude(d => d.DishIngredients)
+            .ThenInclude(di => di.Ingredient)
             .Include(c => c.Dish)
-                .ThenInclude(d => d.DishAllergens)
-                    .ThenInclude(da => da.Allergen)
+            .ThenInclude(d => d.DishAllergens)
+            .ThenInclude(da => da.Allergen)
             .OrderBy(c => c.TargetDate)
             .ToListAsync();
+
+        foreach (var item in list)
+        {
+            item.IsAvailableForDate = true;
+        }
+        
+        return list;
     }
 
     public async Task AddToCartAsync(CartItems item)
@@ -105,5 +112,17 @@ public class CartService : ICartService
 
         _context.CartItems.RemoveRange(items);
         await _context.SaveChangesAsync();
+    }
+    
+    public async Task MarkAvailabilityForDateAsync(List<CartItems> items, DateTime selectedDate)
+    {
+        foreach (var item in items)
+        {
+            item.IsAvailableForDate = await _context.MonthlyMenu.AnyAsync(m =>
+                m.DishId == item.DishId &&
+                m.Month == selectedDate.Month &&
+                m.Year == selectedDate.Year &&
+                m.DayOfWeek == selectedDate.DayOfWeek);
+        }
     }
 }

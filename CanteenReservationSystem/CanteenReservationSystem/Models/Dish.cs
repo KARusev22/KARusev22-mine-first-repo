@@ -15,4 +15,5 @@ public class Dish : BaseEntity
     
     [ValidateNever] public ICollection<DishIngredient> DishIngredients { get; set; } = new List<DishIngredient>();
     [ValidateNever] public ICollection<DishAllergen> DishAllergens { get; set; } = new List<DishAllergen>();
+    [ValidateNever] public ICollection<MonthlyMenu> MonthlyMenuEntries { get; set; } = new List<MonthlyMenu>();
 }

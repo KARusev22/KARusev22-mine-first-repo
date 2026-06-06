@@ -11,4 +11,5 @@ public interface ICartService
     Task ClearCartAsync(string userId);
     Task<List<CartItems>> GetItemsByIdsAsync(List<int> ids);
     Task RemoveItemsByIdsAsync(List<int> ids);
+    Task MarkAvailabilityForDateAsync(List<CartItems> items, DateTime selectedDate);
 }

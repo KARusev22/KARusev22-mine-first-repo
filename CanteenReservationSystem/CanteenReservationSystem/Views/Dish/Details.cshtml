@@ -41,6 +41,17 @@
                 @Html.Raw(Model.Description)
             </p>
         }
+        
+        @if (Model.MonthlyMenuEntries != null && Model.MonthlyMenuEntries.Any())
+        {
+            <p><strong>Available this month:</strong>
+                @string.Join(", ", Model.MonthlyMenuEntries.Select(m => m.DayOfWeek))
+            </p>
+        }
+        else
+        {
+            <p><strong>Not available this month</strong></p>
+        }
 
         <!-- NUTRITION -->
         @if (Model.Nutrition != null)
