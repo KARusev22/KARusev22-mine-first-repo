@@ -1,43 +1,76 @@
-# 🍽️ Система за Управление на Менюта и Резервации (Catering & Canteen Management System)
-Добре дошли в хранилището на системата за дигитално управление на столове и кетъринг услуги. Проектът представлява цялостно софтуерно решение, което оптимизира процеса от разглеждането на менюто от клиента до подготовката на продуктите в кухнята и финансовия отчет на управителя.
+<p align="center">
+  <img src="" width="120" />
+</p>
+
+<h1 align="center">🍽️ FiGusta – Canteen Reservation System</h1>
+
+<p align="center">
+  FiGusta is a modern, role‑based canteen management platform designed to streamline how users browse daily menus, place orders, and interact with a dynamically updated monthly meal schedule. Built for speed, clarity, and real‑world usability, FIGusta brings structure and efficiency to the everyday canteen workflow.
+</p>
+
 ---
-## 👥 Роли в системата и функционалности
-Проектът е разделен на 4 основни потребителски роли, всяка със специфичен бизнес контекст и интерфейс:
-### 1. Роля: КЛИЕНТ
-* **Екран „Каталог с менюта“ (Първичен изглед):** Филтриране по категории (Нормално, Вегетарианско, Диетично). Интуитивни картички с информация: снимка, име, цена и бърз преход към детайли.
-* **Екран „Детайли за ястието“ (Разширен изглед):** Пълна информация за грамаж, хранителни стойности (kcal, Б/М/В, фибри), списък със съставки и визуални икони за алергени.
-* **Кошница и Резервация:** Възможност за планиране на храна за различни дни. Автоматично изтегляне на профилните данни, добавяне на специфична бележка (напр. *"Без лук"*) и генериране на **уникален код** за получаване.
-* **История на поръчките:** Хронологичен списък на поръчките и подробен финансов отчет за похарчените средства за избран период.
-### 2. Роля: АДМИНИСТРАТОР (Управител)
-* **Управление на Анкети:** Създаване на въпросници въз основа на обратна връзка и визуализация на резултатите в реално време чрез графики за вземане на информирани решения за бъдещи менюта.
-* **Разширена статистика (Dashboard):**
-   * Следене на общия оборот от плащания в брой.
-   * Графика за пикова активност по дни от седмицата (оптимизация на човешкия ресурс).
-   * Класация на най-активните потребители.
-   * **Система за „Черни точки“:** Мониторинг на некоректни потребители, които резервират храна, но не я вземат/плащат.
-### 3. Роля: МЕНИДЖЪР (Каса)
-* **Валидация на поръчки:** Бързо въвеждане на уникалния код при плащане на място в брой.
-* **Управление на статуси:** Маркиране на поръчката като „Взета“. Стойността автоматично се отразява в сметката на клиента и обновява оборота в реално време.
-### 4. Роля: ПЕРСОНАЛ (Кухня)
-* **Автоматичен списък с продукти:** Системата калкулира и сумира точните количества нужни съставки на база на всички потвърдени резервации за деня.
-* **Модул „Специфични желания“:** Директна визуализация на бележките от клиентите към готвачите за пропуснати съставки.
-* **Достъп до анкети:** Преглед на вота на клиентите с цел подготовка на менютата за следващите седмици.
+
+## 🚀 Tech Stack
+
+<p align="center">
+  <img src="https://img.shields.io/badge/.NET%208-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" />
+  <img src="https://img.shields.io/badge/ASP.NET%20Core-5C2D91?style=for-the-badge&logo=dotnet&logoColor=white" />
+  <img src="https://img.shields.io/badge/Entity%20Framework%20Core-6DB33F?style=for-the-badge&logo=ef&logoColor=white" />
+  <img src="https://img.shields.io/badge/SQL%20Server-CC2927?style=for-the-badge&logo=microsoftsqlserver&logoColor=white" />
+  <img src="https://img.shields.io/badge/Bootstrap%205-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white" />
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />
+</p>
+
 ---
---- ## 🛠️ Технологичен стек
-* **Frontend:** C#, HTML, CSS, JavaScript
-* * **Backend:** Node.js (Express), Java Spring Boot, .NET
-  * * **База данни:**  MySQL
-    * * **Архитектура:** RESTful API
-    *  ---
-    * ## 🚀 Инсталация и Стартиране 1. Клонирайте хранилището: ```bash git clone [https://github.com/codingburgas/on-the-job-training-11v-figusta.git)
-    * Инсталирайте необходимите зависимости:
-    * Пример за backend
-    * cd backend && npm install
-  * Пример за frontend
-* cd ../frontend && npm install
-* Стартирайте проекта локално:
-*  За backend
-* npm run start
-*  За frontend
-* npm run dev
-## * 💡 Проектът е създаден с цел дигитализация и намаляване на хранителния отпадък (Food Waste) чрез прецизно планиране на продуктите в кухненския блок.
+
+## ✨ Features
+
+- 🥗 **Daily Menu Management**  
+  Each day has its own set of available dishes.
+
+- 📅 **Monthly Menu Rotation**  
+  The system automatically updates the menu for the next month.  
+  Every month can have completely different dishes for each weekday.
+
+- 🛒 **Cart & Checkout**  
+  Add dishes, choose target date, set notes, update quantities.
+
+- 👩‍🍳 **Kitchen Panel**  
+  View all orders for the selected day.
+
+- 💳 **Cashier Panel**  
+  Mark orders as taken.
+
+- 🧪 **Polls & Voting**  
+  Users vote and see the results.
+
+- 📊 **Statistics Dashboard**  
+  Orders, spending, top dishes, categories, charts.
+
+- 🔐 **Identity Roles**  
+  Admin, User, Kitchen, Cashier.
+
+- 🎨 **Custom UI**  
+  Green–white theme (#306D29, #0D530E) with modern layout.
+
+---
+
+## 🧠 Monthly Menu Logic
+
+FIGusta uses a **MonthlyMenu** table to define which dishes are available on which days of the week for each month.
+
+This allows:
+
+- ✔️ Different dishes every day  
+- ✔️ Different menus every month
+- ✔️ Easy admin management  
+- ✔️ Automatic filtering of available dishes  
+
+---
+
+## 🛠️ Getting Started
+
+### 1️⃣ Clone the repository
+```bash
+git clone https://github.com/codingburgas/on-the-job-training-11v-figusta.git
