@@ -1,0 +1,67 @@
+﻿@model IEnumerable<CanteenReservationSystem.Models.Dish>
+
+<h1>Deleted Dishes</h1>
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th class="text-end">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var dish in Model)
+    {
+        <tr>
+            <td>@dish.DishName</td>
+            <td>@dish.Category?.CategoryName</td>
+            <td>@dish.Price.ToString("0.00")</td>
+            <td class="text-end">
+
+                <button class="btn btn-success btn-sm restore-btn"
+                        data-id="@dish.Id"
+                        data-name="@dish.DishName"
+                        data-bs-toggle="modal"
+                        data-bs-target="#restoreModal">
+                    <i class="bi bi-arrow-counterclockwise"></i> Restore
+                </button>
+
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<!-- Restore Modal -->
+<div class="modal fade" id="restoreModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-arrow-counterclockwise text-success"></i> Restore Dish
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <p>Restore <strong id="restoreDishName"></strong>?</p>
+            </div>
+
+            <div class="modal-footer">
+                <form id="restoreForm" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-arrow-counterclockwise"></i> Restore
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="~/js/admin-dishes.js"></script>

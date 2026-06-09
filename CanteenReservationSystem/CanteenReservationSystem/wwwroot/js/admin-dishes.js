@@ -44,4 +44,21 @@
         });
     }
 
+    const restoreButtons = document.querySelectorAll(".restore-btn");
+    const restoreForm = document.getElementById("restoreForm");
+    const restoreDishName = document.getElementById("restoreDishName");
+
+    if (restoreButtons && restoreForm && restoreDishName) {
+        restoreButtons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                const id = btn.dataset.id;
+                const name = btn.dataset.name;
+
+                restoreDishName.textContent = name;
+                restoreForm.action = `/AdminDishes/Restore/${id}`;
+            });
+        });
+    }
 });
+
+

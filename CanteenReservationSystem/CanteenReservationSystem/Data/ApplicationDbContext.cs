@@ -39,6 +39,8 @@ namespace CanteenReservationSystem.Data
                 .HasOne(n => n.Dish)
                 .WithOne(d => d.Nutrition)
                 .HasForeignKey<Nutrition>(n => n.DishId);
+            
+            builder.Entity<Dish>().HasQueryFilter(x => !x.IsDeleted);
         }
     }
 }

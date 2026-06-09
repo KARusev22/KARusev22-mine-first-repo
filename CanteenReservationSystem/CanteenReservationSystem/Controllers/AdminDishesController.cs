@@ -301,4 +301,17 @@ public async Task<IActionResult> Edit(int id, DishFormViewModel vm, IFormFile? i
         await _dishService.DeleteAsync(id);
         return RedirectToAction(nameof(Index));
     }
+    
+    public async Task<IActionResult> Deleted()
+    {
+        var deleted = await _dishService.GetDeletedAsync();
+        return View(deleted);
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> Restore(int id)
+    {
+        await _dishService.RestoreAsync(id);
+        return RedirectToAction("Deleted");
+    }
 }

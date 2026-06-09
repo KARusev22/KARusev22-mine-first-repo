@@ -11,6 +11,7 @@ public class Dish : BaseEntity
     public string? ImageUrl { get; set; }
     public string? Characteristics { get; set; }
     public string? Description { get; set; }
+    public bool IsDeleted { get; set; } = false;
     [ValidateNever] public Nutrition? Nutrition { get; set; }
     
     [ValidateNever] public ICollection<DishIngredient> DishIngredients { get; set; } = new List<DishIngredient>();

@@ -121,6 +121,17 @@ public class DishController : Controller
         var dish = await _dishService.GetByIdAsync(id);
         if (dish == null)
             return NotFound();
+        
+        var today = DateTime.Now;
+
+        var availability = await _context.MonthlyMenu
+            .Where(m => m.DishId == id &&
+                        m.Month == today.Month &&
+                        m.Year == today.Year)
+            .Select(m => m.DayOfWeek)
+            .FirstOrDefaultAsync();
+
+        ViewBag.AvailableDay = availability;
 
         return View(dish);
     }
@@ -248,16 +259,6 @@ public class DishController : Controller
         }
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
-    
-    [HttpGet]
-    public async Task<IActionResult> Delete(int id)
-    {
-        var dish = await _dishService.GetByIdAsync(id);
-        if (dish == null)
-            return NotFound();
-
-        return View(dish);
     }
     
     [HttpPost, ActionName("Delete")]

@@ -42,10 +42,10 @@
             </p>
         }
         
-        @if (Model.MonthlyMenuEntries != null && Model.MonthlyMenuEntries.Any())
+        @if (ViewBag.AvailableDays != null && ((List<DayOfWeek>)ViewBag.AvailableDays).Any())
         {
             <p><strong>Available this month:</strong>
-                @string.Join(", ", Model.MonthlyMenuEntries.Select(m => m.DayOfWeek))
+                @string.Join(", ", ((List<DayOfWeek>)ViewBag.AvailableDays))
             </p>
         }
         else

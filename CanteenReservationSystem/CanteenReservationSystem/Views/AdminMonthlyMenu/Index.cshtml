@@ -32,7 +32,7 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    var cat = item.Dish.Category.CategoryName;
+                    var cat = item.Dish?.Category?.CategoryName ?? "(Deleted)";
                     string badgeClass = cat switch
                     {
                         "Drinks" => "mm-cat-drinks",
@@ -44,7 +44,7 @@
                     };
 
                     <tr>
-                        <td>@item.Dish.DishName</td>
+                        <td>@(item.Dish?.DishName ?? "(Deleted Dish)")</td>
 
                         <td>
                             <span class="mm-badge @badgeClass">

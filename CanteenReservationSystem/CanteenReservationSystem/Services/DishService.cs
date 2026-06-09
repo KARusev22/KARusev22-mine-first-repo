@@ -54,13 +54,32 @@ public class DishService : IDishService
     public async Task DeleteAsync(int id)
     {
         var dish = await _context.Dishes.FindAsync(id);
-        if (dish != null)
-        {
-            _context.Dishes.Remove(dish);
-            await _context.SaveChangesAsync();
-        }
+        if (dish == null) return;
+
+        dish.IsDeleted = true;
+        await _context.SaveChangesAsync();
     }
 
+    public async Task RestoreAsync(int id)
+    {
+        var dish = await _context.Dishes
+            .IgnoreQueryFilters()
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (dish == null) return;
+
+        dish.IsDeleted = false;
+        await _context.SaveChangesAsync();
+    }
+    
+    public async Task<IEnumerable<Dish>> GetDeletedAsync()
+    {
+        return await _context.Dishes
+            .IgnoreQueryFilters()
+            .Where(x => x.IsDeleted)
+            .ToListAsync();
+    }
+    
     public async Task<IEnumerable<Dish>> FilterByCategoryAsync(int categoryId)
     {
         return await _context.Dishes

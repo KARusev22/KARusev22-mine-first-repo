@@ -25,7 +25,7 @@ public class AdminOrdersController : Controller
         
         var query = _context.Orders
             .Include(o => o.User)
-            .Include(o => o.OrderDetails).ThenInclude(od => od.Dish)
+            .Include(o => o.OrderDetails).ThenInclude(od => od.Dish).IgnoreQueryFilters()
             .AsQueryable();
         
         if (!string.IsNullOrEmpty(status))
@@ -74,7 +74,7 @@ public class AdminOrdersController : Controller
         var order = await _context.Orders
             .Include(o => o.User)
             .Include(o => o.OrderDetails)
-            .ThenInclude(od => od.Dish)
+            .ThenInclude(od => od.Dish).IgnoreQueryFilters()
             .FirstOrDefaultAsync(o => o.Id == id);
 
         if (order == null)
