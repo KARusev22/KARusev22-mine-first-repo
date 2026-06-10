@@ -122,16 +122,16 @@ public class DishController : Controller
         if (dish == null)
             return NotFound();
         
-        var today = DateTime.Now;
+        var today = DateTime.Today;
 
-        var availability = await _context.MonthlyMenu
+        var availableDays = await _context.MonthlyMenu
             .Where(m => m.DishId == id &&
                         m.Month == today.Month &&
                         m.Year == today.Year)
             .Select(m => m.DayOfWeek)
-            .FirstOrDefaultAsync();
+            .ToListAsync();
 
-        ViewBag.AvailableDay = availability;
+        ViewBag.AvailableDays = availableDays;
 
         return View(dish);
     }

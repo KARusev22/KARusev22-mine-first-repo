@@ -19,6 +19,16 @@
     <p class="figusta-page-subtitle">Modify your dishes, quantities and notes.</p>
 </div>
 
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger mt-3">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div>@error.ErrorMessage</div>
+        }
+    </div>
+}
+
 <form asp-action="Edit" method="post" id="editOrderForm">
     <input type="hidden" id="allDishesJson" value='@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.AllDishes))' />
     <input type="hidden" asp-for="OrderId" />

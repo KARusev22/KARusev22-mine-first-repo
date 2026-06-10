@@ -84,7 +84,7 @@ public class OrderService : IOrderService
         await _context.SaveChangesAsync();
     }
     
-    public async Task UpdateAsync(Orders order, EditOrderViewModel model)
+    public async Task<string?> UpdateAsync(Orders order, EditOrderViewModel model)
     {
         if (model.TargetDate.Date <= DateTime.Today)
             throw new InvalidOperationException("Cannot set a past date.");
@@ -101,6 +101,19 @@ public class OrderService : IOrderService
         {
             var dish = await _context.Dishes.FindAsync(item.DishId);
 
+            bool isAvailable = await _context.MonthlyMenu.AnyAsync(m =>
+                m.DishId == item.DishId &&
+                m.Month == model.TargetDate.Month &&
+                m.Year == model.TargetDate.Year &&
+                m.DayOfWeek == model.TargetDate.DayOfWeek);
+
+            if (!isAvailable)
+            {
+                return $"The dish '{dish.DishName}' is not available on {model.TargetDate:dddd}.";
+            }
+           
+            item.Price = dish.Price;
+            
             _context.OrderDetails.Add(new OrderDetails
             {
                 OrderId = order.Id,
@@ -116,6 +129,7 @@ public class OrderService : IOrderService
         order.TargetDate = model.TargetDate;
 
         await _context.SaveChangesAsync();
+        return null;
     }
     
     public async Task<Orders?> GetByUniqueCodeAsync(string code)

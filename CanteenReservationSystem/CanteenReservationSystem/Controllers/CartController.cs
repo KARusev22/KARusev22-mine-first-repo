@@ -25,7 +25,7 @@ public class CartController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add(int dishId, int quantity, DateTime targetDate)
+    public async Task<IActionResult> Add(int dishId, int quantity)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -34,7 +34,6 @@ public class CartController : Controller
             UserId = userId,
             DishId = dishId,
             Quantity = quantity,
-            TargetDate = targetDate
         };
 
         await _cartService.AddToCartAsync(item);

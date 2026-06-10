@@ -26,13 +26,11 @@ public class CartService : ICartService
             .Include(c => c.Dish)
             .ThenInclude(d => d.DishAllergens)
             .ThenInclude(da => da.Allergen)
-            .OrderBy(c => c.TargetDate)
+            .OrderBy(c => c.Id)
             .ToListAsync();
-
+        
         foreach (var item in list)
-        {
             item.IsAvailableForDate = true;
-        }
         
         return list;
     }
@@ -42,8 +40,7 @@ public class CartService : ICartService
         var existing = await _context.CartItems
             .FirstOrDefaultAsync(c =>
                 c.UserId == item.UserId &&
-                c.DishId == item.DishId &&
-                c.TargetDate.Date == item.TargetDate.Date);
+                c.DishId == item.DishId);
 
         if (existing != null)
         {

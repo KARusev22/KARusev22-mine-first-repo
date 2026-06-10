@@ -123,10 +123,54 @@ public async Task<IActionResult> Details(int id)
             if (model.TargetDate.Date <= DateTime.Today)
             {
                 ModelState.AddModelError("TargetDate", "You cannot set a past date.");
+                
+                var dishes = await _dishService.GetAllAsync();
+                model.AllDishes = dishes.Select(d => new DishOption
+                {
+                    Id = d.Id,
+                    Name = d.DishName,
+                    Price = d.Price
+                }).ToList();
+
+                foreach (var item in model.Items)
+                {
+                    var dish = dishes.FirstOrDefault(x => x.Id == item.DishId);
+                    if (dish != null)
+                    {
+                        item.DishName = dish.DishName;
+                        item.Price = dish.Price;
+                    }
+                }
+                
                 return View(model);
             }
 
-            await _orderService.UpdateAsync(order, model);
+            var error = await _orderService.UpdateAsync(order, model);
+
+            if (error != null)
+            {
+                ModelState.AddModelError("", error);
+
+                var dishes = await _dishService.GetAllAsync();
+                model.AllDishes = dishes.Select(d => new DishOption
+                {
+                    Id = d.Id,
+                    Name = d.DishName,
+                    Price = d.Price
+                }).ToList();
+
+                foreach (var item in model.Items)
+                {
+                    var dish = dishes.FirstOrDefault(x => x.Id == item.DishId);
+                    if (dish != null)
+                    {
+                        item.DishName = dish.DishName;
+                        item.Price = dish.Price;
+                    }
+                }
+                
+                return View(model);
+            }
 
             return RedirectToAction("MyOrders");
         }
