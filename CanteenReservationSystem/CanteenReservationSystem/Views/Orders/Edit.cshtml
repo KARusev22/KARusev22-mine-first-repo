@@ -7,8 +7,6 @@
     ViewData["FigustaNav"] = "orders";
 }
 
-@Html.AntiForgeryToken()
-
 <link rel="stylesheet" href="~/css/edit.css" />
 
 <div class="figusta-page-header">
@@ -30,8 +28,9 @@
 }
 
 <form asp-action="Edit" method="post" id="editOrderForm">
-    <input type="hidden" id="allDishesJson" value='@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.AllDishes))' />
-    <input type="hidden" asp-for="OrderId" />
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="allDishesJson" value='@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.AllDishes))'/>
+    <input type="hidden" asp-for="OrderId"/>
 
     <div class="figusta-edit-container">
 
@@ -40,7 +39,7 @@
             <input asp-for="TargetDate"
                    type="date"
                    class="figusta-input"
-                   min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" />
+                   min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")"/>
         </div>
 
         <div class="figusta-edit-section">
@@ -48,56 +47,58 @@
 
             <table class="figusta-table" id="orderItemsTable">
                 <thead>
-                    <tr>
-                        <th>Dish</th>
-                        <th>Qty</th>
-                        <th>Price</th>
-                        <th>Total</th>
-                        <th>Note</th>
-                        <th></th>
-                    </tr>
+                <tr>
+                    <th>Dish</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>Note</th>
+                    <th></th>
+                </tr>
                 </thead>
 
                 <tbody id="itemsBody">
-                    @for (int i = 0; i < Model.Items.Count; i++)
-                    {
-                        <tr class="order-row">
-                            <td>
-                                <select name="Items[@i].DishId" class="figusta-select dish-select" data-price="@Model.Items[i].Price">
-                                    @foreach (var d in Model.AllDishes)
-                                    {
-                                        <option value="@d.Id" data-price="@d.Price"
+                @for (int i = 0; i < Model.Items.Count; i++)
+                {
+                    <tr class="order-row">
+                        <td>
+                            <select name="Items[@i].DishId" class="figusta-select dish-select"
+                                    data-price="@Model.Items[i].Price.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)">
+                                @foreach (var d in Model.AllDishes)
+                                {
+                                    <option value="@d.Id"
+                                            data-price="@d.Price.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)"
                                             selected="@(d.Id == Model.Items[i].DishId)">
-                                            @d.Name
-                                        </option>
-                                    }
-                                </select>
-                            </td>
+                                        @d.Name
+                                    </option>
+                                }
+                            </select>
+                        </td>
 
-                            <td>
-                                <input type="number" name="Items[@i].Quantity"
-                                       class="figusta-input qty-input"
-                                       value="@Model.Items[i].Quantity" min="1" />
-                            </td>
+                        <td>
+                            <input type="number" name="Items[@i].Quantity"
+                                   class="figusta-input qty-input"
+                                   value="@Model.Items[i].Quantity" min="1"/>
+                        </td>
 
-                            <td class="price-cell">@Model.Items[i].Price.ToString("0.00") €</td>
+                        <td class="price-cell">@Model.Items[i].Price.ToString("0.00") €</td>
 
-                            <td class="row-total">@((Model.Items[i].Price * Model.Items[i].Quantity).ToString("0.00")) €</td>
+                        <td class="row-total">@((Model.Items[i].Price * Model.Items[i].Quantity).ToString("0.00")) €</td>
 
-                            <td>
-                                <input type="text"
-                                       name="Items[@i].Note"
-                                       class="figusta-input note-input"
-                                       value="@Model.Items[i].Note" />
-                            </td>
+                        <td>
+                            <input type="text"
+                                   name="Items[@i].Note"
+                                   class="figusta-input note-input"
+                                   value="@Model.Items[i].Note"/>
+                        </td>
 
-                            <td>
-                                <button type="button" class="figusta-btn-delete-small remove-row">
-                                    <i class="bi bi-x-circle"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    }
+                        <td>
+                            <button type="button" class="figusta-btn-delete-small remove-row">
+                                <i class="bi bi-x-circle"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
 

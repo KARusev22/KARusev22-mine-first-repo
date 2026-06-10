@@ -12,7 +12,9 @@
         document.querySelectorAll(".order-row").forEach(row => {
             const select = row.querySelector(".dish-select");
             const qty = row.querySelector(".qty-input");
-            const price = parseFloat(select.selectedOptions[0].dataset.price);
+            const price = parseFloat(
+                select.selectedOptions[0].dataset.price.replace(",", ".")
+            );
 
             const rowTotal = price * parseInt(qty.value);
             row.querySelector(".row-total").innerText = rowTotal.toFixed(2) + " €";
@@ -74,7 +76,9 @@
 
         if (e.target.classList.contains("dish-select")) {
             const row = e.target.closest("tr");
-            const price = parseFloat(e.target.selectedOptions[0].dataset.price);
+            const price = parseFloat(
+                e.target.selectedOptions[0].dataset.price.replace(",", ".")
+            );
 
             row.querySelector(".price-cell").innerText = price.toFixed(2) + " €";
 
@@ -86,7 +90,9 @@
 
         if (e.target.classList.contains("qty-input")) {
             const row = e.target.closest("tr");
-            const price = parseFloat(row.querySelector(".dish-select").selectedOptions[0].dataset.price);
+            const price = parseFloat(
+                row.querySelector(".dish-select").selectedOptions[0].dataset.price.replace(",", ".")
+            );
 
             const qty = parseInt(e.target.value);
             row.querySelector(".row-total").innerText = (price * qty).toFixed(2) + " €";

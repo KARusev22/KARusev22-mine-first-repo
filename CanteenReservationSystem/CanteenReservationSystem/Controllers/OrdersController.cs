@@ -142,6 +142,16 @@ public async Task<IActionResult> Details(int id)
                     }
                 }
                 
+                for (int i = 0; i < model.Items.Count; i++)
+                {
+                    ModelState.Remove($"Items[{i}].Price");
+                    ModelState.Remove($"Items[{i}].DishName");
+                    ModelState.Remove($"Items[{i}].Quantity");
+                    ModelState.Remove($"Items[{i}].DishId");
+                    ModelState.Remove($"Items[{i}].OrderDetailId");
+                }
+                
+                ModelState.Remove("AllDishes"); 
                 return View(model);
             }
 
@@ -169,6 +179,16 @@ public async Task<IActionResult> Details(int id)
                     }
                 }
                 
+                for (int i = 0; i < model.Items.Count; i++)
+                {
+                    ModelState.Remove($"Items[{i}].Price");
+                    ModelState.Remove($"Items[{i}].DishName");
+                    ModelState.Remove($"Items[{i}].Quantity");
+                    ModelState.Remove($"Items[{i}].DishId");
+                    ModelState.Remove($"Items[{i}].OrderDetailId");
+                }
+                
+                ModelState.Remove("AllDishes");
                 return View(model);
             }
 
