@@ -118,6 +118,67 @@
     background: #3e8e41;
 }
 
+.orders-day-block h3 {
+    color: #3BAF6C;
+}
+
+.orders-scroll-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.orders-scroll {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 10px;
+}
+
+.orders-scroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+.orders-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+}
+
+.scroll-btn {
+    background: rgba(255,255,255,0.4);
+    border: none;
+    backdrop-filter: blur(6px);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    z-index: 10;
+}
+
+.scroll-btn:hover {
+    background: rgba(255,255,255,0.7);
+}
+
+.left-btn {
+    margin-right: 10px;
+}
+
+.right-btn {
+    margin-left: 10px;
+}
+
+.orders-scroll .order-card {
+    flex: 0 0 auto;
+}
+
+.order-card {
+    padding-top: 45px !important;
+}
+
 @keyframes ripple-effect {
     from { opacity: 1; transform: scale(0); }
     to { opacity: 0; transform: scale(3); }
