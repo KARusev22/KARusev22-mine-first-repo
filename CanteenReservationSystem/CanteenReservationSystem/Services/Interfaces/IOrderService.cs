@@ -16,6 +16,8 @@ public interface IOrderService
     Task MarkAsCompletedAsync(int orderId);
 
     Task MarkAllPendingAsNotTakenAsync();
+    
+    Task<Orders?> GetByIdAsync(int id);
 }
 
 

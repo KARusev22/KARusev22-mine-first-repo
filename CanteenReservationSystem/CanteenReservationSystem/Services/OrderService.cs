@@ -172,4 +172,13 @@ public class OrderService : IOrderService
 
         await _context.SaveChangesAsync();
     }
+    
+    public async Task<Orders?> GetByIdAsync(int id)
+    {
+        return await _context.Orders
+            .Include(o => o.User)
+            .Include(o => o.OrderDetails)
+            .ThenInclude(od => od.Dish)
+            .FirstOrDefaultAsync(o => o.Id == id);
+    }
 }

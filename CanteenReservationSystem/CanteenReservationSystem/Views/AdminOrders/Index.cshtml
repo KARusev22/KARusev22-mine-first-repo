@@ -39,10 +39,10 @@
     </div>
     
    @{
-    var grouped = Model
-        .OrderByDescending(o => o.CreatedOn)
-        .GroupBy(o => o.CreatedOn.Date)
-        .OrderByDescending(g => g.Key);
+        var grouped = Model
+            .OrderByDescending(o => o.TargetDate)
+            .GroupBy(o => o.TargetDate.Date)
+            .OrderByDescending(g => g.Key);   
 }
 
 @foreach (var day in grouped)
@@ -60,7 +60,7 @@
             </button>
 
             <div class="orders-scroll" id="scroll-@day.Key.ToString("yyyyMMdd")">
-                @foreach (var o in day)
+                @foreach (var o in day.OrderByDescending(o => o.CreatedOn))
                 {
                     <div class="order-card glass-card p-4 rounded-4 shadow-lg me-3">
                         <span class="badge status-badge @o.Status.ToLower()">

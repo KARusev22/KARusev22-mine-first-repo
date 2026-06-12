@@ -42,7 +42,23 @@ public class CashierController : Controller
     {
         ViewData["FigustaPage"] = true;
         
+        var order = await _orderService.GetByIdAsync(orderId);
+
+        if (order == null)
+        {
+            ViewBag.Error = "Order not found.";
+            return RedirectToAction("Index");
+        }
+
+        if (order.Status == "Completed")
+        {
+            ViewBag.Error = "This order has already been taken.";
+            return View("OrderDetails", order);
+        }
+
         await _orderService.MarkAsCompletedAsync(orderId);
-        return RedirectToAction("Index");
+
+        ViewBag.Success = "Order marked as taken.";
+        return View("OrderDetails", order);
     }
 }

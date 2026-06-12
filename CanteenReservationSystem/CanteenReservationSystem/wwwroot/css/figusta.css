@@ -487,6 +487,24 @@ body.figusta-body {
   border-radius: 6px;
 }
 
+.figusta-badge-green {
+    background: #dff3df;
+    color: #1f5f1f;
+    border: 1px solid #bfe5bf;
+}
+
+.figusta-badge-red {
+    background: #fde2e2;
+    color: #8a1f1f;
+    border: 1px solid #f5b5b5;
+}
+
+.figusta-badge-gray {
+    background: #e5e7eb;
+    color: #374151;
+    border: 1px solid #d1d5db;
+}
+
 .figusta-badge-amber {
   background: #fef3c7;
   color: #92400e;

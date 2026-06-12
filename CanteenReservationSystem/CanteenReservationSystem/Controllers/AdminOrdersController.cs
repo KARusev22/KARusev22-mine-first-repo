@@ -38,7 +38,7 @@ public class AdminOrdersController : Controller
             query = query.Where(o => o.UniqueCode.Contains(code));
         
         var orders = await query
-            .OrderByDescending(o => o.CreatedAt)
+            .OrderByDescending(o => o.TargetDate)
             .ToListAsync();
         
         var model = orders.Select(o => new OrderViewModel
