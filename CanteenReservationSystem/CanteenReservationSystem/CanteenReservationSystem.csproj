@@ -23,4 +23,9 @@
       <Folder Include="wwwroot\icons\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Home\Admin.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Home\Kitchen.cshtml" />
+    </ItemGroup>
+
 </Project>
