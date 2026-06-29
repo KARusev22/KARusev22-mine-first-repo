@@ -21,6 +21,7 @@ public class VoteService : IVoteService
             .AnyAsync(v => v.Option.PollId == pollId && v.UserId == userId);
     }
 
+    //Stores timestamp for auditing or analytics
     public async Task<Votes> AddVoteAsync(int optionId, string userId)
     {
         var vote = new Votes
@@ -36,6 +37,7 @@ public class VoteService : IVoteService
         return vote;
     }
 
+    //Retrieves all votes for a specific poll
     public async Task<IEnumerable<Votes>> GetVotesForPollAsync(int pollId)
     {
         return await _context.Votes

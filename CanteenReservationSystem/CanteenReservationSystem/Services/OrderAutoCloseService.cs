@@ -18,19 +18,22 @@ public class OrderAutoCloseService : BackgroundService
         {
             var now = DateTime.Now;
 
-            // Run at 23:59 every day
+            //Run at 23:59 every day
             var nextRun = DateTime.Today.AddDays(1).AddMinutes(-1);
 
             var delay = nextRun - now;
 
+            //Wait until the scheduled time unless cancellation is requested
             if (delay.TotalMilliseconds > 0)
                 await Task.Delay(delay, stoppingToken);
 
+            //Perform daily order processing
             await ProcessUncompletedOrders();
         }
         
     }
 
+    //Marks all pending orders as "Not Taken"
     private async Task ProcessUncompletedOrders()
     {
         using var scope = _scopeFactory.CreateScope();

@@ -31,6 +31,7 @@ public class KitchenService : IKitchenService
             SelectedDate = date
         };
 
+        //Aggregate dish-level data
         vm.Dishes = details
             .GroupBy(x => x.DishId)
             .Select(g => new KitchenDishViewModel
@@ -45,6 +46,7 @@ public class KitchenService : IKitchenService
             })
             .ToList();
 
+        //Aggregate category-level totals
         vm.Categories = details
             .GroupBy(x => x.Dish.Category.CategoryName)
             .Select(g => new KitchenCategoryViewModel
@@ -54,12 +56,14 @@ public class KitchenService : IKitchenService
             })
             .ToList();
 
+        //Calculate total ingredient quantities needed for the day
         var ingredientTotals = new Dictionary<string, decimal>();
 
         foreach (var d in details)
         {
             foreach (var ing in d.Dish.DishIngredients)
             {
+                //If the note explicitly mentions removing this ingredient, skip it
                 if (d.Note != null &&
                     d.Note.ToLower().Contains(ing.Ingredient.IngredientName.ToLower()))
                     continue;
@@ -73,6 +77,7 @@ public class KitchenService : IKitchenService
             }
         }
 
+        //Convert ingredient totals into view model entries
         vm.Ingredients = ingredientTotals
             .Select(i => new KitchenIngredientViewModel
             {

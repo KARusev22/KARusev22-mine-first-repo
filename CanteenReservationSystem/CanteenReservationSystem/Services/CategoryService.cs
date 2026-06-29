@@ -14,6 +14,7 @@ public class CategoryService : ICategoryService
         _context = context;
     }
 
+    //Returns all categories including their related dishes
     public async Task<IEnumerable<Category>> GetAllAsync()
     {
         return await _context.Categories
@@ -21,6 +22,7 @@ public class CategoryService : ICategoryService
             .ToListAsync();
     }
 
+    //Returns a single category with full dish details
     public async Task<Category?> GetByIdAsync(int id)
     {
         return await _context.Categories
@@ -35,6 +37,7 @@ public class CategoryService : ICategoryService
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
+    //Creates a new category
     public async Task CreateAsync(Category category)
     {
         _context.Categories.Add(category);
@@ -47,6 +50,7 @@ public class CategoryService : ICategoryService
         await _context.SaveChangesAsync();
     }
 
+    //Deletes a category if it exists.
     public async Task DeleteAsync(int id)
     {
         var category = await _context.Categories.FindAsync(id);
@@ -57,6 +61,7 @@ public class CategoryService : ICategoryService
         }
     }
 
+    //Returns all dishes belonging to a specific category
     public async Task<IEnumerable<Dish>> GetDishesByCategoryAsync(int categoryId)
     {
         return await _context.Dishes

@@ -60,6 +60,8 @@ public class DishService : IDishService
         await _context.SaveChangesAsync();
     }
 
+    //Restores a previously soft-deleted dish
+    //IgnoreQueryFilters() is required to access deleted records
     public async Task RestoreAsync(int id)
     {
         var dish = await _context.Dishes
@@ -72,6 +74,7 @@ public class DishService : IDishService
         await _context.SaveChangesAsync();
     }
     
+    //Returns all soft-deleted dishes
     public async Task<IEnumerable<Dish>> GetDeletedAsync()
     {
         return await _context.Dishes

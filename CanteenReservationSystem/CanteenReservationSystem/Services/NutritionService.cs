@@ -14,6 +14,7 @@ public class NutritionService : INutritionService
         _context = context;
     }
 
+    //Retrieves nutrition information for a specific dish
     public async Task<Nutrition?> GetByDishIdAsync(int dishId)
     {
         return await _context.Nutritions
@@ -33,6 +34,7 @@ public class NutritionService : INutritionService
         await _context.SaveChangesAsync();
     }
 
+    //Deletes the nutrition record associated with a specific dish
     public async Task DeleteByDishIdAsync(int dishId)
     {
         var nutrition = await _context.Nutritions

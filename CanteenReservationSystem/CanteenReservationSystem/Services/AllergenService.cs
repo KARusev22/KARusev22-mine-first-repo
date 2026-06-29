@@ -22,6 +22,7 @@ public class AllergenService : IAllergenService
             .ToListAsync();
     }
 
+    //Returns a single allergen with its related dishes
     public async Task<Allergen?> GetByIdAsync(int id)
     {
         return await _context.Allergens
@@ -42,6 +43,8 @@ public class AllergenService : IAllergenService
         await _context.SaveChangesAsync();
     }
 
+    // Deletes an allergen if it exists.
+    // EF Core will remove related join table entries depending on cascade rules
     public async Task DeleteAsync(int id)
     {
         var allergen = await _context.Allergens.FindAsync(id);
@@ -52,6 +55,7 @@ public class AllergenService : IAllergenService
         }
     }
 
+    //Returns all dishes associated with a specific allergen
     public async Task<IEnumerable<Dish>> GetDishesByAllergenAsync(int allergenId)
     {
         return await _context.DishAllergens

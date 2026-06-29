@@ -24,6 +24,7 @@ public class ReservationService : IReservationService
 
         var minDate = DateTime.Today.AddDays(1);
 
+        //Reservations can only be made for tomorrow or later
         if (targetDate.Date < minDate)
             throw new InvalidOperationException("You can order for tomorrow at the earliest.");
 
@@ -35,6 +36,8 @@ public class ReservationService : IReservationService
             CreatedAt = DateTime.Now,
             TargetDate = targetDate,
             TotalPrice = selectedItems.Sum(i => i.Dish.Price * i.Quantity),
+            
+            //Convert cart items into order details
             OrderDetails = selectedItems.Select(i => new OrderDetails
             {
                 DishId = i.DishId,
@@ -46,6 +49,7 @@ public class ReservationService : IReservationService
         _context.Orders.Add(reservation);
         await _context.SaveChangesAsync();
 
+        //Remove items from cart after reservation is created
         await _cartService.RemoveItemsByIdsAsync(selectedItemIds);
 
         return reservation;
@@ -60,6 +64,7 @@ public class ReservationService : IReservationService
             .FirstOrDefaultAsync(o => o.Id == id);
     }
 
+    //Retrieves a reservation by its unique code
     public async Task<Orders?> GetByCodeAsync(string code)
     {
         return await _context.Orders

@@ -14,6 +14,7 @@ public class IngredientService : IIngredientService
         _context = context;
     }
 
+    //Returns all ingredients including the dishes they are used in
     public async Task<IEnumerable<Ingredient>> GetAllAsync()
     {
         return await _context.Ingredients
@@ -52,6 +53,7 @@ public class IngredientService : IIngredientService
         }
     }
 
+    //Returns all dishes that contain a specific ingredient
     public async Task<IEnumerable<Dish>> GetDishesByIngredientAsync(int ingredientId)
     {
         return await _context.DishIngredients
@@ -72,9 +74,11 @@ public class IngredientService : IIngredientService
         var ingredient = await _context.Ingredients
             .FirstOrDefaultAsync(i => i.IngredientName.ToLower() == normalized);
 
+        //Ingredient already exists
         if (ingredient != null)
             return ingredient;
 
+        //Otherwise create a new ingredient
         ingredient = new Ingredient
         {
             IngredientName = name.Trim()

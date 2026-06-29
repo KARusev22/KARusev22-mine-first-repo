@@ -84,6 +84,7 @@ public class OrderService : IOrderService
         await _context.SaveChangesAsync();
     }
     
+    //Updates an order based on the edit form model.
     public async Task<string?> UpdateAsync(Orders order, EditOrderViewModel model)
     {
         if (model.TargetDate.Date <= DateTime.Today)
@@ -101,6 +102,7 @@ public class OrderService : IOrderService
         {
             var dish = await _context.Dishes.FindAsync(item.DishId);
 
+            //Check if dish is available on the selected date
             bool isAvailable = await _context.MonthlyMenu.AnyAsync(m =>
                 m.DishId == item.DishId &&
                 m.Month == model.TargetDate.Month &&
@@ -114,6 +116,7 @@ public class OrderService : IOrderService
            
             item.Price = dish.Price;
             
+            //Add updated order detail
             _context.OrderDetails.Add(new OrderDetails
             {
                 OrderId = order.Id,
@@ -132,6 +135,7 @@ public class OrderService : IOrderService
         return null;
     }
     
+    //Retrieves an order by its unique code
     public async Task<Orders?> GetByUniqueCodeAsync(string code)
     {
         return await _context.Orders

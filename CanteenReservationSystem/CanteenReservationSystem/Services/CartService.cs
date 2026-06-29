@@ -29,6 +29,7 @@ public class CartService : ICartService
             .OrderBy(c => c.Id)
             .ToListAsync();
         
+        //Real validation happens during reservation
         foreach (var item in list)
             item.IsAvailableForDate = true;
         
@@ -44,6 +45,7 @@ public class CartService : ICartService
 
         if (existing != null)
         {
+            //Increase quantity; ensure minimum of 1
             existing.Quantity += Math.Max(item.Quantity, 1);
         }
         else
@@ -71,6 +73,7 @@ public class CartService : ICartService
         }
     }
     
+    //Removes a single item from the user's cart
     public async Task RemoveItemAsync(string userId, int cartItemId)
     {
         var item = await _context.CartItems
@@ -83,6 +86,7 @@ public class CartService : ICartService
         }
     }
 
+    //Clears all items
     public async Task ClearCartAsync(string userId)
     {
         var items = await _context.CartItems
@@ -111,6 +115,7 @@ public class CartService : ICartService
         await _context.SaveChangesAsync();
     }
     
+    //Availability is based on the MonthlyMenu configuration
     public async Task MarkAvailabilityForDateAsync(List<CartItems> items, DateTime selectedDate)
     {
         foreach (var item in items)

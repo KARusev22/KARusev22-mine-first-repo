@@ -22,7 +22,7 @@ public class PollService : IPollService
             .ThenInclude(o => o.Votes)
             .ToListAsync();
     }
-
+    
     public async Task<Polls?> GetByIdAsync(int id)
     {
         return await _context.Polls
@@ -31,6 +31,7 @@ public class PollService : IPollService
             .FirstOrDefaultAsync(p => p.Id == id);
     }
 
+    //Creates a new poll with its associated options
     public async Task CreatePollAsync(Polls poll, IEnumerable<string> options)
     {
         poll.IsActive = true;
@@ -47,6 +48,7 @@ public class PollService : IPollService
         await _context.SaveChangesAsync();
     }
 
+    //Checks whether a user has already voted
     public async Task<bool> HasUserVotedAsync(int pollId, string userId)
     {
         return await _context.Votes
@@ -54,6 +56,7 @@ public class PollService : IPollService
             .AnyAsync(v => v.Option.PollId == pollId && v.UserId == userId);
     }
 
+    //Retrieves all options for a poll, including vote counts
     public async Task<IEnumerable<PollOptions>> GetOptionsAsync(int pollId)
     {
         return await _context.PollOptions
@@ -83,6 +86,7 @@ public class PollService : IPollService
             .ToListAsync();
     }
     
+    //Returns poll results as a dictionary
     public async Task<Dictionary<string, int>> GetPollResultsAsync(int pollId)
     {
         return await _context.PollOptions
