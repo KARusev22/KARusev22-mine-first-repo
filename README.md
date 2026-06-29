@@ -87,6 +87,7 @@ git clone https://github.com/codingburgas/on-the-job-training-11v-figusta.git
 | Kristiyana Hristova |  Data base  | 🟩 11V  |
 | Veselina Varadeva | Q&A | 🟩 11V |
 | Kalina Atanasova | Scrum trainer | 🟩 11V |
+| Natali Ribareva | Design | 🟩 11V |
 | Aleksandar Stanev | Project owner | 🟩 11V |
 
 <h2 align="center">
