@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="" width="120" />
+  <img src="CanteenReservationSystem/CanteenReservationSystem/wwwroot/images/logo.png" width="160" />
 </p>
 
 <h1 align="center">🍽️ FiGusta – Canteen Reservation System</h1>
@@ -74,3 +74,22 @@ This allows:
 ### 1️⃣ Clone the repository
 ```bash
 git clone https://github.com/codingburgas/on-the-job-training-11v-figusta.git
+```
+---
+
+## 👨🏻‍💻 Team Members
+
+| **Name** | **Role** | **Grade** |
+| :---:   | :---: | :---: |
+| Teodora Skulieva |  Back-end developer  | 🟩 11V  |
+| Kristian Rusev |  Front-end developer  | 🟩 11V  |
+| Gabriela Encheva |  Unit testing  | 🟩 11V  |
+| Kristiyana Hristova |  Data base  | 🟩 11V  |
+| Veselina Varadeva | Q&A | 🟩 11V |
+| Kalina Atanasova | Scrum trainer | 🟩 11V |
+| Aleksandar Stanev | Project owner | 🟩 11V |
+
+<h2 align="center">
+ If you like the app, you can give a 🌟 to our repository!
+</h2>
+
