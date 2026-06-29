@@ -24,17 +24,21 @@ public class PollController : Controller
     [HttpPost]
     public async Task<IActionResult> SubmitVote(int optionId)
     {
+        //Retrieve logged-in user's ID from authentication claims
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
+        //Validate option existence
         var option = await _pollService.GetOptionByIdAsync(optionId);
         if (option == null)
             return NotFound();
 
         var pollId = option.PollId;
 
+        //Prevent duplicate voting
         if (await _voteService.HasUserVotedAsync(pollId, userId))
             return BadRequest("Already voted");
 
+        //Record the vote
         await _voteService.AddVoteAsync(optionId, userId);
 
         return Ok();

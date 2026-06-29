@@ -20,12 +20,13 @@ public class CashierController : Controller
         ViewData["FigustaPage"] = true;
         return View();
     }
-
+    
     [HttpPost]
     public async Task<IActionResult> FindOrder(string uniqueCode)
     {
         ViewData["FigustaPage"] = true;
         
+        //Retrieve order using the unique code
         var order = await _orderService.GetByUniqueCodeAsync(uniqueCode);
 
         if (order == null)
@@ -34,6 +35,7 @@ public class CashierController : Controller
             return View("Index");
         }
 
+        //Display order details for cashier verification
         return View("OrderDetails", order);
     }
 
@@ -50,12 +52,14 @@ public class CashierController : Controller
             return RedirectToAction("Index");
         }
 
+        //Prevent double completion
         if (order.Status == "Completed")
         {
             ViewBag.Error = "This order has already been taken.";
             return View("OrderDetails", order);
         }
 
+        //Mark order as completed
         await _orderService.MarkAsCompletedAsync(orderId);
 
         ViewBag.Success = "Order marked as taken.";

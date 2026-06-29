@@ -11,6 +11,7 @@ namespace CanteenReservationSystem.Data
         {
         }
 
+        //DbSets representing all domain entities
         public DbSet<Category> Categories { get; set; }
         public DbSet<Dish> Dishes { get; set; }
         public DbSet<Nutrition> Nutritions { get; set; }
@@ -27,19 +28,23 @@ namespace CanteenReservationSystem.Data
         public DbSet<MonthlyMenu> MonthlyMenu { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            //Ensure Identity configuration is applied
             base.OnModelCreating(builder);
             
+            //Configure composite keys for many‑to‑many join tables
             builder.Entity<DishAllergen>()
                 .HasKey(da => new { da.DishId, da.AllergenId });
 
             builder.Entity<DishIngredient>()
                 .HasKey(di => new { di.DishId, di.IngredientId });
             
+            //Configure one‑to‑one relationship
             builder.Entity<Nutrition>()
                 .HasOne(n => n.Dish)
                 .WithOne(d => d.Nutrition)
                 .HasForeignKey<Nutrition>(n => n.DishId);
             
+            //Hides soft‑deleted dishes from all queries unless explicitly ignored
             builder.Entity<Dish>().HasQueryFilter(x => !x.IsDeleted);
         }
     }

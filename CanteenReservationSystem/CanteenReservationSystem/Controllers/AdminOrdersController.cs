@@ -11,23 +11,28 @@ namespace CanteenReservationSystem.Controllers;
 public class AdminOrdersController : Controller
 {
     private readonly ApplicationDbContext _context;
-
+    
+    //Inject EF Core database context
     public AdminOrdersController(ApplicationDbContext context)
     {
         _context = context;
     }
 
+    //Displays all orders with optional filtering
     public async Task<IActionResult> Index(string? status,
         DateTime? date,
         string? code)
     {
+        
         ViewData["FigustaPage"] = true;
         
+        //IgnoreQueryFilters() ensures soft-deleted dishes still appear
         var query = _context.Orders
             .Include(o => o.User)
             .Include(o => o.OrderDetails).ThenInclude(od => od.Dish).IgnoreQueryFilters()
             .AsQueryable();
         
+        //Apply optional filters
         if (!string.IsNullOrEmpty(status))
             query = query.Where(o => o.Status == status);
         
@@ -37,10 +42,12 @@ public class AdminOrdersController : Controller
         if (!string.IsNullOrWhiteSpace(code))
             query = query.Where(o => o.UniqueCode.Contains(code));
         
+        //Sort newest orders first
         var orders = await query
             .OrderByDescending(o => o.TargetDate)
             .ToListAsync();
         
+        //Map database entities to view model
         var model = orders.Select(o => new OrderViewModel
         {
             Id = o.Id,
@@ -48,6 +55,8 @@ public class AdminOrdersController : Controller
             CreatedOn = o.CreatedAt,
             TargetDate = o.TargetDate,
             Status = o.Status,
+            
+            // Combine all notes into a single string
             Notes = o.OrderDetails.Any(d => d.Note != null)
                 ? string.Join("; ", o.OrderDetails.Where(d => d.Note != null).Select(d => d.Note))
                 : null,
@@ -59,6 +68,7 @@ public class AdminOrdersController : Controller
             }).ToList()
         }).ToList();
 
+        //Provide usernames for display in the view
         ViewBag.UserNames = orders.ToDictionary(
             o => o.Id,
             o => o.User.FullName
@@ -71,6 +81,7 @@ public class AdminOrdersController : Controller
     {
         ViewData["FigustaPage"] = true;
         
+        //Load order with related user and dish data
         var order = await _context.Orders
             .Include(o => o.User)
             .Include(o => o.OrderDetails)
@@ -80,6 +91,7 @@ public class AdminOrdersController : Controller
         if (order == null)
             return NotFound();
 
+        //Build view model for detailed view
         var model = new OrderViewModel
         {
             Id = order.Id,
@@ -111,6 +123,7 @@ public class AdminOrdersController : Controller
 
         if (order == null) return NotFound();
 
+        //Update status and penalize user
         order.Status = "NotTaken";
         order.User.BlackPoints += 1;
 
@@ -131,11 +144,13 @@ public class AdminOrdersController : Controller
             .Include(o => o.User)
             .ToListAsync();
 
+        //Basic metrics
         var totalOrders = orders.Count;
         var ordersToday = orders.Count(o => o.TargetDate.Date == today);
         var totalRevenue = orders.Sum(o => o.TotalPrice);
         var todayRevenue = orders.Where(o => o.TargetDate.Date == today).Sum(o => o.TotalPrice);
 
+        //Group orders by day for charts
         var groupedByDay = orders
             .GroupBy(o => o.TargetDate.Date)
             .OrderBy(g => g.Key)
@@ -144,6 +159,7 @@ public class AdminOrdersController : Controller
         var ordersPerDayLabels = groupedByDay.Select(g => g.Key.ToString("dd MMM")).ToList();
         var ordersPerDayValues = groupedByDay.Select(g => g.Count()).ToList();
 
+        //Status distribution
         var statusLabels = new List<string> { "Pending", "Completed", "NotTaken" };
         var statusValues = new List<int>
         {
@@ -162,9 +178,11 @@ public class AdminOrdersController : Controller
         var topDishesLabels = topDishes.Select(g => g.Key).ToList();
         var topDishesValues = topDishes.Select(g => g.Sum(x => x.Quantity)).ToList();
 
+        //Revenue
         var revenuePerDayLabels = groupedByDay.Select(g => g.Key.ToString("dd MMM")).ToList();
         var revenuePerDayValues = groupedByDay.Select(g => g.Sum(o => o.TotalPrice)).ToList();
 
+        //Black points
         var usersWithPoints = orders
             .Select(o => o.User)
             .Where(u => u.BlackPoints > 0)
@@ -187,6 +205,7 @@ public class AdminOrdersController : Controller
         var activeUsersLabels = activeUsers.Select(x => x.Name).ToList();
         var activeUsersValues = activeUsers.Select(x => x.Count).ToList();
         
+        //Build dashboard view model
         var model = new AdminDashboardViewModel
         {
             TotalOrders = totalOrders,

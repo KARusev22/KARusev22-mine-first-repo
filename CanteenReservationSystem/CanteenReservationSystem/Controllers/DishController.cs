@@ -31,6 +31,7 @@ public class DishController : Controller
         _dishService = dishService;
         _ingredientService = ingredientService;
         
+        //Allow basic formatting tags
         _sanitizer.AllowedTags.Add("b");
         _sanitizer.AllowedTags.Add("i");
         _sanitizer.AllowedTags.Add("strong");
@@ -78,8 +79,10 @@ public class DishController : Controller
             dish.ImageUrl = "/uploads/" + fileName;
         }
 
+        //Save dish record
         await _dishService.CreateAsync(dish);
 
+        //Create ingredient relations
         for (int i = 0; i < ingredientNames.Count; i++)
         {
             var name = ingredientNames[i];
@@ -98,6 +101,7 @@ public class DishController : Controller
             });
         }
         
+        //Save allergen relations
         if (Request.Form.TryGetValue("selectedAllergens", out var allergenValues))
         {
             foreach (var allergenIdStr in allergenValues)
@@ -124,6 +128,7 @@ public class DishController : Controller
         
         var today = DateTime.Today;
 
+        //Determine which days this dish is available in the current month
         var availableDays = await _context.MonthlyMenu
             .Where(m => m.DishId == id &&
                         m.Month == today.Month &&
@@ -189,6 +194,7 @@ public class DishController : Controller
             .Where(di => di.DishId == dish.Id)
             .ToListAsync();
         
+        //Update or add ingredients
         for (int i = 0; i < ingredientNames.Count; i++)
         {
             var ingId = ingredientIds[i];
@@ -204,6 +210,7 @@ public class DishController : Controller
 
             if (ingId > 0)
             {
+                //Update existing ingredient relation
                 var existingRecord = existing.First(di => di.Id == ingId);
 
                 existingRecord.IngredientId = ingredient.Id;
@@ -213,6 +220,7 @@ public class DishController : Controller
             }
             else
             {
+                //Add new ingredient relation
                 _context.DishIngredients.Add(new DishIngredient
                 {
                     DishId = dish.Id,
@@ -222,6 +230,7 @@ public class DishController : Controller
             }
         }
         
+        //Remove ingredients that were deleted in the form
         var idsFromForm = ingredientIds.Where(x => x > 0).ToList();
 
         var toDelete = existing
@@ -237,7 +246,7 @@ public class DishController : Controller
         var selectedAllergens = Request.Form["selectedAllergens"]
             .Select(int.Parse)
             .ToList();
-        
+     
         foreach (var allergenId in selectedAllergens)
         {
             if (!existingAllergens.Any(da => da.AllergenId == allergenId))
@@ -250,6 +259,7 @@ public class DishController : Controller
             }
         }
         
+        //Remove unselected allergens
         foreach (var allergenRecord  in existingAllergens)
         {
             if (!selectedAllergens.Contains(allergenRecord .AllergenId))
@@ -261,6 +271,7 @@ public class DishController : Controller
         return RedirectToAction(nameof(Index));
     }
     
+    //Soft delete dish
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)

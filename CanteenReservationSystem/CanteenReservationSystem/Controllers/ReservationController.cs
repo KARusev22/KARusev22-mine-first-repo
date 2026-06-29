@@ -26,6 +26,7 @@ public class ReservationController : Controller
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var cart = await _cartService.GetUserCartAsync(userId);
 
+        //Default reservation date is tomorrow
         var vm = new CheckoutViewModel
         {
             Items = cart.ToList(),
@@ -42,6 +43,7 @@ public class ReservationController : Controller
 
         var items = await _cartService.GetItemsByIdsAsync(SelectedItemIds.ToList());
 
+        //Mark each item as available/unavailable for the selected date
         await _cartService.MarkAvailabilityForDateAsync(items, TargetDate);
 
         var vm = new CheckoutViewModel
@@ -50,9 +52,11 @@ public class ReservationController : Controller
             SelectedDate = TargetDate
         };
 
+        // If any item is unavailable- warning
         if (items.Any(i => !i.IsAvailableForDate))
             return View(vm);
 
+        //Proceed to confirmation step
         return View("ConfirmReservation", new ConfirmReservationViewModel {
             TargetDate = TargetDate,
             Ids = string.Join(",", SelectedItemIds)
@@ -65,8 +69,10 @@ public class ReservationController : Controller
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+        //Convert comma-separated IDs into a list
         var selectedIds = ids.Split(',').Select(int.Parse).ToList();
 
+        //Create reservation using service layer
         var reservation = await _reservationService.CreateReservationAsync(
             userId,
             TargetDate,

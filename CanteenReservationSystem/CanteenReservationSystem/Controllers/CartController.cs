@@ -19,6 +19,7 @@ public class CartController : Controller
 
     public async Task<IActionResult> Index()
     {
+        //Retrieve the logged-in user's ID from authentication claims
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var cart = await _cartService.GetUserCartAsync(userId);
         return View(cart);
@@ -29,6 +30,7 @@ public class CartController : Controller
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+        //Build cart item model
         var item = new CartItems
         {
             UserId = userId,
@@ -36,6 +38,7 @@ public class CartController : Controller
             Quantity = quantity,
         };
 
+        //Delegate logic to the cart service
         await _cartService.AddToCartAsync(item);
 
         return RedirectToAction("Index");
@@ -46,6 +49,7 @@ public class CartController : Controller
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+        //Service handles validation and update logic
         await _cartService.UpdateItemAsync(userId, cartItemId, quantity, note);
 
         return Ok();

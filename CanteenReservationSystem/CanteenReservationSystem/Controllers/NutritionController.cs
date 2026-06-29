@@ -18,6 +18,7 @@ public class NutritionController : Controller
     {
         var nutrition = await _nutritionService.GetByDishIdAsync(dishId);
 
+        //Create a new nutrition entry if none exists
         if (nutrition == null)
         {
             nutrition = new Nutrition { DishId = dishId };
@@ -38,6 +39,7 @@ public class NutritionController : Controller
         else
             await _nutritionService.UpdateAsync(nutrition);
 
+        //Redirect back to the dish details page
         return RedirectToAction("Details", "Dish", new { id = nutrition.DishId });
     }
 
@@ -46,6 +48,8 @@ public class NutritionController : Controller
     public async Task<IActionResult> Delete(int dishId)
     {
         await _nutritionService.DeleteByDishIdAsync(dishId);
+        
+        //Redirect back to the dish details page
         return RedirectToAction("Details", "Dish", new { id = dishId });
     }
 }

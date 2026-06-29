@@ -9,6 +9,7 @@ public class AdminMonthlyMenuController : Controller
 {
     private readonly ApplicationDbContext _context;
 
+    //Inject the EF Core database context
     public AdminMonthlyMenuController(ApplicationDbContext context)
     {
         _context = context;
@@ -16,11 +17,13 @@ public class AdminMonthlyMenuController : Controller
     [HttpGet]
     public async Task<IActionResult> Create()
     {
+        //Load all dishes
         ViewBag.Dishes = await _context.Dishes
             .Include(d => d.Category)
             .OrderBy(d => d.Category.CategoryName)
             .ToListAsync();
 
+        //Pre-fill the form with the current month and year
         return View(new MonthlyMenu
         {
             Month = DateTime.Now.Month,
@@ -32,6 +35,7 @@ public class AdminMonthlyMenuController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(MonthlyMenu model)
     {
+        //Basic validations
         if (model.DishId == null)
         {
             ModelState.AddModelError("DishId", "Please select a dish.");
@@ -53,6 +57,7 @@ public class AdminMonthlyMenuController : Controller
         }
         else
         {
+            //Each category can appear max 2 times per day
             int categoryId = dish.CategoryId;
 
             int countForCategory = await _context.MonthlyMenu
@@ -81,6 +86,7 @@ public class AdminMonthlyMenuController : Controller
             return View(model);
         }
 
+        //Save the new monthly menu entry
         _context.MonthlyMenu.Add(model);
         await _context.SaveChangesAsync();
 
@@ -89,6 +95,7 @@ public class AdminMonthlyMenuController : Controller
 
     public async Task<IActionResult> Index()
     {
+        //Load all monthly menu entries
         var menus = await _context.MonthlyMenu
             .Include(m => m.Dish)
             .ThenInclude(d => d.Category)

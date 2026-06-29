@@ -32,6 +32,7 @@ public class AllergenController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Allergen allergen)
     {
+        //Validate model before saving
         if (!ModelState.IsValid)
             return View(allergen);
 
@@ -54,6 +55,7 @@ public class AllergenController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, Allergen allergen)
     {
+        //Ensure the route ID matches the model ID
         if (id != allergen.Id)
             return BadRequest();
 
@@ -65,6 +67,7 @@ public class AllergenController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    //Shows confirmation page before deletion
     [HttpGet]
     public async Task<IActionResult> Delete(int id)
     {

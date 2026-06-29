@@ -22,6 +22,7 @@ namespace CanteenReservationSystem.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var orders = await _orderService.GetOrdersByUserAsync(userId);
 
+            //Map database entities to a view model
             var model = orders.Select(o => new OrderViewModel
             {
                 Id = o.Id,
@@ -29,10 +30,14 @@ namespace CanteenReservationSystem.Controllers
                 CreatedOn = o.CreatedAt,
                 TargetDate = o.TargetDate,
                 Status = o.Status,
+                
+                //Combine notes from all order items
                 Notes = o.OrderDetails.Any(d => d.Note != null)
                     ? string.Join("; ", o.OrderDetails.Where(d => d.Note != null).Select(d => d.Note))
                     : null,
                 TotalPrice = o.TotalPrice,
+                
+                //Map order items
                 Items = o.OrderDetails.Select(d => new OrderItemViewModel
                 {
                     Name = d.Dish.DishName,
@@ -47,6 +52,7 @@ public async Task<IActionResult> Details(int id)
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var order = await _orderService.GetByIdForUserAsync(id, userId);
 
+            //Prevent access to orders belonging to other users
             if (order == null)
                 return NotFound();
 
@@ -79,11 +85,13 @@ public async Task<IActionResult> Details(int id)
             if (order == null)
                 return NotFound();
 
+            //Prevent editing past or same-day orders
             if (order.TargetDate.Date <= DateTime.Today)
                 return Forbid();
 
             var dishes = await _dishService.GetAllAsync();
 
+            //Build view model for editing
             var model = new EditOrderViewModel
             {
                 OrderId = order.Id,
@@ -97,6 +105,8 @@ public async Task<IActionResult> Details(int id)
                     Quantity = d.Quantity,
                     Note = d.Note
                 }).ToList(),
+                
+                //Provide all dishes for selection
                 AllDishes = dishes.Select(d => new DishOption
                 {
                     Id = d.Id,
@@ -117,13 +127,16 @@ public async Task<IActionResult> Details(int id)
             if (order == null)
                 return NotFound();
 
+            //Prevent editing past or same-day orders
             if (order.TargetDate.Date <= DateTime.Today)
                 return Forbid();
             
+            //Validate new target date
             if (model.TargetDate.Date <= DateTime.Today)
             {
                 ModelState.AddModelError("TargetDate", "You cannot set a past date.");
                 
+                //Reload dish list and update item display fields
                 var dishes = await _dishService.GetAllAsync();
                 model.AllDishes = dishes.Select(d => new DishOption
                 {
@@ -142,6 +155,7 @@ public async Task<IActionResult> Details(int id)
                     }
                 }
                 
+                //Remove fields to avoid validation errors
                 for (int i = 0; i < model.Items.Count; i++)
                 {
                     ModelState.Remove($"Items[{i}].Price");
@@ -155,8 +169,10 @@ public async Task<IActionResult> Details(int id)
                 return View(model);
             }
 
+            //Attempt to update order via service
             var error = await _orderService.UpdateAsync(order, model);
 
+            //If service error, re-render form with validation message
             if (error != null)
             {
                 ModelState.AddModelError("", error);
@@ -179,6 +195,7 @@ public async Task<IActionResult> Details(int id)
                     }
                 }
                 
+                //Remove fields to avoid validation errors
                 for (int i = 0; i < model.Items.Count; i++)
                 {
                     ModelState.Remove($"Items[{i}].Price");
@@ -195,6 +212,7 @@ public async Task<IActionResult> Details(int id)
             return RedirectToAction("MyOrders");
         }
         
+        //Displays user-specific order statistics
         public async Task<IActionResult> Stats()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -211,6 +229,7 @@ public async Task<IActionResult> Details(int id)
             if (order == null)
                 return NotFound();
 
+            //Prevent deletion of past or same-day orders
             if (order.TargetDate.Date <= DateTime.Today)
                 return Forbid();
 

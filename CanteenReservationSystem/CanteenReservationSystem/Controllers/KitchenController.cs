@@ -16,7 +16,10 @@ public class KitchenController : Controller
     {
         ViewData["FigustaNav"] = "kitchenDashboard";
         
+        //Default to today's date if none is provided
         var selectedDate = date ?? DateTime.Today;
+        
+        //Retrieve kitchen data
         var vm = _kitchenService.GetKitchenData(selectedDate);
         return View(vm);
     }

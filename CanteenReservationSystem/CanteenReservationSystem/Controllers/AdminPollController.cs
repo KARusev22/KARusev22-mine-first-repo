@@ -5,16 +5,19 @@ using CanteenReservationSystem.Models;
 
 namespace CanteenReservationSystem.Controllers;
 
+//Requires authenticated users
 [Authorize]
 public class AdminPollController : Controller
 {
     private readonly IPollService _pollService;
 
+    //Inject poll service responsible for business logic and data access
     public AdminPollController(IPollService pollService)
     {
         _pollService = pollService;
     }
-
+    
+    //Accessible to Admin and Kitchen staff
     [Authorize(Roles = "Admin,Kitchen")]
     public async Task<IActionResult> Index()
     {
@@ -34,14 +37,17 @@ public class AdminPollController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(Polls poll, List<string> options)
     {
+        //Remove empty or whitespace-only options
         options = options.Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
 
+        //Ensure at least one option is provided
         if (!options.Any())
         {
             ModelState.AddModelError("", "Add at least one option");
             return View(poll);
         }
 
+        //Delegate creation logic
         await _pollService.CreatePollAsync(poll, options);
         return RedirectToAction("Index");
     }

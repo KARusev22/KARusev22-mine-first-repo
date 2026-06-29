@@ -50,6 +50,7 @@ public class CategoryController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, Category category)
     {
+        //Ensure the route ID matches the model ID
         if (id != category.Id)
             return BadRequest();
 
@@ -60,6 +61,7 @@ public class CategoryController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    //Shows confirmation page before deletion
     [HttpGet]
     public async Task<IActionResult> Delete(int id)
     {

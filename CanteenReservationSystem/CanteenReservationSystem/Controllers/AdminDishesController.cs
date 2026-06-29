@@ -10,6 +10,7 @@ using Ganss.Xss;
 
 namespace CanteenReservationSystem.Controllers;
 
+//Restricts access
 [Authorize(Roles = "Admin")]
 public class AdminDishesController : Controller
 {
@@ -17,6 +18,8 @@ public class AdminDishesController : Controller
     private readonly IDishService _dishService;
     private readonly IIngredientService _ingredientService;
     private readonly IWebHostEnvironment _env;
+    
+    //HTML sanitizer to prevent XSS attacks
     private readonly HtmlSanitizer _sanitizer = new HtmlSanitizer();
 
     public AdminDishesController(
@@ -30,6 +33,7 @@ public class AdminDishesController : Controller
         _ingredientService = ingredientService;
         _env = env;
 
+        //Allow basic formatting tags
         _sanitizer.AllowedTags.Add("b");
         _sanitizer.AllowedTags.Add("i");
         _sanitizer.AllowedTags.Add("strong");
@@ -40,6 +44,7 @@ public class AdminDishesController : Controller
         _sanitizer.AllowedTags.Add("br");
     }
 
+    //Displays all dishes
     public async Task<IActionResult> Index()
     {
         var dishes = await _dishService.GetAllAsync();
@@ -49,10 +54,13 @@ public class AdminDishesController : Controller
     [HttpGet]
     public async Task<IActionResult> Create()
     {
+        //Prepare form view model with empty dish and nutrition objects
         var vm = new DishFormViewModel
         {
             Dish = new Dish(),
             Nutrition = new Nutrition(),
+            
+            //Load categories and allergens
             Categories = await _context.Categories
                 .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.CategoryName })
                 .ToListAsync(),
@@ -66,9 +74,11 @@ public class AdminDishesController : Controller
 [ValidateAntiForgeryToken]
 public async Task<IActionResult> Create(DishFormViewModel vm, IFormFile? imageFile)
 {
+    //Image is mandatory
     if (imageFile == null)
         ModelState.AddModelError("Dish.ImageUrl", "Image is required.");
 
+    //If fails, reload lists and return form
     if (!ModelState.IsValid)
     {
         vm.Categories = await _context.Categories
@@ -77,6 +87,7 @@ public async Task<IActionResult> Create(DishFormViewModel vm, IFormFile? imageFi
 
         vm.Allergens = await _context.Allergens.ToListAsync();
 
+        //Ensure collections are initialized to avoid null
         vm.Nutrition ??= new Nutrition();
         vm.IngredientIds ??= new();
         vm.IngredientNames ??= new();
@@ -86,6 +97,8 @@ public async Task<IActionResult> Create(DishFormViewModel vm, IFormFile? imageFi
         return View(vm);
     }
 
+    
+    //Sanitize description to prevent XSS
     vm.Dish.Description = _sanitizer.Sanitize(vm.Dish.Description);
 
     var fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
@@ -95,11 +108,14 @@ public async Task<IActionResult> Create(DishFormViewModel vm, IFormFile? imageFi
 
     vm.Dish.ImageUrl = "/images/" + fileName;
 
+    //Create dish record
     await _dishService.CreateAsync(vm.Dish);
 
+    //Save nutrition info
     vm.Nutrition.DishId = vm.Dish.Id;
     _context.Nutritions.Add(vm.Nutrition);
 
+    //Ingredient relations
     for (int i = 0; i < vm.IngredientNames.Count; i++)
     {
         if (string.IsNullOrWhiteSpace(vm.IngredientNames[i]))
@@ -115,6 +131,7 @@ public async Task<IActionResult> Create(DishFormViewModel vm, IFormFile? imageFi
         });
     }
 
+    //Save allergen relations
     if (vm.SelectedAllergenIds != null)
     {
         foreach (var allergenId in vm.SelectedAllergenIds)
@@ -133,6 +150,7 @@ public async Task<IActionResult> Create(DishFormViewModel vm, IFormFile? imageFi
 
     public async Task<IActionResult> Edit(int id)
     {
+        //Load dish and related data
         var dish = await _dishService.GetByIdAsync(id);
         if (dish == null)
             return NotFound();
@@ -160,6 +178,7 @@ public async Task<IActionResult> Create(DishFormViewModel vm, IFormFile? imageFi
             })
             .ToListAsync();
 
+        //Build view model for editing
         var vm = new DishFormViewModel
         {
             Dish = dish,
@@ -174,6 +193,7 @@ public async Task<IActionResult> Create(DishFormViewModel vm, IFormFile? imageFi
             SelectedAllergenIds = selectedAllergens
         };
 
+        //Used for UI logic
         ViewData["FigustaPage"] = true;
         return View(vm);
     }
@@ -189,6 +209,7 @@ public async Task<IActionResult> Edit(int id, DishFormViewModel vm, IFormFile? i
     if (existingDish == null)
         return NotFound();
 
+    //Handle optional image update
     if (imageFile != null)
     {
         var fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
@@ -204,10 +225,13 @@ public async Task<IActionResult> Edit(int id, DishFormViewModel vm, IFormFile? i
         vm.Dish.ImageUrl = existingDish.ImageUrl;
     }
     
+    //Sanitize description
     vm.Dish.Description = _sanitizer.Sanitize(vm.Dish.Description);
 
+    //Update dish entity values
     _context.Entry(existingDish).CurrentValues.SetValues(vm.Dish);
 
+    //Update or create nutrition
     var existingNutrition = await _context.Nutritions
         .FirstOrDefaultAsync(n => n.DishId == id);
 
@@ -230,6 +254,7 @@ public async Task<IActionResult> Edit(int id, DishFormViewModel vm, IFormFile? i
         .Where(di => di.DishId == id)
         .ToListAsync();
 
+    //Determine which ingredients were removed
     var formDishIngredientIds = vm.IngredientIds.Where(x => x > 0).ToList();
 
     var toDelete = existingIngredients
@@ -238,6 +263,7 @@ public async Task<IActionResult> Edit(int id, DishFormViewModel vm, IFormFile? i
 
     _context.DishIngredients.RemoveRange(toDelete);
 
+    //Update or add ingredients
     for (int i = 0; i < vm.IngredientNames.Count; i++)
     {
         var name = vm.IngredientNames[i];
@@ -248,9 +274,10 @@ public async Task<IActionResult> Edit(int id, DishFormViewModel vm, IFormFile? i
             continue;
 
         var ingredient = await _ingredientService.FindOrCreateByNameAsync(name);
-
+        
         if (diId == 0)
         {
+            //New ingredient relation
             _context.DishIngredients.Add(new DishIngredient
             {
                 DishId = id,
@@ -260,6 +287,7 @@ public async Task<IActionResult> Edit(int id, DishFormViewModel vm, IFormFile? i
         }
         else
         {
+            //Update existing relation
             var existing = existingIngredients.First(di => di.Id == diId);
             existing.IngredientId = ingredient.Id;
             existing.GramsPerPortion = grams;
@@ -272,6 +300,7 @@ public async Task<IActionResult> Edit(int id, DishFormViewModel vm, IFormFile? i
 
     var selected = vm.SelectedAllergenIds ?? new List<int>();
 
+    //Add new allergens
     foreach (var allergenId in selected)
     {
         if (!existingAllergens.Any(a => a.AllergenId == allergenId))
@@ -284,6 +313,7 @@ public async Task<IActionResult> Edit(int id, DishFormViewModel vm, IFormFile? i
         }
     }
 
+    //Remove unselected allergens
     foreach (var allergen in existingAllergens)
     {
         if (!selected.Contains(allergen.AllergenId))
@@ -294,6 +324,7 @@ public async Task<IActionResult> Edit(int id, DishFormViewModel vm, IFormFile? i
     return RedirectToAction(nameof(Index));
 }
 
+    // Soft delete dish
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
