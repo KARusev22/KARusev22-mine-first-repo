@@ -44,10 +44,10 @@ public class AiAssistantService : IAiAssistantService
                             && m.DayOfWeek == date.DayOfWeek
                             && m.Month == date.Month
                             && m.Year == date.Year)
+                .Include(m => m.Dish).ThenInclude(d => d.Category)
+                .Include(m => m.Dish).ThenInclude(d => d.Nutrition)
+                .Include(m => m.Dish).ThenInclude(d => d.DishAllergens).ThenInclude(da => da.Allergen)
                 .Select(m => m.Dish!)
-                .Include(d => d.Category)
-                .Include(d => d.Nutrition)
-                .Include(d => d.DishAllergens).ThenInclude(da => da.Allergen)
                 .Distinct()
                 .ToListAsync(ct);
 
