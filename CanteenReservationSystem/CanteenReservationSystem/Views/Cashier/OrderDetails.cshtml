@@ -5,6 +5,9 @@
 }
 
 <link rel="stylesheet" href="~/css/cashier.css" />
+<link rel="stylesheet" href="~/css/ai.css" />
+
+@Html.AntiForgeryToken()
 
 <div class="cashier-container">
     <h2 class="cashier-title">Order Details</h2>
@@ -33,9 +36,23 @@
         </ul>
     </div>
 
+    <!-- AI handover assistant: loads on demand, never blocks the counter flow -->
+    <div class="ai-card mt-3">
+        <div class="d-flex justify-content-between align-items-center flex-wrap" style="gap:12px;">
+            <h4 class="ai-title mb-0">
+                <span class="ai-badge"><i class="bi bi-stars"></i> AI</span>
+                Pickup Assistant
+            </h4>
+            <button id="ai-cashier-btn" class="ai-btn" data-code="@Model.UniqueCode">
+                <i class="bi bi-chat-left-text"></i> Summarize for handover
+            </button>
+        </div>
+        <div id="ai-cashier-result" class="mt-2"></div>
+    </div>
+
     @if (ViewBag.Success == null && Model.Status == "Completed")
     {
-        <div class="alert alert-info">This order has already been taken.</div>
+        <div class="alert alert-info mt-3">This order has already been taken.</div>
     }
 
     @if (ViewBag.Success == null && Model.Status != "Completed")
@@ -46,3 +63,5 @@
         </form>
     }
 </div>
+
+<script src="~/js/ai-cashier.js"></script>

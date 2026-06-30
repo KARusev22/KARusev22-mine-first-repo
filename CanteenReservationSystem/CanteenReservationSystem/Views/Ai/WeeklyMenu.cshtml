@@ -1,0 +1,73 @@
+@{
+    ViewData["Title"] = "AI Weekly Planner";
+    var allergens = ViewBag.Allergens as List<string> ?? new List<string>();
+    var aiConfigured = ViewBag.AiConfigured as bool? ?? false;
+}
+
+<link rel="stylesheet" href="~/css/ai.css" />
+
+<div class="ai-wrapper">
+    <div class="ai-card">
+        <h2 class="ai-title">
+            <span class="ai-badge"><i class="bi bi-stars"></i> AI</span>
+            Weekly Menu Planner
+        </h2>
+        <p class="ai-subtitle">
+            Tell us what you like and we'll build a balanced weekly plan using only the dishes
+            available in the canteen for the coming days.
+        </p>
+
+        @if (!aiConfigured)
+        {
+            <div class="ai-hint mb-3">
+                <i class="bi bi-info-circle"></i>
+                AI is not configured on this server yet. Once an OpenRouter API key is set,
+                this planner will generate personalised weekly menus.
+            </div>
+        }
+
+        <form id="ai-weekly-form" onsubmit="return false;">
+            @Html.AntiForgeryToken()
+            <div class="ai-form-grid">
+                <div>
+                    <label class="form-label">Number of days</label>
+                    <select class="form-control" name="Days">
+                        <option value="3">3 days</option>
+                        <option value="5" selected>5 days (work week)</option>
+                        <option value="7">7 days</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">Daily calorie target (optional)</label>
+                    <input type="number" class="form-control" name="CalorieTarget" min="0" placeholder="e.g. 2000" />
+                </div>
+                <div style="grid-column: 1 / -1;">
+                    <label class="form-label">Preferences (optional)</label>
+                    <input type="text" class="form-control" name="Preferences"
+                           placeholder="e.g. high protein, vegetarian on Friday, light lunches" />
+                </div>
+            </div>
+
+            @if (allergens.Any())
+            {
+                <label class="form-label">Allergens to avoid</label>
+                <div class="ai-allergen-chips mb-3">
+                    @foreach (var a in allergens)
+                    {
+                        <label class="ai-chip">
+                            <input type="checkbox" name="AvoidAllergens" value="@a" /> @a
+                        </label>
+                    }
+                </div>
+            }
+
+            <button type="submit" id="ai-generate-btn" class="ai-btn" @(aiConfigured ? "" : "disabled")>
+                <i class="bi bi-magic"></i> Generate my weekly plan
+            </button>
+        </form>
+
+        <div id="ai-weekly-result" class="mt-3"></div>
+    </div>
+</div>
+
+<script src="~/js/ai-weekly-menu.js"></script>

@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Security.Claims;
 using CanteenReservationSystem.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -120,7 +121,16 @@ namespace CanteenReservationSystem.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, false);
+                        // Sign in with the role claim so a freshly registered user gets the
+                        // same access as an existing user (My Orders, Cart, AI Planner, etc.).
+                        // The app derives authorization roles from the custom Role claim, which
+                        // SignInAsync alone does not add — mirror the Login flow here.
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Role, user.Role)
+                        };
+
+                        await _signInManager.SignInWithClaimsAsync(user, isPersistent: false, claims);
                         return LocalRedirect(returnUrl);
                     }
                 }

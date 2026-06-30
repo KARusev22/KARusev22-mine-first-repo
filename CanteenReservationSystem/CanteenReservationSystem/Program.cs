@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using CanteenReservationSystem.Data;
 using CanteenReservationSystem.Models;
 using CanteenReservationSystem.Services;
+using CanteenReservationSystem.Services.Ai;
 using CanteenReservationSystem.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,14 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IKitchenService, KitchenService>();
 
 builder.Services.AddHostedService<OrderAutoCloseService>();
+
+// ---- AI (OpenRouter / GPT-4o-mini) ----
+// API key is read from configuration (env var OpenRouter__ApiKey or user secrets),
+// never from source control.
+builder.Services.Configure<OpenRouterOptions>(
+    builder.Configuration.GetSection(OpenRouterOptions.SectionName));
+builder.Services.AddHttpClient<IOpenRouterClient, OpenRouterClient>();
+builder.Services.AddScoped<IAiAssistantService, AiAssistantService>();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();

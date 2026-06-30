@@ -4,7 +4,7 @@
 
 @{
     var active = ViewData["FigustaNav"] as string ?? "";
-    var user = UserManager.GetUserAsync(User).Result;
+    var user = await UserManager.GetUserAsync(User);
     var role = user?.Role;
 }
 
@@ -22,6 +22,11 @@
         <a class="figusta-nav-link @(active == "stats" ? "is-active" : "")"
            asp-controller="Orders" asp-action="Stats">
             <i class="bi bi-bar-chart"></i> Statistics
+        </a>
+
+        <a class="figusta-nav-link @(active == "aiPlanner" ? "is-active" : "")"
+           asp-controller="Ai" asp-action="WeeklyMenu">
+           <i class="bi bi-stars"></i> AI Planner
         </a>
 
         <a class="figusta-nav-link @(active == "polls" ? "is-active" : "")"

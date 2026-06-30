@@ -316,12 +316,14 @@ body.figusta-body {
 }
 
 .figusta-btn-primary {
+  display: inline-block;
   background: var(--figusta-green);
   border-color: var(--figusta-green);
   color: var(--figusta-white);
   border-radius: 8px;
   font-weight: 600;
   padding: 0.65rem 1rem;
+  text-decoration: none;
 }
 
 .figusta-btn-primary:hover,
@@ -329,6 +331,7 @@ body.figusta-body {
   background: var(--figusta-green-dark);
   border-color: var(--figusta-green-dark);
   color: var(--figusta-white);
+  text-decoration: none;
 }
 
 .figusta-login-links {
