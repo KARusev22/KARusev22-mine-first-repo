@@ -77,13 +77,34 @@ public class KitchenService : IKitchenService
             }
         }
 
+        //Stock on hand for every ingredient (used by the inventory editor + AI).
+        var stock = _context.Ingredients
+            .OrderBy(i => i.IngredientName)
+            .Select(i => new { i.Id, i.IngredientName, i.AvailableGrams })
+            .ToList();
+
+        var stockByName = stock.ToDictionary(
+            s => s.IngredientName,
+            s => s.AvailableGrams,
+            StringComparer.OrdinalIgnoreCase);
+
         //Convert ingredient totals into view model entries
         vm.Ingredients = ingredientTotals
             .Select(i => new KitchenIngredientViewModel
             {
                 IngredientName = i.Key,
                 TotalQuantity = i.Value,
-                Unit = "g"
+                Unit = "g",
+                AvailableQuantity = stockByName.TryGetValue(i.Key, out var avail) ? avail : 0
+            })
+            .ToList();
+
+        vm.Stock = stock
+            .Select(s => new KitchenStockViewModel
+            {
+                IngredientId = s.Id,
+                IngredientName = s.IngredientName,
+                AvailableGrams = s.AvailableGrams
             })
             .ToList();
 

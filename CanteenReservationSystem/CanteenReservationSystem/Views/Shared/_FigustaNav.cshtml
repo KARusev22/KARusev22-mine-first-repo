@@ -24,6 +24,11 @@
             <i class="bi bi-bar-chart"></i> Statistics
         </a>
 
+        <a class="figusta-nav-link @(active == "aiPlanner" ? "is-active" : "")"
+           asp-controller="Ai" asp-action="WeeklyMenu">
+           <i class="bi bi-stars"></i> AI Planner
+        </a>
+
         <a class="figusta-nav-link @(active == "polls" ? "is-active" : "")"
            asp-controller="Poll" asp-action="Index">
            <i class="bi bi-ui-checks-grid"></i> Polls

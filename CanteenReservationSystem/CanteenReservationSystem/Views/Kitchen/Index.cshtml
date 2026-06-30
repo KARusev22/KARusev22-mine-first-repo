@@ -5,6 +5,9 @@
 }
 
 <link rel="stylesheet" href="~/css/kitchen.css" />
+<link rel="stylesheet" href="~/css/ai.css" />
+
+@Html.AntiForgeryToken()
 
 <div class="kitchen-layout">
     <aside class="ingredients-card">
@@ -15,8 +18,18 @@
             {
                 <div class="ingredient-row">
                     <span>@ing.IngredientName</span>
-                    <span class="qty">@ing.TotalQuantity @ing.Unit</span>
+                    <span class="qty @(ing.IsSufficient ? "ing-sufficient" : "ing-short")">
+                        @ing.TotalQuantity / @ing.AvailableQuantity @ing.Unit
+                        @if (!ing.IsSufficient)
+                        {
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                        }
+                    </span>
                 </div>
+            }
+            @if (!Model.Ingredients.Any())
+            {
+                <div class="ingredient-row"><span>No orders for this day.</span></div>
             }
         </div>
     </aside>
@@ -34,6 +47,24 @@
             </form>
         </div>
 
+        <!-- AI Kitchen Assistant: loads on demand, never blocks the dashboard -->
+        <section class="ai-card mb-4">
+            <div class="d-flex justify-content-between align-items-center flex-wrap" style="gap:12px;">
+                <h4 class="ai-title mb-0">
+                    <span class="ai-badge"><i class="bi bi-stars"></i> AI</span>
+                    Availability Assistant
+                </h4>
+                <button id="ai-kitchen-btn" class="ai-btn"
+                        data-date="@Model.SelectedDate.ToString("yyyy-MM-dd")">
+                    <i class="bi bi-clipboard-check"></i> Analyze this day
+                </button>
+            </div>
+            <p class="ai-subtitle mb-0 mt-2">
+                Checks whether the current stock covers every order for the day, taking customer notes into account.
+            </p>
+            <div id="ai-kitchen-result" class="mt-2"></div>
+        </section>
+
         <section class="glass-card mb-4">
             <h4 class="section-title">Portions by Category</h4>
 
@@ -48,7 +79,7 @@
             </div>
         </section>
 
-        <section class="glass-card">
+        <section class="glass-card mb-4">
             <h4 class="section-title">Dishes Overview</h4>
 
             @foreach (var d in Model.Dishes)
@@ -76,8 +107,29 @@
             }
         </section>
 
+        <!-- Inventory editor -->
+        <section class="glass-card">
+            <h4 class="section-title">Inventory (available stock)</h4>
+            <div class="ai-stock-grid">
+                @foreach (var s in Model.Stock)
+                {
+                    <div class="ai-stock-row">
+                        <label>@s.IngredientName</label>
+                        <input type="number" min="0" value="@s.AvailableGrams"
+                               data-ingredient-id="@s.IngredientId" class="ai-stock-input" />
+                        <span class="unit">g</span>
+                    </div>
+                }
+                @if (!Model.Stock.Any())
+                {
+                    <div>No ingredients defined yet.</div>
+                }
+            </div>
+        </section>
+
     </main>
 
 </div>
 
 <script src="~/js/kitchen.js"></script>
+<script src="~/js/ai-kitchen.js"></script>

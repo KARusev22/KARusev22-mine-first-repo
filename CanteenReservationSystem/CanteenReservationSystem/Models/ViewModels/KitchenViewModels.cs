@@ -7,6 +7,16 @@ public class KitchenViewModel
     public List<KitchenDishViewModel> Dishes { get; set; } = new();
     public List<KitchenCategoryViewModel> Categories { get; set; } = new();
     public List<KitchenIngredientViewModel> Ingredients { get; set; } = new();
+
+    // Full ingredient stock list for the inventory editor.
+    public List<KitchenStockViewModel> Stock { get; set; } = new();
+}
+
+public class KitchenStockViewModel
+{
+    public int IngredientId { get; set; }
+    public string IngredientName { get; set; } = string.Empty;
+    public int AvailableGrams { get; set; }
 }
 
 public class KitchenDishViewModel
@@ -33,4 +43,8 @@ public class KitchenIngredientViewModel
     public string IngredientName { get; set; } = string.Empty;
     public decimal TotalQuantity { get; set; }
     public string Unit { get; set; } = "g";
+
+    // Stock on hand for this ingredient and whether it covers the day's needs.
+    public int AvailableQuantity { get; set; }
+    public bool IsSufficient => AvailableQuantity >= TotalQuantity;
 }
