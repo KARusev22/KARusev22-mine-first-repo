@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["FigustaPage"] = true;
+    ViewData["FigustaNav"] = "adminPolls";
+}
+
+<h2 class="mb-4">Polls</h2>
+
+<a class="btn btn-success mb-3" asp-controller="AdminPoll" asp-action="Create">
+    <i class="bi bi-plus-circle"></i> Create Poll
+</a>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Question</th>
+        <th>Created</th>
+        <th>Active</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var poll in Model)
+    {
+        <tr>
+            <td>@poll.Question</td>
+            <td>@poll.CreatedAt.ToShortDateString()</td>
+            <td>@(poll.IsActive ? "Yes" : "No")</td>
+            <td>
+                <a class="btn btn-primary btn-sm"
+                   asp-controller="AdminPoll" asp-action="Results" asp-route-id="@poll.Id">
+                    Results
+                </a>
+
+                <form method="post" asp-controller="AdminPoll" asp-action="Delete" asp-route-id="@poll.Id"
+                      style="display:inline-block">
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

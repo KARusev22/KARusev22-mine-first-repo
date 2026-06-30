@@ -1,0 +1,154 @@
+﻿.kitchen-layout {
+    display: flex;
+    gap: 25px;
+    padding: 20px;
+}
+
+.ingredients-card {
+    width: 300px;
+    height: calc(100vh - 40px);
+    position: sticky;
+    top: 20px;
+    padding: 20px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    overflow-y: auto;
+}
+
+.section-title {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.ingredients-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ingredient-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.45);
+    font-size: 15px;
+}
+
+.qty {
+    font-weight: 600;
+    color: #4CAF50;
+}
+
+.kitchen-content {
+    flex: 1;
+}
+
+.header-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.date-form {
+    display: flex;
+    gap: 10px;
+}
+
+.date-picker {
+    width: 200px;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border-radius: 18px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 15px;
+}
+
+.category-card {
+    padding: 15px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.45);
+    text-align: center;
+}
+
+.cat-name {
+    font-weight: 600;
+}
+
+.cat-count {
+    margin-top: 5px;
+    color: #4CAF50;
+    font-weight: 500;
+}
+
+.dish-card {
+    padding: 15px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.45);
+    margin-bottom: 20px;
+}
+
+.dish-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dish-name {
+    font-weight: 600;
+    font-size: 17px;
+}
+
+.notes-list {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.note-item {
+    display: flex;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: rgba(255, 230, 230, 0.6);
+}
+
+.note-qty {
+    font-weight: 700;
+    color: #d9534f;
+}
+
+.note-text {
+    color: #b52b27;
+    font-weight: 500;
+}
+
+.btn-load {
+    background-color: #306D29;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    transition: 0.25s ease;
+}
+
+.btn-load:hover {
+    background-color: #0D530E;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}

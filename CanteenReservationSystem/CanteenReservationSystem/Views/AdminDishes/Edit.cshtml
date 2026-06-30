@@ -1,0 +1,129 @@
+﻿@model CanteenReservationSystem.Models.ViewModels.DishFormViewModel
+
+@{
+    ViewData["FigustaPage"] = true;
+}
+
+<link rel="stylesheet" href="~/css/admin-dishes.css" />
+
+<h1 class="mb-4">Edit Dish</h1>
+
+<form asp-controller="AdminDishes" asp-action="Edit" asp-route-id="@Model.Dish.Id"
+      method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" asp-for="Dish.Id" />
+
+    <div class="mb-3">
+        <label asp-for="Dish.DishName" class="form-label"></label>
+        <input asp-for="Dish.DishName" class="form-control"/>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Dish.CategoryId" class="form-label">Category</label>
+        <select asp-for="Dish.CategoryId" asp-items="Model.Categories" class="form-select"></select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Dish.Price" class="form-label"></label>
+        <input asp-for="Dish.Price" class="form-control" type="number" step="0.01" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Image</label>
+        <input type="file" name="imageFile" class="form-control"/>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Dish.ImageUrl))
+        {
+            <img src="@Model.Dish.ImageUrl" class="admin-thumb mt-2"/>
+        }
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Dish.Characteristics" class="form-label"></label>
+        <input asp-for="Dish.Characteristics" class="form-control"/>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Dish.Description" class="form-label"></label>
+        <textarea asp-for="Dish.Description" class="form-control" rows="4"></textarea>
+    </div>
+
+    <h4 class="mt-4">Nutrition</h4>
+
+    <div class="row mb-3">
+        <div class="col">
+            <label class="form-label">Portion Weight (grams)</label>
+            <input class="form-control" name="Nutrition.WeightGrams" value="@Model.Nutrition?.WeightGrams"/>
+        </div>
+        <div class="col">
+            <label class="form-label">Calories</label>
+            <input class="form-control" name="Nutrition.Calories" value="@Model.Nutrition?.Calories"/>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col">
+            <label class="form-label">Protein (g)</label>
+            <input class="form-control" name="Nutrition.Protein" value="@Model.Nutrition?.Protein"/>
+        </div>
+        <div class="col">
+            <label class="form-label">Fats (g)</label>
+            <input class="form-control" name="Nutrition.Fats" value="@Model.Nutrition?.Fats"/>
+        </div>
+        <div class="col">
+            <label class="form-label">Carbohydrates (g)</label>
+            <input class="form-control" name="Nutrition.Carbohydrates" value="@Model.Nutrition?.Carbohydrates"/>
+        </div>
+        <div class="col">
+            <label class="form-label">Fiber (g)</label>
+            <input class="form-control" name="Nutrition.Fiber" value="@Model.Nutrition?.Fiber"/>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Ingredients</h4>
+    <div id="ingredients-container">
+        @for (int i = 0; i < Model.IngredientNames.Count; i++)
+        {
+            <div class="row mb-2">
+                <input type="hidden" name="IngredientIds[@i]" value="@Model.IngredientIds[i]" />
+                <div class="col">
+                    <input class="form-control" name="IngredientNames[@i]" value="@Model.IngredientNames[i]" />
+                </div>
+                <div class="col">
+                    <input class="form-control" name="IngredientGrams[@i]" value="@Model.IngredientGrams[i]" />
+                </div>
+            </div>
+        }
+    </div>
+
+    <button type="button" class="btn btn-secondary mb-3" id="add-ingredient-btn">
+        <i class="bi bi-plus-circle"></i> Add Ingredient
+    </button>
+
+    <h4 class="mt-4">Allergens</h4>
+    <div class="mb-3">
+        @foreach (var allergen in Model.Allergens)
+        {
+            var isChecked = Model.SelectedAllergenIds.Contains(allergen.Id);
+
+            <div class="form-check">
+                <input class="form-check-input"
+                       type="checkbox"
+                       name="SelectedAllergenIds[]"
+                       value="@allergen.Id"
+                       @(isChecked ? "checked" : "")/>
+                <label class="form-check-label">@allergen.AllergenName</label>
+            </div>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        <i class="bi bi-check-circle"></i> Save Changes
+    </button>
+
+</form>
+
+@section Scripts {
+    <script src="~/js/admin-dishes.js"></script>
+}

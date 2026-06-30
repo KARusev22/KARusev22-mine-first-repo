@@ -1,0 +1,124 @@
+﻿@using CanteenReservationSystem.Models.ViewModels
+@model EditOrderViewModel
+
+@{
+    ViewData["Title"] = "Edit Order";
+    ViewData["FigustaPage"] = true;
+    ViewData["FigustaNav"] = "orders";
+}
+
+<link rel="stylesheet" href="~/css/edit.css" />
+
+<div class="figusta-page-header">
+    <h1 class="figusta-page-title">
+        <i class="bi bi-pencil-square me-2 text-success"></i>
+        Edit Order #@Model.OrderId
+    </h1>
+    <p class="figusta-page-subtitle">Modify your dishes, quantities and notes.</p>
+</div>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger mt-3">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div>@error.ErrorMessage</div>
+        }
+    </div>
+}
+
+<form asp-action="Edit" method="post" id="editOrderForm">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="allDishesJson" value='@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.AllDishes))'/>
+    <input type="hidden" asp-for="OrderId"/>
+
+    <div class="figusta-edit-container">
+
+        <div class="figusta-edit-section">
+            <label class="figusta-label">Pickup Date</label>
+            <input asp-for="TargetDate"
+                   type="date"
+                   class="figusta-input"
+                   min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")"/>
+        </div>
+
+        <div class="figusta-edit-section">
+            <label class="figusta-label">Dishes</label>
+
+            <table class="figusta-table" id="orderItemsTable">
+                <thead>
+                <tr>
+                    <th>Dish</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>Note</th>
+                    <th></th>
+                </tr>
+                </thead>
+
+                <tbody id="itemsBody">
+                @for (int i = 0; i < Model.Items.Count; i++)
+                {
+                    <tr class="order-row">
+                        <td>
+                            <select name="Items[@i].DishId" class="figusta-select dish-select"
+                                    data-price="@Model.Items[i].Price.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)">
+                                @foreach (var d in Model.AllDishes)
+                                {
+                                    <option value="@d.Id"
+                                            data-price="@d.Price.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)"
+                                            selected="@(d.Id == Model.Items[i].DishId)">
+                                        @d.Name
+                                    </option>
+                                }
+                            </select>
+                        </td>
+
+                        <td>
+                            <input type="number" name="Items[@i].Quantity"
+                                   class="figusta-input qty-input"
+                                   value="@Model.Items[i].Quantity" min="1"/>
+                        </td>
+
+                        <td class="price-cell">@Model.Items[i].Price.ToString("0.00") €</td>
+
+                        <td class="row-total">@((Model.Items[i].Price * Model.Items[i].Quantity).ToString("0.00")) €</td>
+
+                        <td>
+                            <input type="text"
+                                   name="Items[@i].Note"
+                                   class="figusta-input note-input"
+                                   value="@Model.Items[i].Note"/>
+                        </td>
+
+                        <td>
+                            <button type="button" class="figusta-btn-delete-small remove-row">
+                                <i class="bi bi-x-circle"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+
+            <button type="button" id="addDishBtn" class="figusta-btn-secondary mt-3">
+                <i class="bi bi-plus-circle"></i> Add Dish
+            </button>
+        </div>
+
+        <div class="figusta-total-box">
+            <span>Total:</span>
+            <strong id="grandTotal">0.00 €</strong>
+        </div>
+
+        <button type="submit" class="figusta-btn-primary mt-4">
+            <i class="bi bi-check-circle"></i> Save Changes
+        </button>
+
+    </div>
+</form>
+
+@section Scripts {
+    <script src="~/js/orders-edit.js" asp-append-version="true"></script>
+}

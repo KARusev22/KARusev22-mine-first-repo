@@ -1,0 +1,85 @@
+﻿.stats-header {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #2f6f3e;
+    margin-bottom: 35px;
+    letter-spacing: 0.5px;
+    text-align: center;
+    position: relative;
+}
+
+/* Decorative lines left-right */
+.stats-header::before,
+.stats-header::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 220px; /* longer lines */
+    height: 3px;
+    background: linear-gradient(90deg, #2f6f3e, #e8d98a);
+}
+
+.stats-header::before {
+    left: -240px;
+}
+
+.stats-header::after {
+    right: -240px;
+}
+
+/* Cards */
+.stats-card {
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(12px);
+    border: 1px dotted rgba(0, 0, 0, 0.08);
+    transition: 0.3s ease;
+    animation: fadeUp 0.7s ease forwards;
+    opacity: 0;
+}
+
+.stats-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.stats-icon {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    opacity: 0.9;
+}
+
+/* Chart containers */
+.chart-container-small,
+.chart-container-medium {
+    width: 100%;
+    height: 260px;
+    margin: 0 auto;
+    animation: fadeIn 1s ease forwards;
+    opacity: 0;
+}
+
+/* Animations */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+/* Chart titles */
+.chart-title {
+    font-weight: 600;
+    color: #2f6f3e;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chart-title i {
+    font-size: 1.2rem;
+    color: #e8d98a;
+}

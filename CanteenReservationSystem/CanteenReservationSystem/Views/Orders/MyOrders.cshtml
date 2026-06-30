@@ -1,0 +1,115 @@
+﻿@using CanteenReservationSystem.Models.ViewModels
+@model IEnumerable<OrderViewModel>
+
+@{
+    ViewData["Title"] = "My Orders";
+    ViewData["FigustaPage"] = true;
+    ViewData["FigustaNav"] = "orders";
+}
+
+@Html.AntiForgeryToken()
+
+<div class="figusta-page-header">
+    <h1 class="figusta-page-title">
+        <i class="bi bi-receipt-cutoff me-2 text-success"></i>
+        My Orders
+    </h1>
+    <p class="figusta-page-subtitle">Here you can track all your past and upcoming orders.</p>
+</div>
+
+<div class="figusta-orders-list">
+
+    @if (!Model.Any())
+    {
+        <div class="figusta-empty-state">
+            <i class="bi bi-emoji-smile"></i>
+            <h3>No orders yet</h3>
+            <p>Browse the menu and add something delicious to your cart.</p>
+            <a class="figusta-btn-primary mt-2" asp-controller="Home" asp-action="Index">
+                <i class="bi bi-list"></i> Go to Menu
+            </a>
+        </div>
+    }
+    else
+    {
+        foreach (var order in Model)
+        {
+            <div class="figusta-order-card">
+
+                <div class="figusta-order-top">
+                    <div>
+                        <div class="figusta-order-code">#@order.Code</div>
+                        <div class="figusta-order-time">
+                            <i class="bi bi-clock"></i>
+                            @order.CreatedOn.ToString("dd MMM yyyy, HH:mm")
+                        </div>
+                    </div>
+
+                    <span class="figusta-badge @GetStatusClass(order.Status)">
+                        @order.Status
+                    </span>
+                </div>
+
+                <ul class="figusta-order-items">
+                    @foreach (var item in order.Items)
+                    {
+                        <li>
+                            <i class="bi bi-dot text-success"></i>
+                            @item.Quantity× @item.Name
+                        </li>
+                    }
+                </ul>
+
+                @if (!string.IsNullOrWhiteSpace(order.Notes))
+                {
+                    <div class="figusta-order-notes">
+                        <span class="figusta-order-notes-label">Notes</span>
+                        <p>@order.Notes</p>
+                    </div>
+                }
+
+                <div class="figusta-order-bottom">
+
+                    <div class="figusta-order-total">
+                        <span>Total:</span>
+                        <strong>@order.TotalPrice.ToString("0.00") euro.</strong>
+                    </div>
+
+                    <div class="figusta-order-actions">
+
+                        @if (order.TargetDate.Date > DateTime.Today)
+                        {
+                            <a class="figusta-btn-edit"
+                               asp-controller="Orders"
+                               asp-action="Edit"
+                               asp-route-id="@order.Id">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a>
+
+                            <button type="button"
+                                    class="figusta-btn-delete"
+                                    onclick="confirmDelete(@order.Id, this)">
+                                <i class="bi bi-x-circle"></i> Delete
+                            </button>
+                        }
+                    </div>
+
+                </div>
+
+            </div>
+        }
+    }
+</div>
+
+@functions {
+    string GetStatusClass(string status)
+    {
+        return status switch
+        {
+            "Pending" => "figusta-badge-amber",
+            "Completed" => "figusta-badge-green",
+            "NotTaken" => "figusta-badge-red",
+            _ => "figusta-badge-gray"
+        };
+    }
+}

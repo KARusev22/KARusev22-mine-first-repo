@@ -1,0 +1,121 @@
+﻿@model CanteenReservationSystem.Models.ViewModels.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    ViewData["FigustaPage"] = true;
+    ViewData["FigustaNav"] = "adminDashboard";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-dashboard.css" />
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/js/admin-dashboard.js"></script>
+}
+
+<div class="container py-4 dashboard-container">
+
+    <h2 class="dashboard-title mb-4 text-center fw-bold">Admin Dashboard</h2>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="glass-card dashboard-card fade-up">
+                <h6>Total Orders</h6>
+                <h2 style="color:rgba(139,102,143,0.88)">@Model.TotalOrders</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="glass-card dashboard-card fade-up">
+                <h6>Orders Today</h6>
+                <h2 style="color:#2c7033">@Model.OrdersToday</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="glass-card dashboard-card fade-up">
+                <h6>Total Revenue</h6>
+                <h2 style="color:rgba(220,182,56,0.85)">@Model.TotalRevenue euro</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="glass-card dashboard-card fade-up">
+                <h6>Today Revenue</h6>
+                <h2 style="color:rgba(138,127,165,0.98)">@Model.TodayRevenue euro</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 1 -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-8">
+            <div class="glass-card chart-card big-chart fade-up">
+                <h5 class="chart-title">Orders Per Day</h5>
+                <canvas id="ordersPerDayChart"></canvas>
+            </div>
+        </div>
+
+        <div class="col-lg-4 d-flex flex-column">
+
+            <div class="glass-card chart-card small-chart-wide fade-up">
+                <h5 class="chart-title">Top Dishes</h5>
+                <canvas id="topDishesChart"></canvas>
+            </div>
+
+            <div class="glass-card chart-card small-chart-thin fade-up">
+                <h5 class="chart-title">Orders by Status</h5>
+                <canvas id="statusChart"></canvas>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ROW 2 -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-4">
+            <div class="glass-card chart-card equal-chart fade-up">
+                <h5 class="chart-title">Users with Black Points</h5>
+                <canvas id="blackPointsChart"></canvas>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="glass-card chart-card equal-chart fade-up">
+                <h5 class="chart-title">Revenue Per Day</h5>
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="glass-card chart-card equal-chart fade-up">
+                <h5 class="chart-title">Most Active Users</h5>
+                <canvas id="activeUsersChart"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    window.dashboardData = {
+        ordersPerDayLabels: @Html.Raw(Json.Serialize(Model.OrdersPerDay_Labels)),
+        ordersPerDayValues: @Html.Raw(Json.Serialize(Model.OrdersPerDay_Values)),
+        statusLabels: @Html.Raw(Json.Serialize(Model.StatusLabels)),
+        statusValues: @Html.Raw(Json.Serialize(Model.StatusValues)),
+        topDishesLabels: @Html.Raw(Json.Serialize(Model.TopDishes_Labels)),
+        topDishesValues: @Html.Raw(Json.Serialize(Model.TopDishes_Values)),
+        revenueLabels: @Html.Raw(Json.Serialize(Model.RevenuePerDay_Labels)),
+        revenueValues: @Html.Raw(Json.Serialize(Model.RevenuePerDay_Values)),
+        blackPointsLabels: @Html.Raw(Json.Serialize(Model.BlackPoints_Labels)),
+        blackPointsValues: @Html.Raw(Json.Serialize(Model.BlackPoints_Values)),
+        activeUsersLabels: @Html.Raw(Json.Serialize(Model.ActiveUsers_Labels)),
+        activeUsersValues: @Html.Raw(Json.Serialize(Model.ActiveUsers_Values))
+    };
+</script>

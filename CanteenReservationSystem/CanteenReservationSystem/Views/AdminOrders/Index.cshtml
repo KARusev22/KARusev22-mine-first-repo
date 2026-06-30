@@ -1,0 +1,90 @@
+﻿@model List<CanteenReservationSystem.Models.ViewModels.OrderViewModel>
+
+@{
+    ViewData["Title"] = "Admin Orders";
+    ViewData["FigustaPage"] = true;
+    ViewData["FigustaNav"] = "adminOrders";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-orders.css" />
+}
+
+@section Scripts {
+    <script src="~/js/admin-orders.js"></script>
+}
+
+<div class="container py-4">
+    <h2 class="mb-4 text-center fw-bold">Admin Orders</h2>
+
+    <div class="admin-filters-container">
+        <form method="get" class="admin-filters-form">
+
+            <select name="status" class="filter-input">
+                <option value="">Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Completed">Completed</option>
+                <option value="NotTaken">NotTaken</option>
+            </select>
+
+            <input type="date" name="date" class="filter-input"/>
+
+            <input type="text" name="code" placeholder="Code" class="filter-input" />
+
+            <button class="filter-btn">
+                <i class="bi bi-funnel"></i>
+            </button>
+
+        </form>
+    </div>
+    
+   @{
+        var orders = Model.OrderByDescending(o => o.TargetDate).ThenByDescending(o => o.CreatedOn);
+    }
+
+    @if (!Model.Any())
+    {
+        <p class="text-center text-muted py-5">No orders match the current filters.</p>
+    }
+
+    <div class="orders-grid">
+        @foreach (var o in orders)
+        {
+            <div class="order-card glass-card p-4 rounded-4 shadow-lg">
+                <span class="badge status-badge @o.Status.ToLower()">
+                    @o.Status
+                </span>
+
+                <h5 class="fw-bold mb-3 order-title">
+                    <i class="bi bi-receipt-cutoff me-2"></i> @o.Code
+                </h5>
+
+                <p class="mb-1">
+                    <i class="bi bi-person-circle me-2"></i>
+                    @ViewBag.UserNames[o.Id]
+                </p>
+
+                <p class="mb-1">
+                    <i class="bi bi-calendar-event me-2"></i>
+                    @o.CreatedOn.ToString("dd MMM yyyy")
+                </p>
+
+                <p class="mb-1">
+                    <i class="bi bi-flag me-2"></i>
+                    For: @o.TargetDate.ToString("dd MMM yyyy")
+                </p>
+
+                <p class="mb-1">
+                    <i class="bi bi-cash-coin me-2"></i>
+                    @o.TotalPrice euro
+                </p>
+
+                <div class="mt-3 text-end">
+                    <a href="/AdminOrders/Details/@o.Id" class="btn dotted-btn rounded-pill px-4">
+                        View Details <i class="bi bi-arrow-right-circle ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,28 @@
+﻿@model CanteenReservationSystem.Models.ViewModels.ConfirmReservationViewModel
+
+<div class="figusta-main">
+
+    <div class="figusta-page-header">
+        <h1 class="figusta-page-title">Confirm Reservation</h1>
+        <p class="figusta-page-subtitle">Please confirm your reservation</p>
+    </div>
+
+    <div class="figusta-panel-card">
+        <p>You are about to create a reservation for:</p>
+
+        <p><strong>@Model.TargetDate.ToString("dd MMM yyyy")</strong></p>
+
+        <form asp-controller="Reservation" asp-action="CreateReservation" method="post">
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" name="TargetDate" value="@Model.TargetDate.ToString("yyyy-MM-dd", 
+                                        System.Globalization.CultureInfo.GetCultureInfo("en-US"))" />
+            <input type="hidden" name="ids" value="@Model.Ids" />
+
+            <button type="submit" class="figusta-btn-primary">
+                Confirm Reservation
+            </button>
+        </form>
+    </div>
+
+</div>

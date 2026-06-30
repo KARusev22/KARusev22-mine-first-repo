@@ -1,0 +1,66 @@
+﻿@model CanteenReservationSystem.Models.MonthlyMenu
+
+@{
+    ViewData["Title"] = "Create Monthly Menu Entry";
+    var dishes = ViewBag.Dishes as List<CanteenReservationSystem.Models.Dish>;
+}
+
+<div class="figusta-main">
+    <div class="figusta-page-header">
+        <h1 class="figusta-page-title">Create Monthly Menu Entry</h1>
+        <p class="figusta-page-subtitle">Assign a dish to a specific day</p>
+    </div>
+
+    <div class="mm-panel">
+        <form asp-controller="AdminMonthlyMenu"
+              asp-action="Create"
+              method="post"
+              class="mm-form">
+
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(false)
+
+            <label asp-for="DishId" class="mm-label"></label>
+            <select asp-for="DishId" class="mm-select">
+                <option value="">-- Select a dish --</option>
+                @foreach (var group in dishes.Where(d => d.Category != null).GroupBy(d => d.Category.CategoryName))
+                {
+                    <optgroup label="@group.Key">
+                        @foreach (var d in group)
+                        {
+                            <option value="@d.Id">@d.DishName</option>
+                        }
+                    </optgroup>
+                }
+            </select>
+
+            <label asp-for="DayOfWeek" class="mm-label"></label>
+            <select asp-for="DayOfWeek" class="mm-select">
+                @foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
+                {
+                    <option value="@((int)day)">@day</option>
+                }
+            </select>
+
+            <label asp-for="Month" class="mm-label"></label>
+            <select asp-for="Month" class="mm-select">
+                @for (int m = 1; m <= 12; m++)
+                {
+                    <option value="@m">
+                        @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(m)
+                    </option>
+                }
+            </select>
+
+            <label asp-for="Year" class="mm-label"></label>
+            <select asp-for="Year" class="mm-select">
+                @for (int y = 2026; y <= 2030; y++)
+                {
+                    <option value="@y">@y</option>
+                }
+            </select>
+
+            <button type="submit" class="mm-btn">Save Entry</button>
+        </form>
+    </div>
+</div>

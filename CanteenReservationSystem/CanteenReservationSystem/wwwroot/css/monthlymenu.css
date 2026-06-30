@@ -1,0 +1,101 @@
+﻿.mm-panel {
+    padding: 2rem;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.mm-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.mm-label {
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+    color: #333;
+}
+
+.mm-select {
+    padding: 0.55rem 1rem;
+    border-radius: 10px;
+    border: 1px solid #d0d0d0;
+    background: #fff;
+    font-size: 1rem;
+    transition: 0.2s ease;
+}
+
+.mm-select:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 3px rgba(76,175,80,0.25);
+}
+
+.mm-btn {
+    padding: 0.7rem 1.4rem;
+    border-radius: 10px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.mm-btn:hover {
+    background: #43a047;
+}
+
+.mm-table-panel {
+    padding: 2rem;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.mm-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.mm-table thead {
+    background: rgba(0,0,0,0.05);
+}
+
+.mm-table th {
+    padding: 0.8rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.mm-table td {
+    padding: 0.8rem;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.mm-table tr:hover {
+    background: rgba(0,0,0,0.04);
+}
+
+.mm-badge {
+    padding: 0.35rem 0.7rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+}
+
+.mm-cat-drinks { background: #00bcd4; }
+.mm-cat-vegan { background: #4caf50; }
+.mm-cat-vegetarian { background: #8bc34a; }
+.mm-cat-healthy { background: #ff9800; }
+.mm-cat-classic { background: #9c27b0; }
+
+.mm-day {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+}

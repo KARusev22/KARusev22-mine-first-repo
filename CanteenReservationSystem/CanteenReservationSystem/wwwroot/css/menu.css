@@ -1,0 +1,136 @@
+﻿:root {
+    --figusta-green: #68b063;
+    --figusta-green-dark: #5a9d55;
+    --figusta-bg: #f8f9fa;
+    --figusta-text: #333333;
+    --figusta-text-muted: #777777;
+    --figusta-border: #e5e7eb;
+    --figusta-white: #ffffff;
+    --figusta-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    --figusta-radius: 12px;
+}
+
+.figusta-main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 3rem;
+}
+
+.figusta-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.figusta-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    min-width: 210px;
+    width: 100%;
+    max-width: 320px;
+}
+
+.figusta-filter-label {
+    font-size: 0.85rem;
+    color: var(--figusta-text-muted);
+}
+
+.figusta-filter-input,
+.figusta-filter-select,
+.figusta-sort-select {
+    appearance: none;
+    background: var(--figusta-white);
+    border: 1px solid var(--figusta-border);
+    border-radius: 10px;
+    padding: 0.7rem 1rem;
+    font-size: 0.95rem;
+    color: var(--figusta-text);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.figusta-filter-input:focus,
+.figusta-filter-select:focus,
+.figusta-sort-select:focus {
+    outline: none;
+    border-color: var(--figusta-green);
+    box-shadow: 0 0 0 3px rgba(104, 176, 99, 0.15);
+}
+
+.figusta-filter-select,
+.figusta-sort-select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 16 16'%3E%3Cpath fill='%23777777' d='M4.5 6L8 9.5 11.5 6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    min-width: 120px;
+}
+
+.figusta-empty-state {
+    text-align: center;
+    background: rgba(104, 176, 99, 0.08);
+    border: 1px solid rgba(104, 176, 99, 0.25);
+    color: var(--figusta-text);
+    border-radius: var(--figusta-radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.98rem;
+}
+
+.figusta-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+
+.figusta-dish-card {
+    background: var(--figusta-white);
+    border-radius: var(--figusta-radius);
+    overflow: hidden;
+    box-shadow: var(--figusta-shadow);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.figusta-dish-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.figusta-dish-card.is-hidden {
+    display: none;
+}
+
+.figusta-dish-image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+}
+
+.figusta-dish-body {
+    padding: 1rem 1.1rem 1.15rem;
+}
+
+.figusta-dish-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0 0 0.2rem;
+    color: var(--figusta-text);
+}
+
+.figusta-dish-category {
+    font-size: 0.85rem;
+    color: var(--figusta-text-muted);
+    margin: 0 0 0.75rem;
+}
+
+.figusta-dish-price {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--figusta-green);
+    margin: 0;
+}
