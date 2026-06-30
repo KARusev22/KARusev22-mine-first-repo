@@ -16,4 +16,8 @@ public interface IAiAssistantService
     // ADMIN: suggest a poll question + options from the most-ordered dishes and
     // the comments customers left on their orders.
     Task<AiResult<PollSuggestion>> SuggestPollAsync(CancellationToken ct = default);
+
+    // CASHIER: produce a concise pickup handover summary for an order, highlighting
+    // allergens, special notes and customer reliability (black points).
+    Task<AiResult<OrderHandover>> SummarizeOrderForPickupAsync(string code, CancellationToken ct = default);
 }

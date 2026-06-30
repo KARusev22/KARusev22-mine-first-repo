@@ -4,7 +4,7 @@
 
 @{
     var active = ViewData["FigustaNav"] as string ?? "";
-    var user = UserManager.GetUserAsync(User).Result;
+    var user = await UserManager.GetUserAsync(User);
     var role = user?.Role;
 }
 

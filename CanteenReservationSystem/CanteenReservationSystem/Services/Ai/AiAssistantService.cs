@@ -194,6 +194,48 @@ public class AiAssistantService : IAiAssistantService
         return await CallJsonAsync<PollSuggestion>(system, ctx.ToString(), ct);
     }
 
+    // ------------------------------------------------------------- CASHIER ----
+    public async Task<AiResult<OrderHandover>> SummarizeOrderForPickupAsync(string code, CancellationToken ct = default)
+    {
+        if (!IsConfigured) return AiResult<OrderHandover>.Fail("AI is not configured.");
+
+        var order = await _context.Orders
+            .Include(o => o.User)
+            .Include(o => o.OrderDetails).ThenInclude(d => d.Dish).ThenInclude(di => di.DishAllergens).ThenInclude(da => da.Allergen)
+            .FirstOrDefaultAsync(o => o.UniqueCode == code, ct);
+
+        if (order == null)
+            return AiResult<OrderHandover>.Fail("Order not found.");
+
+        var blackPoints = order.User?.BlackPoints ?? 0;
+        var reliability = blackPoints == 0
+            ? "good (no missed pickups)"
+            : $"{blackPoints} missed pickup(s) on record";
+
+        var ctx = new StringBuilder();
+        ctx.AppendLine($"Order code: {order.UniqueCode}");
+        ctx.AppendLine($"Customer: {order.User?.FullName ?? order.User?.UserName}");
+        ctx.AppendLine($"Customer reliability: {reliability}");
+        ctx.AppendLine($"Status: {order.Status}; Total: {order.TotalPrice:0.00} EUR");
+        ctx.AppendLine("Items:");
+        foreach (var d in order.OrderDetails)
+        {
+            var allergens = d.Dish.DishAllergens?.Select(a => a.Allergen.AllergenName) ?? Enumerable.Empty<string>();
+            var allergenStr = allergens.Any() ? $" (allergens: {string.Join(", ", allergens)})" : "";
+            var note = string.IsNullOrWhiteSpace(d.Note) ? "" : $" — note: \"{d.Note}\"";
+            ctx.AppendLine($"  - {d.Quantity}x {d.Dish.DishName}{allergenStr}{note}");
+        }
+
+        var system =
+            "You are a friendly assistant for a canteen cashier handing an order to a customer. " +
+            "Write a very short, warm handover summary the cashier can read while verifying the order, " +
+            "and a list of short alerts to mention (allergens present, special preparation notes, and a " +
+            "polite reliability reminder if the customer has missed pickups before). " +
+            "Reply ONLY with a JSON object: {\"summary\": string, \"alerts\": [string]}.";
+
+        return await CallJsonAsync<OrderHandover>(system, ctx.ToString(), ct);
+    }
+
     // --------------------------------------------------------------- helpers --
     private async Task<AiResult<T>> CallJsonAsync<T>(string system, string user, CancellationToken ct)
     {

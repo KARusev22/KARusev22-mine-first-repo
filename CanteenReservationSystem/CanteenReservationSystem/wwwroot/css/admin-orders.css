@@ -118,6 +118,14 @@
     background: #3e8e41;
 }
 
+/* Responsive grid so orders flow side by side instead of stacking vertically. */
+.orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    align-items: start;
+}
+
 .orders-day-block h3 {
     color: #3BAF6C;
 }

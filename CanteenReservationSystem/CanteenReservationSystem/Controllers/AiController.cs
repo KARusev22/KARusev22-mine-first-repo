@@ -62,4 +62,14 @@ public class AiController : Controller
         var result = await _ai.SuggestPollAsync(ct);
         return Json(result);
     }
+
+    // ---- CASHIER: order pickup handover summary ----
+    [Authorize(Roles = "Cashier,Admin")]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CashierSummary(string code, CancellationToken ct)
+    {
+        var result = await _ai.SummarizeOrderForPickupAsync(code, ct);
+        return Json(result);
+    }
 }

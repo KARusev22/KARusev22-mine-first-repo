@@ -66,3 +66,11 @@ public class PollSuggestion
     public string Question { get; set; } = string.Empty;
     public List<string> Options { get; set; } = new();
 }
+
+// ---- Cashier: pickup handover summary ----
+public class OrderHandover
+{
+    public string Summary { get; set; } = string.Empty;
+    // Short reminders to mention at the counter (allergens, special notes, reliability).
+    public List<string> Alerts { get; set; } = new();
+}
