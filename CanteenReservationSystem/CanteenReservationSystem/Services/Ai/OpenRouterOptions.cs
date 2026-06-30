@@ -3,8 +3,8 @@ namespace CanteenReservationSystem.Services.Ai;
 // Strongly-typed configuration for the OpenRouter AI integration.
 // The API key is intentionally NOT stored in source control. Provide it through
 // one of the following (any standard ASP.NET Core configuration source):
-//   - Environment variable:  OpenRouter__ApiKey=sk-or-v1-...
-//   - User secrets (dev):     dotnet user-secrets set "OpenRouter:ApiKey" "sk-or-v1-..."
+//   - Environment variable:  OpenRouter__ApiKey=<your-openrouter-key>
+//   - User secrets (dev):     dotnet user-secrets set "OpenRouter:ApiKey" "<your-openrouter-key>"
 //   - appsettings overrides that are kept out of git
 public class OpenRouterOptions
 {
